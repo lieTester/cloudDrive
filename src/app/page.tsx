@@ -1,6 +1,11 @@
 "use client";
+
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
+import Login from "./Auth/page";
+import Body from "@/components/Body";
+import Header from "@/components/Header";
+import LoadingPage from "@/components/subcomponent/LoderComponent";
 
 export default function Home() {
    const { data: session } = useSession();
@@ -15,10 +20,21 @@ export default function Home() {
 
    return (
       <main className="w-screen h-screen bg-prim1 font-openSans">
-         {!session ? (
-            <div className=""> in</div>
+         {!isLoding ? (
+            session ? (
+               <>
+                  <Header />
+                  <Body />
+               </>
+            ) : (
+               // <>
+               //    <Header />
+               //    <Body />
+               // </>
+               <Login />
+            )
          ) : (
-            <div>out</div>
+            <LoadingPage />
          )}
       </main>
    );
