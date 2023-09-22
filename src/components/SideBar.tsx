@@ -7,6 +7,7 @@ import { RiSpam2Line } from "react-icons/ri";
 import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
 import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
 import UploadHook from "@/hook/UploadFile";
+import CreateFolderUI from "../components/subcomponent/CreateFolder";
 
 const SideBar = () => {
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
@@ -63,6 +64,10 @@ const SideBar = () => {
                   <BsFolderSymlink size={18} className="mx-2" /> Folder Upload
                </li>
             </ul>
+            <CreateFolderUI
+               isOpen={openCreateFolder}
+               onClose={handelCreateFolder}
+            />
          </div>
          <div
             className="flex-grow overflow-y-auto"
