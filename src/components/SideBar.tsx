@@ -6,13 +6,21 @@ import { BiTimeFive } from "react-icons/bi";
 import { RiSpam2Line } from "react-icons/ri";
 import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
 import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
-
+import UploadHook from "@/hook/UploadFile";
 
 const SideBar = () => {
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
    const [openCreateFolder, setOpenCreateFolder] = useState(false);
 
-   
+   // to create add new folder window
+   const handelCreateFolder = () => {
+      setOpenCreateFolder(!openCreateFolder);
+   };
+
+   const handleFileChange = (e: any) => {
+      const selectedFile = e.target.files[0];
+      UploadHook(selectedFile);
+   };
 
    return (
       <div className="w-[18%]  h-full p-2 z-10 flex flex-col">
@@ -25,8 +33,36 @@ const SideBar = () => {
             >
                +<span className="ml-3 text-sm align-middle ">New</span>
             </button>
-           
-            
+            <ul
+               className={` ${
+                  fileFolderOpt
+                     ? "  h-fit translate-y-0 opacity-100"
+                     : " h-0 -translate-y-2 opacity-0"
+               }  transition-all ease-in duration-200  absolute cursor-pointer overflow-hidden top-0 text-[13px] bg-prim2 w-[120%] [&>li:hover]:bg-seco2 drop-shadow-md shadow-slate-800 rounded-[5px]`}
+               onClick={() => {
+                  setfileFolderOpt(!fileFolderOpt);
+               }}
+            >
+               <li
+                  className="px-2 pt-2 pb-1  flex"
+                  onClick={handelCreateFolder}
+               >
+                  <BsFolderPlus size={18} className="mx-2" /> New folder
+               </li>
+               <li className="!relative px-2 pt-2 pb-1  flex">
+                  <input
+                     className="absolute top-0 left-0 opacity-0 w-full h-full"
+                     type="file"
+                     onChange={(e) => {
+                        handleFileChange(e);
+                     }}
+                  />
+                  <MdUploadFile size={18} className="mx-2" /> File Upload
+               </li>
+               <li className="px-2 pt-2 pb-1  flex">
+                  <BsFolderSymlink size={18} className="mx-2" /> Folder Upload
+               </li>
+            </ul>
          </div>
          <div
             className="flex-grow overflow-y-auto"
