@@ -8,6 +8,7 @@ import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
 import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
 import UploadHook from "@/hook/UploadFile";
 import CreateFolderUI from "../components/subcomponent/CreateFolder";
+import FileUpload from "../components/subcomponent/FileUploads";
 
 const SideBar = () => {
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
@@ -18,6 +19,15 @@ const SideBar = () => {
       setOpenCreateFolder(!openCreateFolder);
    };
 
+   const [fileUploadCompVisiblity, setfileUploadCompVisiblity] =
+      useState(false);
+   const closeUploadBlock = () => {
+      setfileUploadCompVisiblity(false);
+   };
+
+   // fileUpload related functions
+   const [file, setFile] = useState("temp");
+   const [progress, setProgress] = useState(23);
    const handleFileChange = (e: any) => {
       const selectedFile = e.target.files[0];
       UploadHook(selectedFile);
@@ -67,6 +77,12 @@ const SideBar = () => {
             <CreateFolderUI
                isOpen={openCreateFolder}
                onClose={handelCreateFolder}
+            />
+            <FileUpload
+               isVisible={fileUploadCompVisiblity}
+               onClose={closeUploadBlock}
+               fileName={file}
+               progress={progress}
             />
          </div>
          <div
