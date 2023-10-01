@@ -3,9 +3,11 @@ import { IoIosSearch } from "react-icons/io";
 import { BsQuestionCircle, BsCircle } from "react-icons/bs";
 import { AiOutlineSetting } from "react-icons/ai";
 import { IoApps } from "react-icons/io5";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 const Header = () => {
+   const { data: session } = useSession();
    return (
       <div className="w-full h-[8%] flex p-2 !important  text-prim1 ">
          <Logo />
@@ -20,21 +22,29 @@ const Header = () => {
                   <IoIosSearch className="  text-[25px]" />
                </span>
             </div>
-            <div className="h-full flex font-extrabold text-extra2 [&>span]:mx-[2px] ">
-               <span className="p-3  hover:bg-seco2 flex justify-center rounded-full">
+            <div className="h-full flex items-center font-extrabold text-extra2 [&>span]:mx-[2px] ">
+               <span className=" p-2 !mx-1 hover:bg-seco2 flex justify-center rounded-full">
                   <BsQuestionCircle className="  text-[22px] " />
                </span>
-               <span className="p-3  hover:bg-seco2 flex justify-center rounded-full">
+               <span className="p-2 !mx-1 hover:bg-seco2 flex justify-center rounded-full">
                   <AiOutlineSetting className="  text-[22px] " />
                </span>
-               <span className="p-3  hover:bg-seco2 flex justify-center rounded-full">
+               <span className="p-2  !mx-1 hover:bg-seco2 flex justify-center rounded-full">
                   <IoApps className="  text-[22px] " />
                </span>
                <span
-                  className="p-3  hover:bg-seco2 flex justify-center rounded-full"
+                  className=" relative !mx-1 p-1 hover:bg-seco2 flex justify-center rounded-full"
                   onClick={() => signOut}
                >
-                  <BsCircle className="  text-[22px] " />
+                  {session?.user?.image && (
+                     <Image
+                        src={session?.user?.image}
+                        alt="user profile image"
+                        width={30}
+                        height={30}
+                        className="rounded-full "
+                     />
+                  )}
                </span>
             </div>
          </div>
