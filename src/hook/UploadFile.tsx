@@ -1,8 +1,12 @@
-import { useState } from "react";
-import { storage, app, database } from "../../firebaseConfig";
+import { storage } from "../../firebaseConfig";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-
-const UploadHook = (file: any) => {
+import { createFileInFolder } from "@/schema/dataFunctions";
+const UploadFile = (
+   file: any,
+   owner: string,
+   parentId: string,
+   setProgress: Function
+) => {
    if (file) {
       const storageRef = ref(storage, `files/${file.name}`);
 
@@ -14,7 +18,8 @@ const UploadHook = (file: any) => {
             // Track the upload progress
             const uploadProgress =
                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(uploadProgress);
+            // console.log(uploadProgress);
+            setProgress(uploadProgress);
          },
          (error) => {
             console.error("Error uploading file: ", error);
@@ -24,11 +29,22 @@ const UploadHook = (file: any) => {
             console.log("File uploaded successfully!");
 
             // Get the download URL of the uploaded file
+            // console.log(uploadTask.snapshot);
             const url = await getDownloadURL(uploadTask.snapshot.ref);
             console.log(url);
+            const fileDetails = {
+               name: file.name,
+               size: file.size,
+               owner: owner,
+               isFolder: false,
+               fileLink: url,
+               parentFolder: parentId,
+            };
+            // console.log(fileDetails);
+            await createFileInFolder(fileDetails);
          }
       );
    }
 };
 
-export default UploadHook;
+export default UploadFile;
