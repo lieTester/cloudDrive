@@ -1,8 +1,18 @@
-import React, { FC, useState } from "react";
+import { FC, useState, useContext } from "react";
+import { CreateFolderUIProps } from "@/types";
+import { useSession } from "next-auth/react";
+import FileFolderContext from "../../context/FileDataContext";
+import { createFolderInFolder } from "@/schema/dataFunctions";
+import { Folder } from "@/types/modelTypes";
 
 const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
-   const [folderName, setFolderName] = useState("");
+   const { data: session } = useSession();
+   // as over context value is undefined as primarrly so direct destructuring will give warning
+   const contextValue = useContext(FileFolderContext);
+   const folderInfo = contextValue?.folderInfo; // Use optional chaining here
 
+   // create folder name
+   const [folderName, setFolderName] = useState("");
    const handleFolderNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFolderName(e.target.value);
    };
@@ -10,7 +20,19 @@ const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
    const handleCreateFolder = () => {
       // You can implement folder creation logic here
       console.log("Creating folder:", folderName);
-      onClose();
+      if (session?.user?.email && folderInfo?.parentFolder) {
+         const data = {
+            name: folderName,
+            owner: session?.user?.email,
+            isFolder: true,
+            parentFolder: folderInfo?.parentFolder,
+         };
+         console.log(data);
+         createFolderInFolder(data).then((res) => {
+            console.log("Folder created:", res);
+            onClose();
+         });
+      }
    };
 
    const handleOverlayClick = () => {
