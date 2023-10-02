@@ -18,14 +18,14 @@
    --sh-prim2: #170b3b;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
    :root {
       --bg-prim1: #21252b;
       --bg-prim2: #5b5f67;
       --text-prim1: #989aa1;
       --text-prim2: white;
       --extra1: #303443;
-      --extra2: #989aa1;;
+      --extra2: #989aa1;
       --sh-prim1: #181a21;
       --sh-prim2: #303443;
    }

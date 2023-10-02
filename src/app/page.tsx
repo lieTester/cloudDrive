@@ -19,7 +19,7 @@ export default function Home() {
    }, [session]);
 
    return (
-      <main className="w-screen h-screen bg-prim1 font-openSans">
+      <main className="w-screen h-screen bg-prim1 ">
          {!isLoding ? (
             session ? (
                <>
