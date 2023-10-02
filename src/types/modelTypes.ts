@@ -2,21 +2,20 @@
 export interface File {
    name: string;
    size: number;
-   type: string;
-   timestamp: any; // Use Firestore Timestamp type
    owner: string;
    isFolder: boolean;
+   fileLink: string;
+   parentFolder: string;
 }
 
 export interface Folder {
    name: string;
    owner: string;
-   isFolder: true;
+   isFolder: boolean;
+   parentFolder: string;
 }
 
-export interface User {
-   username: string;
-   email: string;
-   filesCount: number;
-   storageUsed: number;
+export interface FolderWithID {
+   data: Folder;
+   id: string;
 }
