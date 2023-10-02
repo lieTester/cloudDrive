@@ -32,10 +32,7 @@ const Header = () => {
                <span className="p-2  !mx-1 hover:bg-seco2 flex justify-center rounded-full">
                   <IoApps className="  text-[22px] " />
                </span>
-               <span
-                  className=" relative !mx-1 p-1 hover:bg-seco2 flex justify-center rounded-full"
-                  onClick={() => signOut}
-               >
+               <span className="relative !mx-1 p-1 hover:bg-seco2 flex justify-center rounded-full [&:hover>ul]:visible [&:hover>ul]:opacity-100">
                   {session?.user?.image && (
                      <Image
                         src={session?.user?.image}
@@ -45,6 +42,18 @@ const Header = () => {
                         className="rounded-full "
                      />
                   )}
+                  <ul className="absolute -bottom-[30px] right-0  invisible transition-all duration-100 ease-linear cursor-pointer">
+                     <li className="p-1 before:absolute before:right-3 before:top-[3px] before:rotate-45 before:w-[12px] before:h-[12px]   before:bg-extra2 before:rounded-sm "></li>
+                     <li
+                        className="text-xs font-normal bg-extra2 text-seco1 rounded-sm p-1 px-3"
+                        onClick={() => {
+                           signOut();
+                           console.log("signOut");
+                        }}
+                     >
+                        Signout
+                     </li>
+                  </ul>
                </span>
             </div>
          </div>

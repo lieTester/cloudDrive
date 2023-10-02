@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { ImDrive } from "react-icons/im";
 import { MdDevices, MdUploadFile } from "react-icons/md";
 import { FaUserGroup } from "react-icons/fa6";
@@ -6,11 +5,20 @@ import { BiTimeFive } from "react-icons/bi";
 import { RiSpam2Line } from "react-icons/ri";
 import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
 import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
-import UploadHook from "@/hook/UploadFile";
-import CreateFolderUI from "../components/subcomponent/CreateFolder";
-import FileUpload from "../components/subcomponent/FileUploads";
+import { useState, useEffect, useContext } from "react";
+import { useSession } from "next-auth/react";
+import UploadFile from "@/hook/UploadFile";
+import FileUpload from "./subcomponent/FileUploadsUI";
+import CreateFolderUI from "./subcomponent/CreateFolderUI";
+import FileFolderContext from "../context/FileDataContext";
 
 const SideBar = () => {
+   const { data: session } = useSession();
+
+   // as over context value is undefined as primarrly so direct destructuring will give warning
+   const contextValue = useContext(FileFolderContext);
+   const folderInfo = contextValue?.folderInfo; // Use optional chaining here
+
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
    const [openCreateFolder, setOpenCreateFolder] = useState(false);
 
@@ -19,18 +27,30 @@ const SideBar = () => {
       setOpenCreateFolder(!openCreateFolder);
    };
 
+   // Upload file UI visibility
    const [fileUploadCompVisiblity, setfileUploadCompVisiblity] =
       useState(false);
    const closeUploadBlock = () => {
+      // console.log("close upload block");
       setfileUploadCompVisiblity(false);
    };
 
    // fileUpload related functions
-   const [file, setFile] = useState("temp");
-   const [progress, setProgress] = useState(23);
+   const [file, setFile] = useState("");
+   const [progress, setProgress] = useState(0);
    const handleFileChange = (e: any) => {
-      const selectedFile = e.target.files[0];
-      UploadHook(selectedFile);
+      // console.log(e.target.files[0], file, session?.user?.email);
+      setFile(e.target.files[0].name);
+      setfileUploadCompVisiblity(true);
+      console.log(folderInfo);
+      if (session?.user?.email && folderInfo?.parentFolder) {
+         UploadFile(
+            e.target.files[0],
+            session.user.email,
+            folderInfo.parentFolder,
+            setProgress
+         );
+      }
    };
 
    return (
