@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-
+import { File, FolderWithID } from "@/types/modelTypes";
 export type AuthCredType = {
    clientId: string;
    clientSecret: string;
@@ -25,6 +25,10 @@ export type FolderInfo = {
 export type FileFolderContextType = {
    folderInfo: FolderInfo;
    setFolderInfo: React.Dispatch<React.SetStateAction<FolderInfo>>;
+   allFiles: File[];
+   setAllFiles: React.Dispatch<React.SetStateAction<File[]>>;
+   allFolders: FolderWithID[];
+   setAllFolders: React.Dispatch<React.SetStateAction<FolderWithID[]>>;
 };
 
 export type FileFolderProviderProps = {

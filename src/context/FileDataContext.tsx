@@ -4,6 +4,7 @@ import {
    FileFolderContextType,
    FileFolderProviderProps,
 } from "@/types/index";
+import { File, FolderWithID } from "@/types/modelTypes";
 
 const FileFolderContext = createContext<FileFolderContextType | undefined>(
    undefined
@@ -14,8 +15,21 @@ export const FileFolderProvider = ({ children }: FileFolderProviderProps) => {
       parentFolder: "My Drive",
    });
 
+   const [allFiles, setAllFiles] = useState<File[]>([]); // Initialize as an array
+
+   const [allFolders, setAllFolders] = useState<FolderWithID[]>([]);
+
    return (
-      <FileFolderContext.Provider value={{ folderInfo, setFolderInfo }}>
+      <FileFolderContext.Provider
+         value={{
+            folderInfo,
+            setFolderInfo,
+            allFiles,
+            setAllFiles, // Updated to match the type
+            allFolders,
+            setAllFolders,
+         }}
+      >
          {children}
       </FileFolderContext.Provider>
    );
