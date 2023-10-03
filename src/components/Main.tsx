@@ -11,13 +11,16 @@ import { File, Folder, FolderWithID } from "@/types/modelTypes";
 
 const Main = () => {
    const { data: session } = useSession();
-   const [allFiles, setAllFiles] = useState<File[]>([]);
-   const [allFolders, setAllFolders] = useState<FolderWithID[]>([]);
 
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const contextValue = useContext(FileFolderContext);
    const folderInfo = contextValue?.folderInfo; // Use optional chaining here
+   const allFiles = contextValue?.allFiles;
+   const setAllFiles = contextValue?.setAllFiles;
+   const allFolders = contextValue?.allFolders;
+   const setAllFolders = contextValue?.setAllFolders;
 
+   // below effect for fetch files and folders from firebase
    useEffect(() => {
       if (session?.user?.email && folderInfo) {
          try {
@@ -28,7 +31,6 @@ const Main = () => {
 
                   arr.forEach((detail: any) => {
                      // console.log(detail);
-
                      // Use type assertion to check if 'detail[0]' is a File
                      if ((detail[0] as File).isFolder !== undefined) {
                         if ((detail[0] as File).isFolder) {
@@ -43,15 +45,17 @@ const Main = () => {
                      }
                   });
                   // console.log(files);
-                  setAllFiles(files);
-                  setAllFolders(folders);
+                  if (setAllFiles && setAllFolders) {
+                     setAllFiles(files);
+                     setAllFolders(folders);
+                  }
                }
             );
          } catch (error) {
             console.log(error);
          }
       }
-   }, [session, folderInfo]);
+   }, [session, folderInfo, allFiles, allFolders]);
 
    return (
       <section className="w-[79%] h-full bg-prim2 rounded-xl px-2 py-3 flex flex-col ">
