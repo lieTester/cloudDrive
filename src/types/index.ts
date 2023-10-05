@@ -29,6 +29,8 @@ export type FileFolderContextType = {
    setAllFiles: React.Dispatch<React.SetStateAction<File[]>>;
    allFolders: FolderWithID[];
    setAllFolders: React.Dispatch<React.SetStateAction<FolderWithID[]>>;
+   addedFileFolder: boolean;
+   setAddedFileFolder: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type FileFolderProviderProps = {
