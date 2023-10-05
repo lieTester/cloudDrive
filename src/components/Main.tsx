@@ -2,63 +2,90 @@ import { useEffect, useContext, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import { BsCardList } from "react-icons/bs";
 import FileFolderContext from "../context/FileDataContext";
-import { getFolderContents } from "@/schema/dataFunctions";
 import { useSession } from "next-auth/react";
 import FolderUI from "./subcomponent/FolderUI";
 import FilesUI from "./subcomponent/FilesUI";
+import { useSearchParams } from "next/navigation";
+import { FolderInfo } from "@/types/index";
+import fetchFileFolders from "@/hook/fetchFileFolders";
 
-import { File, Folder, FolderWithID } from "@/types/modelTypes";
-
-const Main = () => {
+const Main: React.FC = () => {
    const { data: session } = useSession();
 
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const contextValue = useContext(FileFolderContext);
-   const folderInfo = contextValue?.folderInfo; // Use optional chaining here
+   const addedFileFolder = contextValue?.addedFileFolder; // if we added any new file or folder this will trigger use effect for realtime data
+   const setAddedFileFolder = contextValue?.setAddedFileFolder; // if we added any new file or folder this will trigger use effect for realtime data
+   const folderInfo = contextValue?.folderInfo;
+   const setFolderInfo = contextValue?.setFolderInfo;
    const allFiles = contextValue?.allFiles;
    const setAllFiles = contextValue?.setAllFiles;
    const allFolders = contextValue?.allFolders;
    const setAllFolders = contextValue?.setAllFolders;
 
-   // below effect for fetch files and folders from firebase
+   // below code is to use shallow routing for  folder structure move nestedly and comeback
+   const searchParams = useSearchParams();
    useEffect(() => {
-      if (session?.user?.email && folderInfo) {
-         try {
-            getFolderContents(folderInfo.parentFolder, session.user.email).then(
-               (arr) => {
-                  const files: File[] = [];
-                  const folders: FolderWithID[] = [];
-
-                  arr.forEach((detail: any) => {
-                     // console.log(detail);
-                     // Use type assertion to check if 'detail[0]' is a File
-                     if ((detail[0] as File).isFolder !== undefined) {
-                        if ((detail[0] as File).isFolder) {
-                           const folderData: FolderWithID = {
-                              data: detail[0] as Folder,
-                              id: detail[1],
-                           };
-                           folders.push(folderData);
-                        } else {
-                           files.push(detail[0] as File);
-                        }
-                     }
-                  });
-                  // console.log(files);
-                  if (setAllFiles && setAllFolders) {
-                     setAllFiles(files);
-                     setAllFolders(folders);
-                  }
-               }
-            );
-         } catch (error) {
-            console.log(error);
-         }
+      // The url ID changed!
+      // console.log(searchParams?.get("id"));
+      let id = searchParams?.get("id") || "My Drive"; // if we are on / direct then "My Drive" act as id
+      if (setFolderInfo && id) {
+         setFolderInfo((prev) => {
+            return { ...prev, parentFolder: id } as FolderInfo; // Added type annotation here
+         });
       }
-   }, [session, folderInfo, allFiles, allFolders]);
+   }, [searchParams?.get("id")]);
+
+   // below effect for fetch files and folders from firebase
+   // Use the custom hook to handle the file and folder fetching logic
+
+   // Add a useEffect to call useFetchFileFolders when dependencies change
+   useEffect(() => {
+      fetchFileFolders({
+         setAddedFileFolder,
+         folderInfo,
+         session,
+         setAllFiles,
+         setAllFolders,
+      });
+
+      // if (setAddedFileFolder) setAddedFileFolder(false);
+      // if (session?.user?.email && folderInfo) {
+      //    try {
+      //       getFolderContents(folderInfo.parentFolder, session.user.email).then(
+      //          (arr) => {
+      //             const files: File[] = [];
+      //             const folders: FolderWithID[] = [];
+      //             arr.forEach((detail: any) => {
+      //                // console.log(detail);
+      //                // Use type assertion to check if 'detail[0]' is a File
+      //                if ((detail[0] as File).isFolder !== undefined) {
+      //                   if ((detail[0] as File).isFolder) {
+      //                      const folderData: FolderWithID = {
+      //                         data: detail[0] as Folder,
+      //                         id: detail[1], // this parent id we are connecting with it
+      //                      };
+      //                      folders.push(folderData);
+      //                   } else {
+      //                      files.push(detail[0] as File);
+      //                   }
+      //                }
+      //             });
+      //             // console.log(files);
+      //             if (setAllFiles && setAllFolders) {
+      //                setAllFiles(files);
+      //                setAllFolders(folders);
+      //             }
+      //          }
+      //       );
+      //    } catch (error) {
+      //       console.log(error);
+      //    }
+      // }
+   }, [session, folderInfo, addedFileFolder]);
 
    return (
-      <section className="w-[79%] h-full bg-prim2 rounded-xl px-2 py-3 flex flex-col ">
+      <section className="w-[50%] md:w-[75%] lg:w-[79%] h-full bg-prim2 rounded-xl px-2 py-3 flex flex-col ">
          <div className="relative   w-full flex items-center justify-between">
             <ul className="inline-block [&>li]:text-[22px] [&>li]:px-2  [&>li]:rounded-full">
                <li className="hover:bg-seco2">My Drive</li>
@@ -72,7 +99,7 @@ const Main = () => {
                </li>
             </ul>
          </div>
-         <div className="w-auto px-3 flex-grow">
+         <div className="w-auto px-3 flex-grow overflow-y-auto">
             <label className="block text-[14px] text-prim1 !my-3 font-medium">
                Folders
             </label>
