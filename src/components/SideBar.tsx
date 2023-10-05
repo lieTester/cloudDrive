@@ -5,20 +5,18 @@ import { BiTimeFive } from "react-icons/bi";
 import { RiSpam2Line } from "react-icons/ri";
 import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
 import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
-import { useState, useEffect, useContext } from "react";
-import { useSession } from "next-auth/react";
+import { useState, useContext } from "react";
 import UploadFile from "@/hook/UploadFile";
 import FileUpload from "./subcomponent/FileUploadsUI";
 import CreateFolderUI from "./subcomponent/CreateFolderUI";
 import FileFolderContext from "../context/FileDataContext";
 
 const SideBar = () => {
-   const { data: session } = useSession();
-
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const contextValue = useContext(FileFolderContext);
    const folderInfo = contextValue?.folderInfo; // Use optional chaining here
    const setAddedFileFolder = contextValue?.setAddedFileFolder;
+   const session = contextValue?.session;
 
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
    const [openCreateFolder, setOpenCreateFolder] = useState(false);

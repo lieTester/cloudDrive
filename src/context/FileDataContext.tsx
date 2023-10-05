@@ -21,6 +21,8 @@ export const FileFolderProvider = ({ children }: FileFolderProviderProps) => {
 
    const [allFolders, setAllFolders] = useState<FolderWithID[]>([]);
 
+   const [session, setSession] = useState<any>();
+
    return (
       <FileFolderContext.Provider
          value={{
@@ -32,6 +34,8 @@ export const FileFolderProvider = ({ children }: FileFolderProviderProps) => {
             setAllFolders,
             addedFileFolder,
             setAddedFileFolder,
+            session,
+            setSession,
          }}
       >
          {children}

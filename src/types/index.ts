@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
+import { Session } from "next-auth";
 import { File, FolderWithID } from "@/types/modelTypes";
+
 export type AuthCredType = {
    clientId: string;
    clientSecret: string;
@@ -31,8 +33,14 @@ export type FileFolderContextType = {
    setAllFolders: React.Dispatch<React.SetStateAction<FolderWithID[]>>;
    addedFileFolder: boolean;
    setAddedFileFolder: React.Dispatch<React.SetStateAction<boolean>>;
+   session: any;
+   setSession: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type FileFolderProviderProps = {
    children: ReactNode;
+};
+
+export type SessionProp = {
+   session: Session;
 };

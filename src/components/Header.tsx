@@ -1,13 +1,18 @@
+"use client";
 import Logo from "./subcomponent/Logo";
+import Image from "next/image";
 import { IoIosSearch } from "react-icons/io";
 import { BsQuestionCircle, BsCircle } from "react-icons/bs";
 import { AiOutlineSetting } from "react-icons/ai";
 import { IoApps } from "react-icons/io5";
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
+import { signOut } from "next-auth/react";
+import { useContext } from "react";
+import FileFolderContext from "../context/FileDataContext";
 
 const Header = () => {
-   const { data: session } = useSession();
+   const contextValue = useContext(FileFolderContext);
+   const session = contextValue?.session;
+
    return (
       <div className="w-full h-[8%] flex p-2 !important  text-prim1 ">
          <Logo />

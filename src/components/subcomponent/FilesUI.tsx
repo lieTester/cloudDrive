@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { BsFillFileEarmarkFill } from "react-icons/bs";
 import { File } from "@/types/modelTypes";

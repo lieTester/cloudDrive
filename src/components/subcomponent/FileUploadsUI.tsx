@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, FC } from "react";
 import { FiX } from "react-icons/fi";
 import {

@@ -2,17 +2,20 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-
 import Login from "./Auth/page";
 import Landing from "@/pages/Landing";
 import LoadingPage from "@/components/subcomponent/LoderComponent";
+import { FileFolderProvider } from "../context/FileDataContext";
 
 export default function Home() {
+   // session
    const { data: session } = useSession();
    const [isLoding, setIsLoding] = useState(true);
    useEffect(() => {
       console.log(isLoding);
-      if (session) setIsLoding(false);
+      if (session) {
+         setIsLoding(false);
+      }
       setTimeout(() => {
          setIsLoding(false);
       }, 300);
@@ -22,12 +25,10 @@ export default function Home() {
       <main className="w-screen h-screen bg-prim1 ">
          {!isLoding ? (
             session ? (
-               <Landing />
+               <FileFolderProvider>
+                  <Landing session={session} />
+               </FileFolderProvider>
             ) : (
-               // <>
-               //    <Header />
-               //    <Body />
-               // </>
                <Login />
             )
          ) : (

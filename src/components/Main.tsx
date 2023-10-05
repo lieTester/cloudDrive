@@ -1,8 +1,8 @@
+"use client";
 import { useEffect, useContext, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import { BsCardList } from "react-icons/bs";
 import FileFolderContext from "../context/FileDataContext";
-import { useSession } from "next-auth/react";
 import FolderUI from "./subcomponent/FolderUI";
 import FilesUI from "./subcomponent/FilesUI";
 import { useSearchParams } from "next/navigation";
@@ -10,10 +10,9 @@ import { FolderInfo } from "@/types/index";
 import fetchFileFolders from "@/hook/fetchFileFolders";
 
 const Main: React.FC = () => {
-   const { data: session } = useSession();
-
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const contextValue = useContext(FileFolderContext);
+   const session = contextValue?.session; // if we added any new file or folder this will trigger use effect for realtime data
    const addedFileFolder = contextValue?.addedFileFolder; // if we added any new file or folder this will trigger use effect for realtime data
    const setAddedFileFolder = contextValue?.setAddedFileFolder; // if we added any new file or folder this will trigger use effect for realtime data
    const folderInfo = contextValue?.folderInfo;

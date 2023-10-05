@@ -1,3 +1,4 @@
+"use client";
 import { signIn } from "next-auth/react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 
@@ -18,7 +19,7 @@ const Login = () => {
                Sign in with your social account
             </p>
             <button
-               onClick={handelsignin}
+               onClick={() => handelsignin()}
                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full flex items-center justify-center space-x-2 mb-4"
             >
                <FaGoogle />

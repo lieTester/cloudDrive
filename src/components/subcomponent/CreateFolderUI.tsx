@@ -1,13 +1,13 @@
+"use client";
 import { FC, useState, useContext } from "react";
 import { CreateFolderUIProps } from "@/types";
-import { useSession } from "next-auth/react";
 import FileFolderContext from "@/context/FileDataContext";
 import { createFolderInFolder } from "@/schema/dataFunctions";
 
 const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
-   const { data: session } = useSession();
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const contextValue = useContext(FileFolderContext);
+   const session = contextValue?.session; // Use optional chaining here
    const folderInfo = contextValue?.folderInfo; // Use optional chaining here
    const setAddedFileFolder = contextValue?.setAddedFileFolder; // will use this if we create a new folder
 

@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+"use client";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { FaFolderOpen } from "react-icons/fa";
 import { FolderWithID } from "@/types/modelTypes";
@@ -8,8 +9,6 @@ type FolderGridProps = {
 };
 
 const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
-   // as over context value is undefined as primarrly so direct destructuring will give warning
-
    const router = useRouter();
    const changeParentFolder = (id: string) => {
       router.push(`/?id=${id}`, undefined);
