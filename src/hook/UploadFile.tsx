@@ -1,12 +1,16 @@
 import { storage } from "../../firebaseConfig";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { createFileInFolder } from "@/schema/dataFunctions";
+
 const UploadFile = (
    file: any,
    owner: string,
    parentId: string,
-   setProgress: Function
+   setProgress: Function,
+   setAddedFileFolder: Function
 ) => {
+   // as over context value is undefined as primarrly so direct destructuring will give warning
+
    if (file) {
       const storageRef = ref(storage, `files/${file.name}`);
 
@@ -41,7 +45,9 @@ const UploadFile = (
                parentFolder: parentId,
             };
             // console.log(fileDetails);
-            await createFileInFolder(fileDetails);
+            await createFileInFolder(fileDetails).then((res) => {
+               setAddedFileFolder(true); // to set that over file is loaded in database
+            });
          }
       );
    }

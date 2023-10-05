@@ -18,6 +18,7 @@ const SideBar = () => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const contextValue = useContext(FileFolderContext);
    const folderInfo = contextValue?.folderInfo; // Use optional chaining here
+   const setAddedFileFolder = contextValue?.setAddedFileFolder;
 
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
    const [openCreateFolder, setOpenCreateFolder] = useState(false);
@@ -35,26 +36,33 @@ const SideBar = () => {
       setfileUploadCompVisiblity(false);
    };
 
-   // fileUpload related functions
+   // fileUpload related function and states
    const [file, setFile] = useState("");
    const [progress, setProgress] = useState(0);
+
    const handleFileChange = (e: any) => {
       // console.log(e.target.files[0], file, session?.user?.email);
+      // console.log(folderInfo);
+
       setFile(e.target.files[0].name);
       setfileUploadCompVisiblity(true);
-      console.log(folderInfo);
-      if (session?.user?.email && folderInfo?.parentFolder) {
+      if (
+         session?.user?.email &&
+         folderInfo?.parentFolder &&
+         setAddedFileFolder
+      ) {
          UploadFile(
             e.target.files[0],
             session.user.email,
             folderInfo.parentFolder,
-            setProgress
+            setProgress,
+            setAddedFileFolder // to set that file isuploaded and we can now fetchin realtime
          );
       }
    };
 
    return (
-      <div className="w-[18%]  h-full p-2 z-10 flex flex-col">
+      <div className="w-[50%]  md:w-[25%] lg:w-[18%]  h-full p-2 z-10 flex flex-col">
          <div className="w-full relative z-20">
             <button
                onClick={() => {

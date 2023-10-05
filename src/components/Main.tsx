@@ -48,40 +48,6 @@ const Main: React.FC = () => {
          setAllFiles,
          setAllFolders,
       });
-
-      // if (setAddedFileFolder) setAddedFileFolder(false);
-      // if (session?.user?.email && folderInfo) {
-      //    try {
-      //       getFolderContents(folderInfo.parentFolder, session.user.email).then(
-      //          (arr) => {
-      //             const files: File[] = [];
-      //             const folders: FolderWithID[] = [];
-      //             arr.forEach((detail: any) => {
-      //                // console.log(detail);
-      //                // Use type assertion to check if 'detail[0]' is a File
-      //                if ((detail[0] as File).isFolder !== undefined) {
-      //                   if ((detail[0] as File).isFolder) {
-      //                      const folderData: FolderWithID = {
-      //                         data: detail[0] as Folder,
-      //                         id: detail[1], // this parent id we are connecting with it
-      //                      };
-      //                      folders.push(folderData);
-      //                   } else {
-      //                      files.push(detail[0] as File);
-      //                   }
-      //                }
-      //             });
-      //             // console.log(files);
-      //             if (setAllFiles && setAllFolders) {
-      //                setAllFiles(files);
-      //                setAllFolders(folders);
-      //             }
-      //          }
-      //       );
-      //    } catch (error) {
-      //       console.log(error);
-      //    }
-      // }
    }, [session, folderInfo, addedFileFolder]);
 
    return (
