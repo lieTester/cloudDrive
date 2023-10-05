@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
+import { useRouter } from "next/navigation";
 import { FaFolderOpen } from "react-icons/fa";
 import { FolderWithID } from "@/types/modelTypes";
-import FileFolderContext from "@/context/FileDataContext";
 
 type FolderGridProps = {
    folders: FolderWithID[] | undefined;
@@ -9,15 +9,10 @@ type FolderGridProps = {
 
 const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
-   const contextValue = useContext(FileFolderContext);
-   const setFolderInfo = contextValue?.setFolderInfo; // Use optional chaining here
 
+   const router = useRouter();
    const changeParentFolder = (id: string) => {
-      if (setFolderInfo) {
-         setFolderInfo((prev) => {
-            return { ...prev, parentFolder: id };
-         });
-      }
+      router.push(`/?id=${id}`, undefined);
    };
 
    return (

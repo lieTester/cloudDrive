@@ -1,15 +1,15 @@
 import { FC, useState, useContext } from "react";
 import { CreateFolderUIProps } from "@/types";
 import { useSession } from "next-auth/react";
-import FileFolderContext from "../../context/FileDataContext";
+import FileFolderContext from "@/context/FileDataContext";
 import { createFolderInFolder } from "@/schema/dataFunctions";
-import { Folder } from "@/types/modelTypes";
 
 const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
    const { data: session } = useSession();
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const contextValue = useContext(FileFolderContext);
    const folderInfo = contextValue?.folderInfo; // Use optional chaining here
+   const setAddedFileFolder = contextValue?.setAddedFileFolder; // will use this if we create a new folder
 
    // create folder name
    const [folderName, setFolderName] = useState("");
@@ -27,9 +27,10 @@ const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
             isFolder: true,
             parentFolder: folderInfo?.parentFolder,
          };
-         console.log(data);
+         // console.log(data);
          createFolderInFolder(data).then((res) => {
-            console.log("Folder created:", res);
+            // console.log("Folder created:", res); //will get id of folder create in firestore
+            if (setAddedFileFolder) setAddedFileFolder(true);
             onClose();
          });
       }
