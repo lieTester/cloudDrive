@@ -2,9 +2,9 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+
 import Login from "./Auth/page";
-import Body from "@/components/Body";
-import Header from "@/components/Header";
+import Landing from "@/pages/Landing";
 import LoadingPage from "@/components/subcomponent/LoderComponent";
 
 export default function Home() {
@@ -15,17 +15,14 @@ export default function Home() {
       if (session) setIsLoding(false);
       setTimeout(() => {
          setIsLoding(false);
-      }, 200);
+      }, 300);
    }, [session]);
 
    return (
       <main className="w-screen h-screen bg-prim1 ">
          {!isLoding ? (
             session ? (
-               <>
-                  <Header />
-                  <Body />
-               </>
+               <Landing />
             ) : (
                // <>
                //    <Header />

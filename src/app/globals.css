@@ -18,7 +18,7 @@
    --sh-prim2: #170b3b;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: system) {
    :root {
       --bg-prim1: #21252b;
       --bg-prim2: #5b5f67;
@@ -31,5 +31,23 @@
    }
 }
 
-body {
+/* width */
+::-webkit-scrollbar {
+   width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+   background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+   background: #888;
+   border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: #555;
 }
