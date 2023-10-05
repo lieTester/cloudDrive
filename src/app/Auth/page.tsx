@@ -5,7 +5,7 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 const Login = () => {
    const handelsignin = () => {
       signIn("google", {
-         callbackUrl: "http://localhost:3000/",
+         callbackUrl: process.env.NEXTAUTH_URL,
       });
    };
    // return <Button onclick={handelsignin} btnValue="signup" btnClasses="" />;
