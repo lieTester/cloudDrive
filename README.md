@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [Cloud Drive Clone](https://cloud-drive-seven.vercel.app/)
 
-## Getting Started
+![Cloud Drive Clone](./docs//drive.png)
 
-First, run the development server:
+A cloud storage platform clone, built with Next.js, TypeScript, and Tailwind CSS, deployed on Vercel. This project aims to replicate the user interface and core functionalities of Google Drive, offering a similar experience for users to manage their files and folders in the cloud.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-  User authentication: Sign in and out securely.
+-  File and folder management: Create, upload, view, and organize files and folders.
+-  Real-time updates: Changes to files and folders are instantly reflected.
+-  Share files: Share files and folders with other users.
+-  Responsive design: Works seamlessly on various devices.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Image Description](./docs//cloud-drive.gif)
 
-## Learn More
+Check out the live demo of the Cloud Drive Clone [here](https://cloud-drive-seven.vercel.app/).
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-  Next.js: A popular React framework for building web applications.
+-  TypeScript: A statically-typed superset of JavaScript.
+-  Tailwind CSS: A utility-first CSS framework for designing modern websites.
+-  Vercel: A cloud platform for deploying your applications.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Installation
 
-## Deploy on Vercel
+1. Clone the repository:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   https://github.com/lieTester/cloudDrive.git
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+2. Navigate to the project folder:
+
+   ```
+   cd cloud-drive
+   ```
+
+3. Install dependencies:
+
+   ```
+   npm install
+   ```
+
+4. Start the development server:
+
+   ```
+   npm run dev
+   ```
+
+5. Open your browser and visit [http://localhost:3000](http://localhost:3000/) to view the application.
+
+## Usage
+
+1. Sign up for an account or log in if you already have one.
+   ![Sign Up](https://chat.openai.com/c/insert-sign-up-screenshot-url-here)
+2. Start managing your files and folders in the cloud, just like you would with Google Drive!
+   ![File Management](./docs//managment.png)
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests to help improve this project.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./License) file for details.
+
+## Acknowledgments
+
+-  Thanks to the creators of Google Drive for the inspiration.
+-  Icons made by [ReactIcons](https://react-icons.github.io/).
