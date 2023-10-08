@@ -1,3 +1,4 @@
+"use client";
 import { signIn } from "next-auth/react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import Image from "next/image";
