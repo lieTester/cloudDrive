@@ -1,15 +1,24 @@
 "use client";
+// react, next
 import { FC, useState, useContext } from "react";
-import { CreateFolderUIProps } from "@/types";
-import FileFolderContext from "@/context/FileDataContext";
+// types
+import { CreateFolderUIProps } from "@/types/index";
+// context
+import { FileFolderContext } from "@/context/FileFolderContext";
+import { FolderInfoContext } from "@/context/FolderInfoContext";
+import { SessionContext } from "@/context/SessionContext";
+// firebase shema
 import { createFolderInFolder } from "@/schema/dataFunctions";
 
 const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
-   const contextValue = useContext(FileFolderContext);
-   const session = contextValue?.session; // Use optional chaining here
-   const folderInfo = contextValue?.folderInfo; // Use optional chaining here
-   const setAddedFileFolder = contextValue?.setAddedFileFolder; // will use this if we create a new folder
+   const folderInfoContext = useContext(FolderInfoContext);
+   const fileFolderContext = useContext(FileFolderContext);
+   const sessionContext = useContext(SessionContext);
+
+   const session = sessionContext?.session; // Use optional chaining here
+   const folderInfo = folderInfoContext?.folderInfo; // Use optional chaining here
+   const setAddedFileFolder = fileFolderContext?.setAddedFileFolder; // will use this if we create a new folder
 
    // create folder name
    const [folderName, setFolderName] = useState("");
@@ -18,8 +27,8 @@ const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
    };
 
    const handleCreateFolder = () => {
-      // You can implement folder creation logic here
-      console.log("Creating folder:", folderName);
+      // folder creation logic here
+      // console.log("Creating folder:", folderName);
       if (session?.user?.email && folderInfo?.parentFolder) {
          const data = {
             name: folderName,

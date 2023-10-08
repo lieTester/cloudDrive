@@ -1,11 +1,10 @@
 "use client";
+// react, next
 import React from "react";
+// icons
 import { BsFillFileEarmarkFill } from "react-icons/bs";
-import { File } from "@/types/modelTypes";
-
-type FileGridProps = {
-   files: File[] | undefined;
-};
+// types
+import { FileGridProps } from "@/types/index";
 
 const FilesUI: React.FC<FileGridProps> = ({ files }) => {
    // Filter out only files (not folders) from the files array

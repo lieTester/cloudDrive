@@ -29,7 +29,7 @@ export const FileFolderProvider = ({ children }: FileFolderProviderProps) => {
             folderInfo,
             setFolderInfo,
             allFiles,
-            setAllFiles, // Updated to match the type
+            setAllFiles,
             allFolders,
             setAllFolders,
             addedFileFolder,

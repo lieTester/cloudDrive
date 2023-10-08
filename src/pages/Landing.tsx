@@ -1,10 +1,11 @@
 import { FC, useEffect, useContext } from "react";
-import Body from "@/components/Body";
+import SideBar from "@/components/SideBar";
+import MyDrive from "@/pages/subPages/MyDrive";
 import Header from "@/components/Header";
-import { SessionProp } from "@/types/index";
+import { SessionContextType } from "@/types/contextTypes";
 import FileFolderContext from "../context/FileDataContext";
 
-const Landing: FC<SessionProp> = ({ session }) => {
+const Landing: FC<SessionContextType> = ({ session }) => {
    // console.log(session);
    const contextValue = useContext(FileFolderContext);
    const setSession = contextValue?.setSession;
@@ -16,7 +17,10 @@ const Landing: FC<SessionProp> = ({ session }) => {
    return (
       <>
          <Header />
-         <Body />
+         <div className="h-[92%] p-2 flex ">
+            <SideBar />
+            <MyDrive />
+         </div>
       </>
    );
 };

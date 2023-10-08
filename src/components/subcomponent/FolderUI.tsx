@@ -1,12 +1,11 @@
 "use client";
+// react, next
 import React from "react";
 import { useRouter } from "next/navigation";
+// icons
 import { FaFolderOpen } from "react-icons/fa";
-import { FolderWithID } from "@/types/modelTypes";
-
-type FolderGridProps = {
-   folders: FolderWithID[] | undefined;
-};
+// types
+import { FolderGridProps } from "@/types/index";
 
 const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
    const router = useRouter();

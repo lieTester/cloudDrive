@@ -3,7 +3,7 @@ import { getFolderContents } from "@/schema/dataFunctions";
 import { File, Folder, FolderWithID } from "@/types/modelTypes";
 import { FolderInfo } from "@/types/index";
 
-const fetchFileFolders = ({
+const FetchFileFolders = ({
    setAddedFileFolder,
    folderInfo,
    session,
@@ -48,4 +48,4 @@ const fetchFileFolders = ({
    }
 };
 
-export default fetchFileFolders;
+export default FetchFileFolders;

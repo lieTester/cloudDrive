@@ -1,45 +1,45 @@
 "use client";
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext } from "react";
+import { useSearchParams } from "next/navigation";
 import { BiInfoCircle } from "react-icons/bi";
 import { BsCardList } from "react-icons/bs";
-import FileFolderContext from "@/context/FileDataContext";
+import { FileFolderContext } from "@/context/FileFolderContext";
+import { FolderInfoContext } from "@/context/FolderInfoContext";
+import { SessionContext } from "@/context/SessionContext";
 import FolderUI from "@/components/subcomponent/FolderUI";
 import FilesUI from "@/components/subcomponent/FilesUI";
-import { useSearchParams } from "next/navigation";
-import { FolderInfo } from "@/types/index";
+
 import FetchFileFolders from "@/functions/FetchFileFolders";
 
-const Main: React.FC = () => {
-   // as over context value is undefined as primarrly so direct destructuring will give warning
-   const contextValue = useContext(FileFolderContext);
-   const session = contextValue?.session; // if we added any new file or folder this will trigger use effect for realtime data
-   const addedFileFolder = contextValue?.addedFileFolder; // if we added any new file or folder this will trigger use effect for realtime data
-   const setAddedFileFolder = contextValue?.setAddedFileFolder; // if we added any new file or folder this will trigger use effect for realtime data
-   const folderInfo = contextValue?.folderInfo;
-   const setFolderInfo = contextValue?.setFolderInfo;
-   const allFiles = contextValue?.allFiles;
-   const setAllFiles = contextValue?.setAllFiles;
-   const allFolders = contextValue?.allFolders;
-   const setAllFolders = contextValue?.setAllFolders;
+const MyDrive: React.FC = () => {
+   const folderInfoContext = useContext(FolderInfoContext);
+   const fileFolderContext = useContext(FileFolderContext);
+   const sessionContext = useContext(SessionContext);
 
-   // below code is to use shallow routing for  folder structure move nestedly and comeback
+   const session = sessionContext?.session;
+   const addedFileFolder = fileFolderContext?.addedFileFolder;
+   const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
+   const folderInfo = folderInfoContext?.folderInfo;
+   const setFolderInfo = folderInfoContext?.setFolderInfo;
+   const allFiles = fileFolderContext?.allFiles;
+   const setAllFiles = fileFolderContext?.setAllFiles;
+   const allFolders = fileFolderContext?.allFolders;
+   const setAllFolders = fileFolderContext?.setAllFolders;
+
    const searchParams = useSearchParams();
+
    useEffect(() => {
-      // The url ID changed!
-      // console.log(searchParams?.get("id"));
-      let id = searchParams?.get("id") || "My Drive"; // if we are on / direct then "My Drive" act as id
+      let id = searchParams?.get("id") || "My Drive";
       if (setFolderInfo && id) {
          setFolderInfo((prev) => {
-            return { ...prev, parentFolder: id } as FolderInfo; // Added type annotation here
+            return { ...prev, parentFolder: id };
          });
       }
    }, [searchParams?.get("id")]);
 
-   // below effect for fetch files and folders from firebase
-   // Use the custom hook to handle the file and folder fetching logic
-
-   // Add a useEffect to call useFetchFileFolders when dependencies change
    useEffect(() => {
+      // Fetch files and folders using the provided functions from the custom hook
+      // Use addedFileFolder as a dependency
       FetchFileFolders({
          setAddedFileFolder,
          folderInfo,
@@ -78,4 +78,4 @@ const Main: React.FC = () => {
    );
 };
 
-export default Main;
+export default MyDrive;

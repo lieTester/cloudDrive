@@ -6,7 +6,7 @@ import { RiSpam2Line } from "react-icons/ri";
 import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
 import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
 import { useState, useContext } from "react";
-import UploadFile from "@/hook/UploadFile";
+import UploadFile from "@/functions/UploadFile";
 import FileUpload from "./subcomponent/FileUploadsUI";
 import CreateFolderUI from "./subcomponent/CreateFolderUI";
 import FileFolderContext from "../context/FileDataContext";

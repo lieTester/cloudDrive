@@ -1,12 +1,16 @@
 "use client";
+// react, next
 import React, { useState, FC } from "react";
+// icons
 import { FiX } from "react-icons/fi";
 import {
    BiSolidUpArrow,
    BiSolidDownArrow,
    BiSolidCheckCircle,
 } from "react-icons/bi";
-import { FileUploads } from "@/types";
+//types
+import { FileUploads } from "@/types/index";
+
 const FileUpload: FC<FileUploads> = ({
    fileName,
    progress,

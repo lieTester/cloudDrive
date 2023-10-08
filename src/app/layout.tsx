@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/hook/_appAuth";
+import { SessionAuthProvider } from "@/functions/SessionAuthProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -18,7 +18,7 @@ export default function RootLayout({
    return (
       <html lang="en">
          <body className={inter.className}>
-            <AuthProvider>{children}</AuthProvider>
+            <SessionAuthProvider>{children}</SessionAuthProvider>
          </body>
       </html>
    );
