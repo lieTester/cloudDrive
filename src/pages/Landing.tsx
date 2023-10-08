@@ -6,7 +6,7 @@ import { SessionProp } from "@/types/index";
 import { SessionContext } from "@/context/SessionContext";
 
 const Landing: FC<SessionProp> = ({ session }) => {
-   const [sideBarToogle, setSidebarToogle] = useState(true);
+   const [sideBarToogle, setSidebarToogle] = useState(false);
 
    // session store functionality below
    // console.log(session);
