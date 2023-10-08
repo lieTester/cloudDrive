@@ -18,11 +18,11 @@ export default function Home() {
          {session !== undefined ? (
             session?.user ? (
                <SessionProvider>
-                  // session
+                  {/* // session */}
                   <FolderInfoProvider>
-                     // current folder if on main path
+                     {/* // current folder if on main path */}
                      <FileFolderProvider>
-                        // files or folders need to fetch related to subPages
+                        {/* // files or folders need to fetch related to subPages */}
                         <Landing session={session} />
                      </FileFolderProvider>
                   </FolderInfoProvider>

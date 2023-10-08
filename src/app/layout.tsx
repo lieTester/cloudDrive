@@ -9,7 +9,6 @@ export const metadata: Metadata = {
    title: "Cloud-Drive",
    description: "A google drive clone",
 };
-
 export default function RootLayout({
    children,
 }: {
