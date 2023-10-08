@@ -27,7 +27,7 @@ const Header: FC<{
          <div className="w-[100%] sm:w-[60%] md:w-[75%] lg:w-[85%] flex justify-between ">
             <div className="w-[60%] flex-grow md:flex-grow-0 relative bg-seco1 p-2 rounded-full focus-within:bg-prim2">
                <input
-                  className="w-full bg-transparent pl-10 outline-none rounded-full "
+                  className="pr-8 md:pr-0 w-full bg-transparent pl-8 outline-none rounded-full "
                   type="text"
                   placeholder="Search in Drive"
                />
@@ -56,7 +56,7 @@ const Header: FC<{
                <span className=" hidden md:flex p-2  !mx-1 hover:bg-seco2  justify-center rounded-full">
                   <IoApps className="  text-[22px] " />
                </span>
-               <span className="relative !mx-1 p-1 hover:bg-seco2 flex justify-center rounded-full [&:hover>ul]:visible [&:hover>ul]:opacity-100">
+               <span className="absolute right-0 md:relative !mx-1 p-1 hover:bg-seco2 flex justify-center rounded-full [&:hover>ul]:visible [&:hover>ul]:opacity-100">
                   {session?.user?.image && (
                      <Image
                         src={session?.user?.image}

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FaFolderOpen } from "react-icons/fa";
 // types
 import { FolderGridProps } from "@/types/index";
+import InfoComponent from "@/components/subcomponent/InfoFileOrFolder";
 
 const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
    const router = useRouter();
@@ -19,16 +20,18 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
             folders.map((folder, index) => (
                <div
                   key={folder.id}
-                  className="bg-prim1 p-4 rounded-lg border hover:shadow-md transition duration-300 flex items-center cursor-pointer"
-                  onClick={(e) => {
+                  className="relative bg-prim1 p-4 rounded-lg border hover:shadow-md transition duration-300 flex items-center cursor-pointer"
+                  onDoubleClick={(e) => {
                      console.log(folder.id);
                      changeParentFolder(folder.id);
                   }}
                >
                   <FaFolderOpen className="text-prim1 w-[15%] " />
-                  <p className="w-[80%] ml-2 truncate text-sm text-prim1">
+                  <p className="w-[80%] ml-2 truncate text-sm text-prim1 font-medium">
                      {folder.data.name}
                   </p>
+
+                  <InfoComponent folderOrFile="folder" />
                </div>
             ))}
       </div>
