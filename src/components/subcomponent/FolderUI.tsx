@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FaFolderOpen } from "react-icons/fa";
 // types
 import { FolderGridProps } from "@/types/index";
+// components
 import InfoComponent from "@/components/subcomponent/InfoFileOrFolder";
 
 const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {

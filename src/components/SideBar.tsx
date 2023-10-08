@@ -7,7 +7,7 @@ import { FaUserGroup } from "react-icons/fa6";
 import { BiTimeFive } from "react-icons/bi";
 import { RiSpam2Line } from "react-icons/ri";
 import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
-import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
+import { BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
 // contexts
 import { FileFolderContext } from "@/context/FileFolderContext";
 import { FolderInfoContext } from "@/context/FolderInfoContext";
@@ -17,6 +17,7 @@ import UploadFile from "@/functions/UploadFile";
 // components
 import FileUpload from "@/components/subcomponent/FileUploadsUI";
 import CreateFolderUI from "@/components/subcomponent/CreateFolderUI";
+import NavigationList from "@/components/subcomponent/NavigationItems";
 
 const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
@@ -129,7 +130,7 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
             className="flex-grow overflow-y-auto"
             onClick={() => setfileFolderOpt(false)}
          >
-            <ul className="w-[90%] py-3 text-prim1 text-[13px] [&>li]:rounded-full [&>li]:m-1 [&>li]:w-full [&>li]:pl-3 [&>li]:py-1 cursor-pointer">
+            {/* <ul className="w-[90%] py-3 text-prim1 text-[13px] [&>li]:rounded-full [&>li]:m-1 [&>li]:w-full [&>li]:pl-3 [&>li]:py-1 cursor-pointer">
                <li className="flex bg-extra1  hover:bg-seco2 align-middle">
                   <ImDrive className="mr-3  text-xl mt-[1px]" />
                   My Drive
@@ -158,7 +159,8 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
                <li className="flex  hover:bg-seco2">
                   <AiOutlineCloud className="mr-2  text-xl mt-[1px]" /> Storage
                </li>
-            </ul>
+            </ul> */}
+            <NavigationList />
             <span className="inline-block w-full text-center text-prim2 text-base border-2 border-seco2 rounded-full py-1 hover:bg-seco1">
                Get more storage
             </span>
