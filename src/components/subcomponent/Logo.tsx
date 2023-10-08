@@ -3,7 +3,7 @@ import Image from "next/image";
 const Logo = () => {
    return (
       <>
-         <div className="w-[18%] flex  items-center">
+         <div className="w-0 sm:w-[40%] md:w-[35%] lg:w-[25%] flex  items-center">
             <Image
                className="pl-2"
                src={"/img/drive.png"}

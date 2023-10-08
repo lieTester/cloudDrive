@@ -50,7 +50,7 @@ const MyDrive: React.FC = () => {
    }, [session, folderInfo, addedFileFolder]);
 
    return (
-      <section className="w-[50%] md:w-[75%] lg:w-[79%] h-full bg-prim2 rounded-xl px-2 py-3 flex flex-col ">
+      <>
          <div className="relative   w-full flex items-center justify-between">
             <ul className="inline-block [&>li]:text-[22px] [&>li]:px-2  [&>li]:rounded-full">
                <li className="hover:bg-seco2">My Drive</li>
@@ -74,7 +74,7 @@ const MyDrive: React.FC = () => {
             </label>
             <FilesUI files={allFiles} />
          </div>
-      </section>
+      </>
    );
 };
 

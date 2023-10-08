@@ -1,5 +1,5 @@
 // react, next
-import { useState, useContext } from "react";
+import { useState, useContext, FC } from "react";
 // icons
 import { ImDrive } from "react-icons/im";
 import { MdDevices, MdUploadFile } from "react-icons/md";
@@ -18,7 +18,7 @@ import UploadFile from "@/functions/UploadFile";
 import FileUpload from "@/components/subcomponent/FileUploadsUI";
 import CreateFolderUI from "@/components/subcomponent/CreateFolderUI";
 
-const SideBar = () => {
+const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const folderInfoContext = useContext(FolderInfoContext);
    const fileFolderContext = useContext(FileFolderContext);
@@ -70,13 +70,17 @@ const SideBar = () => {
    };
 
    return (
-      <div className="w-[50%]  md:w-[25%] lg:w-[18%]  h-full p-2 z-10 flex flex-col">
+      <div
+         className={`absolute sm:!left-0 ${
+            toggle ? " left-0 " : " -left-full "
+         } top-0 w-full  sm:relative  sm:w-[40%] md:w-[35%] lg:w-[25%] bg-prim1 transition-all duration-100 h-full p-2 z-10 flex flex-col`}
+      >
          <div className="w-full relative z-20">
             <button
                onClick={() => {
                   setfileFolderOpt(!fileFolderOpt);
                }}
-               className="p-2 px-4  text-4xl bg-prim2 rounded-lg drop-shadow hover:bg-seco1"
+               className="hidden sm:block p-2 px-4  text-4xl bg-prim2 rounded-lg drop-shadow hover:bg-seco1"
             >
                +<span className="ml-3 text-sm align-middle ">New</span>
             </button>
