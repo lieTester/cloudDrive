@@ -9,7 +9,7 @@ export const SessionContext = createContext<SessionContextType | undefined>(
 );
 
 export const SessionProvider = ({ children }: ChildrenProp) => {
-   const [session, setSession] = useState<any>();
+   const [session, setSession] = useState<Session>();
 
    return (
       <SessionContext.Provider value={{ session, setSession }}>

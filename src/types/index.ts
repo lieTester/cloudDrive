@@ -30,3 +30,24 @@ export type FolderGridProps = {
 export type FileGridProps = {
    files: File[] | undefined;
 };
+export type SessionProp = {
+   session: Session;
+};
+// // file folder related types
+
+// export type FileFolderContextType = {
+//    folderInfo: FolderInfo;
+//    setFolderInfo: React.Dispatch<React.SetStateAction<FolderInfo>>;
+//    allFiles: File[];
+//    setAllFiles: React.Dispatch<React.SetStateAction<File[]>>;
+//    allFolders: FolderWithID[];
+//    setAllFolders: React.Dispatch<React.SetStateAction<FolderWithID[]>>;
+//    addedFileFolder: boolean;
+//    setAddedFileFolder: React.Dispatch<React.SetStateAction<boolean>>;
+//    session: any;
+//    setSession: React.Dispatch<React.SetStateAction<any>>;
+// };
+
+// export type FileFolderProviderProps = {
+//    children: ReactNode;
+// };

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getFolderContents } from "@/schema/dataFunctions";
 import { File, Folder, FolderWithID } from "@/types/modelTypes";
-import { FolderInfo } from "@/types/index";
+import { FolderInfo } from "@/types/contextTypes";
 
 const FetchFileFolders = ({
    setAddedFileFolder,

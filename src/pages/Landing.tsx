@@ -2,13 +2,14 @@ import { FC, useEffect, useContext } from "react";
 import SideBar from "@/components/SideBar";
 import MyDrive from "@/pages/subPages/MyDrive";
 import Header from "@/components/Header";
-import { SessionContextType } from "@/types/contextTypes";
-import FileFolderContext from "../context/FileDataContext";
+import { SessionProp } from "@/types/index";
+import { SessionContext } from "@/context/SessionContext";
 
-const Landing: FC<SessionContextType> = ({ session }) => {
+const Landing: FC<SessionProp> = ({ session }) => {
    // console.log(session);
-   const contextValue = useContext(FileFolderContext);
-   const setSession = contextValue?.setSession;
+   const sessionContext = useContext(SessionContext);
+
+   const setSession = sessionContext?.setSession;
    useEffect(() => {
       if (session && setSession) {
          setSession(session);

@@ -1,3 +1,6 @@
+// react, next
+import { useState, useContext } from "react";
+// icons
 import { ImDrive } from "react-icons/im";
 import { MdDevices, MdUploadFile } from "react-icons/md";
 import { FaUserGroup } from "react-icons/fa6";
@@ -5,18 +8,25 @@ import { BiTimeFive } from "react-icons/bi";
 import { RiSpam2Line } from "react-icons/ri";
 import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
 import { BsTrash, BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
-import { useState, useContext } from "react";
+// contexts
+import { FileFolderContext } from "@/context/FileFolderContext";
+import { FolderInfoContext } from "@/context/FolderInfoContext";
+import { SessionContext } from "@/context/SessionContext";
+// functions
 import UploadFile from "@/functions/UploadFile";
-import FileUpload from "./subcomponent/FileUploadsUI";
-import CreateFolderUI from "./subcomponent/CreateFolderUI";
-import FileFolderContext from "../context/FileDataContext";
+// components
+import FileUpload from "@/components/subcomponent/FileUploadsUI";
+import CreateFolderUI from "@/components/subcomponent/CreateFolderUI";
 
 const SideBar = () => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
-   const contextValue = useContext(FileFolderContext);
-   const folderInfo = contextValue?.folderInfo; // Use optional chaining here
-   const setAddedFileFolder = contextValue?.setAddedFileFolder;
-   const session = contextValue?.session;
+   const folderInfoContext = useContext(FolderInfoContext);
+   const fileFolderContext = useContext(FileFolderContext);
+   const sessionContext = useContext(SessionContext);
+
+   const folderInfo = folderInfoContext?.folderInfo; // Use optional chaining here
+   const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
+   const session = sessionContext?.session;
 
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
    const [openCreateFolder, setOpenCreateFolder] = useState(false);
