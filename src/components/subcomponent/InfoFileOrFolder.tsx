@@ -16,7 +16,7 @@ const InfoComponent: FC<InfoComponentProps> = ({ folderOrFile }) => {
          <button className="text-prim1 text-sm focus:outline-none">
             <BsThreeDotsVertical className="text-prim1 w-[25px] h-[25px] -mr-2 rounded-full hover:bg-seco2 p-1 " />
          </button>
-         <div className="absolute -right-3 mt-2 w-24 bg-prim2  border-seco2 border-[1px] rounded-[4px] shadow-lg overflow-hidden">
+         <div className="absolute -right-3 mt-2 w-24 bg-prim2  border-seco2 border-[1px] rounded-[4px] shadow-lg overflow-hidden z-10">
             <div className="[&>button]:p-1 [&>button:hover]:bg-seco1 [&>button]:text-prim1 [&>button]:text-xs">
                <button className="w-full flex items-center space-x-2 ">
                   <AiOutlineInfoCircle />
