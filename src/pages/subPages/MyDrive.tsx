@@ -26,8 +26,8 @@ const MyDrive: React.FC = () => {
    const allFolders = fileFolderContext?.allFolders;
    const setAllFolders = fileFolderContext?.setAllFolders;
 
+   // param for checking which folder view to present
    const searchParams = useSearchParams();
-
    useEffect(() => {
       let id = searchParams?.get("id") || "My Drive";
       if (setFolderInfo && id) {
