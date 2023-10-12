@@ -32,7 +32,13 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
                      {folder.data.name}
                   </p>
 
-                  <InfoComponent folderOrFile="folder" />
+                  <InfoComponent
+                     folderOrFile="folder"
+                     folder={{
+                        name: folder.data.name,
+                        id: folder.id,
+                     }}
+                  />
                </div>
             ))}
       </div>

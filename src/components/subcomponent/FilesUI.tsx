@@ -23,7 +23,14 @@ const FilesUI: React.FC<FileGridProps> = ({ files }) => {
                      <p className="truncate text-sm text-prim1 font-medium">
                         {file.data.name}
                      </p>
-                     <InfoComponent folderOrFile="file" file={file} />
+                     <InfoComponent
+                        folderOrFile="file"
+                        file={{
+                           name: file.data.name,
+                           link: file.data.fileLink,
+                           id: file.id,
+                        }}
+                     />
                   </div>
                   <BsFillFileEarmarkFill className="text-gray-500 text-4xl mb-2 mx-auto my-3" />
                </div>

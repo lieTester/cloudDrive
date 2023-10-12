@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Session } from "next-auth";
 import { FileWithID, FolderWithID } from "@/types/modelTypes";
+import { CreateEditFileFolderUIProps } from "@/types/index";
 
 // FolderInfo context types
 export type FolderInfo = {
@@ -14,6 +15,10 @@ export type FolderInfoContextType = {
 
 // FileFolderContext.tsx
 export type FileFolderContextType = {
+   folderFileHandler: CreateEditFileFolderUIProps;
+   setFolderFileHandler: React.Dispatch<
+      React.SetStateAction<CreateEditFileFolderUIProps>
+   >;
    addedFileFolder: boolean;
    setAddedFileFolder: React.Dispatch<React.SetStateAction<boolean>>;
    allFiles: FileWithID[];

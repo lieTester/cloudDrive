@@ -12,19 +12,21 @@ import Spam from "@/pages/subPages/Spam";
 import Storage from "@/pages/subPages/Storage";
 import Trash from "@/pages/subPages/Trash";
 import Recent from "@/pages/subPages/Recent";
-
+import CreateEditFileFolderUI from "@/components/subcomponent/CreateEditFileFolderUI";
 // types
 import { SessionProp } from "@/types/index";
 // context
 import { SessionContext } from "@/context/SessionContext";
+import { FileFolderContext } from "@/context/FileFolderContext";
 
 const Landing: FC<SessionProp> = ({ session }) => {
    // sideBar toggle state pass to header for functional and value to sidebar component
    const [sideBarToogle, setSidebarToogle] = useState(false);
 
    // session store functionality below
-   // console.log(session);
    const sessionContext = useContext(SessionContext);
+   const fileFolderContext = useContext(FileFolderContext);
+   const folderFileHandler = fileFolderContext?.folderFileHandler;
    const setSession = sessionContext?.setSession;
    useEffect(() => {
       if (session && setSession) {
@@ -72,6 +74,12 @@ const Landing: FC<SessionProp> = ({ session }) => {
                {navigationPath(pathValue)}
             </section>
          </div>
+         <CreateEditFileFolderUI
+            // to controll the type error
+            isOpen={folderFileHandler ? folderFileHandler?.isOpen : false}
+            name={folderFileHandler ? folderFileHandler?.name : undefined}
+            id={folderFileHandler ? folderFileHandler?.id : undefined}
+         />
       </section>
    );
 };

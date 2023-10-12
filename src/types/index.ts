@@ -7,9 +7,10 @@ export type AuthCredType = {
    clientSecret: string;
 };
 
-export type CreateFolderUIProps = {
+export type CreateEditFileFolderUIProps = {
    isOpen: boolean;
-   onClose: () => void;
+   name?: string;
+   id?: string;
 };
 
 export type FileUploads = {
@@ -36,4 +37,10 @@ export type SessionProp = {
 
 export type SidebarProps = {
    headerHeight: number | undefined;
+};
+
+export type InfoComponentProps = {
+   folderOrFile: string; // 'folder' or 'file'
+   file?: { name: string; link: string; id: string }; // file detail
+   folder?: { name: string; id: string }; // folder detail
 };

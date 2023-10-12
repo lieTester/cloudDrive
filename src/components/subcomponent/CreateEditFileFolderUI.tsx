@@ -1,16 +1,20 @@
 "use client";
 // react, next
-import { FC, useState, useContext } from "react";
+import { FC, useState, useContext, useEffect } from "react";
 // types
-import { CreateFolderUIProps } from "@/types/index";
+import { CreateEditFileFolderUIProps } from "@/types/index";
 // context
 import { FileFolderContext } from "@/context/FileFolderContext";
 import { FolderInfoContext } from "@/context/FolderInfoContext";
 import { SessionContext } from "@/context/SessionContext";
 // firebase shema
-import { createFolderInFolder } from "@/schema/dataFunctions";
+import { createFolderInFolder, renameFolder } from "@/schema/dataFunctions";
 
-const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
+const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
+   isOpen,
+   name,
+   id,
+}) => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const folderInfoContext = useContext(FolderInfoContext);
    const fileFolderContext = useContext(FileFolderContext);
@@ -19,16 +23,23 @@ const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
    const session = sessionContext?.session; // Use optional chaining here
    const folderInfo = folderInfoContext?.folderInfo; // Use optional chaining here
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder; // will use this if we create a new folder
+   const setFolderFileHandler = fileFolderContext?.setFolderFileHandler; // will use this if we create a new folder
 
-   // create folder name
+   // create Edit folder name
    const [folderName, setFolderName] = useState("");
+   useEffect(() => {
+      name && setFolderName(name);
+   }, [name]);
    const handleFolderNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFolderName(e.target.value);
+   };
+   const onClose = () => {
+      setFolderName("");
+      setFolderFileHandler && setFolderFileHandler({ isOpen: false });
    };
 
    const handleCreateFolder = () => {
       // folder creation logic here
-      // console.log("Creating folder:", folderName);
       if (session?.user?.email && folderInfo?.parentFolder) {
          const data = {
             name: folderName,
@@ -36,31 +47,40 @@ const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
             isFolder: true,
             parentFolder: folderInfo?.parentFolder,
          };
-         // console.log(data);
+
          createFolderInFolder(data).then((res) => {
             // console.log("Folder created:", res); //will get id of folder create in firestore
+            setAddedFileFolder && setAddedFileFolder(true);
+            onClose();
+         });
+      }
+   };
+   // Rename folder
+   const handelRenameFolder = async () => {
+      if (id) {
+         console.log(folderName, id);
+         await renameFolder(folderName, id).then((res) => {
+            console.log("Folder renamed:", res); //will get id of folder create in firestore
             if (setAddedFileFolder) setAddedFileFolder(true);
             onClose();
          });
       }
    };
 
-   const handleOverlayClick = () => {
-      onClose();
-   };
-
    return (
       <div
          className={`${
             isOpen ? "fixed inset-0 flex items-center justify-center" : "hidden"
-         } bg-black bg-opacity-50 z-50`}
-         onClick={handleOverlayClick} // Close when the faded portion is clicked
+         } bg-black bg-opacity-50 z-[90]`}
+         onClick={() => onClose()} // Close when the faded portion is clicked
       >
          <div
             className="bg-prim2 rounded-lg p-6 w-96"
             onClick={(e) => e.stopPropagation()}
          >
-            <h2 className="text-2xl mb-4">New Folder</h2>
+            <h2 className="text-2xl mb-4">
+               {name ? "Rename Folder" : "New Folder"}
+            </h2>
             <div className="mb-4">
                <input
                   type="text"
@@ -78,10 +98,10 @@ const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
                   Cancel
                </button>
                <button
-                  onClick={handleCreateFolder}
+                  onClick={name ? handelRenameFolder : handleCreateFolder}
                   className="px-4 py-1 text-prim2 hover:bg-seco1 rounded-lg"
                >
-                  Create
+                  {name ? "Rename" : "Create"}
                </button>
             </div>
          </div>
@@ -89,4 +109,4 @@ const CreateFolderUI: FC<CreateFolderUIProps> = ({ isOpen, onClose }) => {
    );
 };
 
-export default CreateFolderUI;
+export default CreateEditFolderUI;

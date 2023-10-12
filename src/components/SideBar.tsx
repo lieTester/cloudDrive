@@ -1,12 +1,7 @@
 // react, next
 import { useState, useContext, FC } from "react";
 // icons
-import { ImDrive } from "react-icons/im";
-import { MdDevices, MdUploadFile } from "react-icons/md";
-import { FaUserGroup } from "react-icons/fa6";
-import { BiTimeFive } from "react-icons/bi";
-import { RiSpam2Line } from "react-icons/ri";
-import { AiOutlineCloud, AiOutlineStar } from "react-icons/ai";
+import { MdUploadFile } from "react-icons/md";
 import { BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
 // contexts
 import { FileFolderContext } from "@/context/FileFolderContext";
@@ -16,7 +11,6 @@ import { SessionContext } from "@/context/SessionContext";
 import UploadFile from "@/functions/UploadFile";
 // components
 import FileUpload from "@/components/subcomponent/FileUploadsUI";
-import CreateFolderUI from "@/components/subcomponent/CreateFolderUI";
 import NavigationList from "@/components/subcomponent/NavigationItems";
 
 const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
@@ -27,14 +21,18 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
 
    const folderInfo = folderInfoContext?.folderInfo; // Use optional chaining here
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
+   const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
    const session = sessionContext?.session;
 
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
-   const [openCreateFolder, setOpenCreateFolder] = useState(false);
 
    // to create add new folder window
-   const handelCreateFolder = () => {
-      setOpenCreateFolder(!openCreateFolder);
+   const openCloseAddEditFolderUI = () => {
+      if (setFolderFileHandler) {
+         setFolderFileHandler((prev) => {
+            return { ...prev, isOpen: !prev.isOpen };
+         });
+      }
    };
 
    // Upload file UI visibility
@@ -97,7 +95,7 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
             >
                <li
                   className="px-2 pt-2 pb-1  flex"
-                  onClick={handelCreateFolder}
+                  onClick={openCloseAddEditFolderUI}
                >
                   <BsFolderPlus size={18} className="mx-2" /> New folder
                </li>
@@ -115,10 +113,7 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
                   <BsFolderSymlink size={18} className="mx-2" /> Folder Upload
                </li>
             </ul>
-            <CreateFolderUI
-               isOpen={openCreateFolder}
-               onClose={handelCreateFolder}
-            />
+
             <FileUpload
                isVisible={fileUploadCompVisiblity}
                onClose={closeUploadBlock}

@@ -35,7 +35,7 @@ const UploadFile = (
             // Get the download URL of the uploaded file
             // console.log(uploadTask.snapshot);
             const url = await getDownloadURL(uploadTask.snapshot.ref);
-            console.log(url);
+            // console.log(url);
             const fileDetails = {
                name: file.name,
                size: file.size,
