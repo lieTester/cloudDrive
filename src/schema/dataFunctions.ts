@@ -1,5 +1,13 @@
 // firebase-collections.ts
-import { collection, getDocs, addDoc, where, query } from "firebase/firestore";
+import {
+   collection,
+   getDocs,
+   addDoc,
+   where,
+   query,
+   doc,
+   deleteDoc,
+} from "firebase/firestore";
 import { database } from "../../firebaseConfig";
 import { File, Folder } from "../types/modelTypes";
 
@@ -29,4 +37,13 @@ export const getFolderContents = async (folderId: string, owner: string) => {
       doc.data() as File | Folder,
       doc.id,
    ]);
+};
+
+export const deleteFile = async (fileId: string) => {
+   try {
+      await deleteDoc(doc(db, "files", fileId));
+      return { status: "success", message: "File deleted successfully" };
+   } catch (error) {
+      return { status: "error", message: "Error deleting the file", error };
+   }
 };

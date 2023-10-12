@@ -19,3 +19,7 @@ export interface FolderWithID {
    data: Folder;
    id: string;
 }
+export interface FileWithID {
+   data: File;
+   id: string;
+}

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Session } from "next-auth";
-import { File, FolderWithID } from "@/types/modelTypes";
+import { FileWithID, FolderWithID } from "@/types/modelTypes";
 
 export type AuthCredType = {
    clientId: string;
@@ -28,7 +28,7 @@ export type FolderGridProps = {
 };
 
 export type FileGridProps = {
-   files: File[] | undefined;
+   files: FileWithID[] | undefined;
 };
 export type SessionProp = {
    session: Session;

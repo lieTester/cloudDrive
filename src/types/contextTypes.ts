@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Session } from "next-auth";
-import { File, FolderWithID } from "@/types/modelTypes";
+import { FileWithID, FolderWithID } from "@/types/modelTypes";
 
 // FolderInfo context types
 export type FolderInfo = {
@@ -16,8 +16,8 @@ export type FolderInfoContextType = {
 export type FileFolderContextType = {
    addedFileFolder: boolean;
    setAddedFileFolder: React.Dispatch<React.SetStateAction<boolean>>;
-   allFiles: File[];
-   setAllFiles: React.Dispatch<React.SetStateAction<File[]>>;
+   allFiles: FileWithID[];
+   setAllFiles: React.Dispatch<React.SetStateAction<FileWithID[]>>;
    allFolders: FolderWithID[];
    setAllFolders: React.Dispatch<React.SetStateAction<FolderWithID[]>>;
 };
