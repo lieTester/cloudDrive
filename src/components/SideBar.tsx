@@ -1,5 +1,6 @@
 // react, next
 import { useState, useContext, FC } from "react";
+import Image from "next/image";
 // icons
 import { MdUploadFile } from "react-icons/md";
 import { BsFolderPlus, BsFolderSymlink } from "react-icons/bs";
@@ -67,6 +68,11 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
          );
       }
    };
+   const [isExpanded, setExpanded] = useState(true);
+
+   const toggleExpanded = () => {
+      setExpanded(!isExpanded);
+   };
 
    return (
       <div
@@ -125,40 +131,49 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
             className="flex-grow overflow-y-auto"
             onClick={() => setfileFolderOpt(false)}
          >
-            {/* <ul className="w-[90%] py-3 text-prim1 text-[13px] [&>li]:rounded-full [&>li]:m-1 [&>li]:w-full [&>li]:pl-3 [&>li]:py-1 cursor-pointer">
-               <li className="flex bg-extra1  hover:bg-seco2 align-middle">
-                  <ImDrive className="mr-3  text-xl mt-[1px]" />
-                  My Drive
-               </li>
-               <li className="flex  hover:bg-seco2">
-                  <MdDevices className="mr-3  text-xl mt-[1px]" />
-                  Computers
-               </li>
-               <li className="flex  hover:bg-seco2">
-                  <FaUserGroup className="mr-3  text-xl mt-[1px]" />
-                  Shared with me
-               </li>
-               <li className="flex  hover:bg-seco2">
-                  <BiTimeFive className="mr-3  text-xl mt-[1px]" />
-                  Recent
-               </li>
-               <li className="flex  hover:bg-seco2">
-                  <AiOutlineStar className="mr-2  text-xl mt-[1px]" /> Stared
-               </li>
-               <li className="flex  hover:bg-seco2">
-                  <RiSpam2Line className="mr-2  text-xl mt-[1px]" /> Spam
-               </li>
-               <li className="flex  hover:bg-seco2">
-                  <BsTrash className="mr-2 text-xl mt-[1px]" /> Trash
-               </li>
-               <li className="flex  hover:bg-seco2">
-                  <AiOutlineCloud className="mr-2  text-xl mt-[1px]" /> Storage
-               </li>
-            </ul> */}
             <NavigationList />
             <span className="inline-block w-full text-center text-prim2 text-base border-2 border-seco2 rounded-full py-1 hover:bg-seco1">
                Get more storage
             </span>
+         </div>
+         {/* floating button  */}
+         <div className="flex sm:hidden fixed bottom-8 right-8  flex-col space-y-3 z-10">
+            <div className="relative [&>*]:cursor-pointer [&>*]:shadow-[#FFFFFF_-1px_1px_4px_4px,#888BF3_-1px_-1px_1px_2px,#888BF3_1px_-1px_1px_2px,#888BF3_-1px_1px_2px_2px]">
+               <button
+                  className={`absolute top-1 left-1 w-[40px] h-[40px] bg-green-500 rounded-full text-white flex items-center justify-center shadow-lg transition-transform ease-in-out duration-300 ${
+                     isExpanded ? "translate-y-0" : "-translate-y-[96px]"
+                  }`}
+               >
+                  <input
+                     className="absolute top-0 left-0 opacity-0 w-full h-full"
+                     type="file"
+                     onChange={(e) => {
+                        handleFileChange(e);
+                     }}
+                  />
+                  <MdUploadFile size={18} />
+               </button>
+               <button
+                  onClick={openCloseAddEditFolderUI}
+                  className={`absolute top-1 left-1 w-[40px] h-[40px] bg-indigo-500 rounded-full text-white flex items-center justify-center shadow-lg transition-transform ease-in-out duration-300 ${
+                     isExpanded ? "translate-y-0" : "-translate-y-[50px]"
+                  }`}
+               >
+                  <BsFolderPlus size={18} />
+               </button>
+               <button
+                  className=" w-[47px] h-[47px] rounded-full bg-seco1 flex items-center justify-center drop-shadow-sm  "
+                  onClick={toggleExpanded}
+               >
+                  <Image
+                     className="p-[6px] transition-transform transform rotate-0 ease-in-out duration-300 hover:rotate-180"
+                     src={"/img/drive.png"}
+                     alt="drive-img"
+                     width={"35"}
+                     height={"35"}
+                  />
+               </button>
+            </div>
          </div>
       </div>
    );
