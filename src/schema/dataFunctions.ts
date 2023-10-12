@@ -40,14 +40,6 @@ export const getFolderContents = async (folderId: string, owner: string) => {
    ]);
 };
 
-export const deleteFile = async (fileId: string) => {
-   try {
-      await deleteDoc(doc(db, "data", fileId));
-      return { status: "success", message: "File deleted successfully" };
-   } catch (error) {
-      return { status: "error", message: "Error deleting the file", error };
-   }
-};
 export const renameFolder = async (folderName: string, folderId: string) => {
    try {
       const FolderRef = doc(db, "data", folderId);
@@ -58,6 +50,24 @@ export const renameFolder = async (folderName: string, folderId: string) => {
       });
       return { status: "success", message: "File deleted successfully" };
    } catch (error) {
-      return { status: "error", message: "Error renaming folder", error };
+      return { status: "error", message: "Error renaming folder : ", error };
+   }
+};
+
+export const deleteFile = async (fileId: string) => {
+   try {
+      await deleteDoc(doc(db, "data", fileId));
+      return { status: "success", message: "File deleted successfully" };
+   } catch (error) {
+      return { status: "error", message: "Error deleting the file : ", error };
+   }
+};
+export const deleteFolder = async (folderId: string) => {
+   // this is not exact solution it should be BFS or DFS but for show business logic
+   try {
+      await deleteDoc(doc(db, "data", folderId));
+      return { status: "success", message: "folder deleted successfully" };
+   } catch (error) {
+      return { status: "error", message: "Error deleting the file : ", error };
    }
 };

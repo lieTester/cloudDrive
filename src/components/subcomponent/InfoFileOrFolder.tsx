@@ -12,6 +12,8 @@ import { InfoComponentProps } from "@/types/index";
 import { FileFolderContext } from "@/context/FileFolderContext";
 // functions
 import DeleteFile from "@/functions/DeleteFile";
+// schema
+import { deleteFolder } from "@/schema/dataFunctions";
 
 const InfoComponent: FC<InfoComponentProps> = ({
    folderOrFile,
@@ -22,7 +24,12 @@ const InfoComponent: FC<InfoComponentProps> = ({
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
    const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
 
-   const deleteFile = () => {
+   const removeFileFolder = async () => {
+      if (folder && setAddedFileFolder && folderOrFile === "folder") {
+         await deleteFolder(folder.id).then((res) => {
+            setAddedFileFolder(true);
+         });
+      }
       if (file && setAddedFileFolder && folderOrFile === "file") {
          DeleteFile(file?.name, file?.id, setAddedFileFolder);
       }
@@ -69,14 +76,8 @@ const InfoComponent: FC<InfoComponentProps> = ({
                      <span>Share</span>
                   </button>
 
-                  {folderOrFile === "file" && (
-                     <button className="w-full flex items-center space-x-2 ">
-                        <AiOutlineDownload />
-                        <span>Download</span>
-                     </button>
-                  )}
                   <button
-                     onClick={deleteFile}
+                     onClick={removeFileFolder}
                      className="w-full flex items-center space-x-2 hover:text-red-500"
                   >
                      <BsTrash />
