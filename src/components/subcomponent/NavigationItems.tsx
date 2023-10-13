@@ -1,6 +1,6 @@
 // react, next
-import { useState, FC } from "react";
-import { useRouter } from "next/navigation";
+import { useState, FC, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 // icons
 import { ImDrive } from "react-icons/im";
 import { MdDevices } from "react-icons/md";
@@ -17,6 +17,16 @@ interface ListItem {
 }
 
 const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
+   const itemsSlug: Array<string> = [
+      "my-drive",
+      "computers",
+      "shared-with-me",
+      "recent",
+      "stared",
+      "spam",
+      "trash",
+      "storage",
+   ];
    // Default item array
    const defaultItems: ListItem[] = [
       { icon: <ImDrive className="mr-3 text-xl mt-[1px]" />, text: "My Drive" },
@@ -45,6 +55,7 @@ const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
    ];
 
    const router = useRouter();
+   const searchParams = useSearchParams();
    // Link highlighting
    const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
    const handleItemClick = (
@@ -69,6 +80,13 @@ const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
       router.push(`/?path=${path}`, undefined);
       setToggle();
    };
+   useEffect(() => {
+      if (searchParams?.get("path")) {
+         const item = searchParams?.get("path") || "";
+         console.log(item, itemsSlug.indexOf(item));
+         setHighlightedIndex(itemsSlug.indexOf(item));
+      }
+   }, [searchParams?.get("path")]);
 
    return (
       <ul className="w-[90%] py-3 text-prim1 text-[13px] [&>li]:rounded-full [&>li]:m-1 [&>li]:w-full [&>li]:pl-3 [&>li]:py-1 cursor-pointer">
