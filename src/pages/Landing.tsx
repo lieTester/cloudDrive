@@ -22,6 +22,7 @@ import { FileFolderContext } from "@/context/FileFolderContext";
 const Landing: FC<SessionProp> = ({ session }) => {
    // sideBar toggle state pass to header for functional and value to sidebar component
    const [sideBarToogle, setSidebarToogle] = useState(false);
+   const toogleHandler = () => setSidebarToogle(!sideBarToogle);
 
    // session store functionality below
    const sessionContext = useContext(SessionContext);
@@ -67,9 +68,9 @@ const Landing: FC<SessionProp> = ({ session }) => {
    }, [searchParams?.get("path")]);
    return (
       <section className="w-screen h-screen flex flex-col">
-         <Header setToggle={setSidebarToogle} toggle={sideBarToogle} />
+         <Header setToggle={toogleHandler} toggle={sideBarToogle} />
          <div className="relative h-[92%] p-2 flex">
-            <SideBar toggle={sideBarToogle} />
+            <SideBar setToggle={toogleHandler} toggle={sideBarToogle} />
             <section className="w-full sm:w-[60%] md:w-[75%] lg:w-[85%] h-full bg-prim2 rounded-xl px-2 py-3 flex flex-col ">
                {navigationPath(pathValue)}
             </section>

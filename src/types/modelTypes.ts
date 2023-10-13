@@ -6,6 +6,7 @@ export interface File {
    isFolder: boolean;
    fileLink: string;
    parentFolder: string;
+   trash?: boolean;
 }
 
 export interface Folder {
@@ -13,6 +14,7 @@ export interface Folder {
    owner: string;
    isFolder: boolean;
    parentFolder: string;
+   trash?: boolean;
 }
 
 export interface FolderWithID {

@@ -60,7 +60,7 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
       if (id) {
          console.log(folderName, id);
          await renameFolder(folderName, id).then((res) => {
-            console.log("Folder renamed:", res); //will get id of folder create in firestore
+            // console.log("Folder renamed:", res); //will get id of folder create in firestore
             if (setAddedFileFolder) setAddedFileFolder(true);
             onClose();
          });
@@ -75,22 +75,22 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
          onClick={() => onClose()} // Close when the faded portion is clicked
       >
          <div
-            className="bg-prim2 rounded-lg p-6 w-96"
+            className="bg-prim2 rounded-lg py-3 px-5 w-[90%] sm:w-96"
             onClick={(e) => e.stopPropagation()}
          >
-            <h2 className="text-2xl mb-4">
+            <h2 className="text-lg mb-2">
                {name ? "Rename Folder" : "New Folder"}
             </h2>
-            <div className="mb-4">
+            <div className="mb-3">
                <input
                   type="text"
                   placeholder="Untitled folder"
-                  className="w-full outline-none px-3 py-2 border-[2px] border-[var(--text-prim1)] focus:border-[var(--text-prim2)] rounded-[4px]"
+                  className="w-full outline-none px-2 py-1 border-[2px] text-sm border-[var(--text-prim1)] focus:border-[var(--text-prim2)] rounded-[4px]"
                   value={folderName}
                   onChange={handleFolderNameChange}
                />
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end text-sm">
                <button
                   onClick={onClose}
                   className="px-4 py-1 mr-2 hover:bg-seco1 text-prim2 rounded-lg"

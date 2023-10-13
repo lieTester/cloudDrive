@@ -1,5 +1,5 @@
 // react, next
-import { useState } from "react";
+import { useState, FC } from "react";
 import { useRouter } from "next/navigation";
 // icons
 import { ImDrive } from "react-icons/im";
@@ -16,7 +16,7 @@ interface ListItem {
    onClick?: () => void;
 }
 
-const NavigationList = () => {
+const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
    // Default item array
    const defaultItems: ListItem[] = [
       { icon: <ImDrive className="mr-3 text-xl mt-[1px]" />, text: "My Drive" },
@@ -56,6 +56,7 @@ const NavigationList = () => {
       // slugify the path
       if (path === "My Drive") {
          router.push(`/`, undefined);
+         setToggle();
          return;
       }
       path = path
@@ -66,9 +67,7 @@ const NavigationList = () => {
          .replace(/^-+|-+$/g, "");
       // console.log(path);
       router.push(`/?path=${path}`, undefined);
-      if (onClick) {
-         onClick();
-      }
+      setToggle();
    };
 
    return (

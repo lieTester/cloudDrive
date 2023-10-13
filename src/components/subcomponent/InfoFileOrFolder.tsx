@@ -13,24 +13,25 @@ import { FileFolderContext } from "@/context/FileFolderContext";
 // functions
 import DeleteFile from "@/functions/DeleteFile";
 // schema
-import { deleteFolder } from "@/schema/dataFunctions";
+import { deleteFolder, moveToTrash } from "@/schema/dataFunctions";
 
 const InfoComponent: FC<InfoComponentProps> = ({
    folderOrFile,
    file,
    folder,
+   trash,
 }) => {
    const fileFolderContext = useContext(FileFolderContext);
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
    const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
 
    const removeFileFolder = async () => {
-      if (folder && setAddedFileFolder && folderOrFile === "folder") {
+      if (folder && trash && setAddedFileFolder && folderOrFile === "folder") {
+      } else if (folder && setAddedFileFolder && folderOrFile === "folder") {
          await deleteFolder(folder.id).then((res) => {
             setAddedFileFolder(true);
          });
-      }
-      if (file && setAddedFileFolder && folderOrFile === "file") {
+      } else if (file && setAddedFileFolder && folderOrFile === "file") {
          DeleteFile(file?.name, file?.id, setAddedFileFolder);
       }
    };
@@ -42,6 +43,7 @@ const InfoComponent: FC<InfoComponentProps> = ({
          });
       }
    };
+
    return (
       <>
          <div className="relative inline-block [&>div]:invisible [&>div]:focus-within:visible">
@@ -76,13 +78,23 @@ const InfoComponent: FC<InfoComponentProps> = ({
                      <span>Share</span>
                   </button>
 
-                  <button
-                     onClick={removeFileFolder}
-                     className="w-full flex items-center space-x-2 hover:text-red-500"
-                  >
-                     <BsTrash />
-                     <span>Delete</span>
-                  </button>
+                  {trash ? (
+                     <button
+                        onClick={removeFileFolder}
+                        className="w-full flex items-center space-x-2 hover:text-red-500"
+                     >
+                        <BsTrash />
+                        <span>Delete</span>
+                     </button>
+                  ) : (
+                     <button
+                        onClick={removeFileFolder}
+                        className="w-full flex items-center space-x-2 hover:text-red-500"
+                     >
+                        <BsTrash />
+                        <span>Trash</span>
+                     </button>
+                  )}
                </div>
             </div>
          </div>

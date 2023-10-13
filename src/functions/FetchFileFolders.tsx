@@ -20,21 +20,23 @@ const FetchFileFolders = ({
    if (session?.user?.email && folderInfo) {
       try {
          getFolderContents(folderInfo.parentFolder, session.user.email).then(
-            (arr) => {
+            (arr: any) => {
                const files: FileWithID[] = [];
                const folders: FolderWithID[] = [];
-               arr.forEach((detail: any) => {
-                  if ((detail[0] as File).isFolder !== undefined) {
-                     if ((detail[0] as File).isFolder) {
+               arr.forEach((detail: FileWithID | FolderWithID) => {
+                  // console.log(detail);
+                  if (detail !== undefined) {
+                     // to check i thier is any undefiend which means trash value
+                     if (detail.data.isFolder) {
                         const folderData: FolderWithID = {
-                           data: detail[0] as Folder,
-                           id: detail[1],
+                           data: detail.data as Folder,
+                           id: detail.id,
                         };
                         folders.push(folderData);
                      } else {
                         const fileData: FileWithID = {
-                           data: detail[0] as File,
-                           id: detail[1],
+                           data: detail.data as File,
+                           id: detail.id,
                         };
                         files.push(fileData);
                      }

@@ -15,7 +15,7 @@ import Logo from "./subcomponent/Logo";
 import { SessionContext } from "@/context/SessionContext";
 
 const Header: FC<{
-   setToggle: (setToogle: boolean) => void;
+   setToggle: () => void;
    toggle: boolean;
 }> = ({ toggle, setToggle }) => {
    const sessionContext = useContext(SessionContext);
@@ -36,7 +36,7 @@ const Header: FC<{
                </span>
                <span
                   className="flex sm:hidden left-1  top-1 p-1 absolute  hover:bg-seco2  justify-center rounded-full"
-                  onClick={() => setToggle(!toggle)}
+                  onClick={() => setToggle()}
                >
                   <HiMenu
                      className={`${toggle ? "hidden" : ""}  text-[25px]`}

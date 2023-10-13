@@ -14,7 +14,10 @@ import UploadFile from "@/functions/UploadFile";
 import FileUpload from "@/components/subcomponent/FileUploadsUI";
 import NavigationList from "@/components/subcomponent/NavigationItems";
 
-const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
+const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
+   toggle,
+   setToggle,
+}) => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
    const folderInfoContext = useContext(FolderInfoContext);
    const fileFolderContext = useContext(FileFolderContext);
@@ -68,8 +71,9 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
          );
       }
    };
-   const [isExpanded, setExpanded] = useState(true);
 
+   // floating button toggles
+   const [isExpanded, setExpanded] = useState(true);
    const toggleExpanded = () => {
       setExpanded(!isExpanded);
    };
@@ -131,12 +135,12 @@ const SideBar: FC<{ toggle: boolean }> = ({ toggle }) => {
             className="flex-grow overflow-y-auto"
             onClick={() => setfileFolderOpt(false)}
          >
-            <NavigationList />
+            <NavigationList setToggle={setToggle} />
             <span className="inline-block w-full text-center text-prim2 text-base border-2 border-seco2 rounded-full py-1 hover:bg-seco1">
                Get more storage
             </span>
          </div>
-         {/* floating button  */}
+         {/* floating button for small devices---------------------------------------------------------------------------------------------- */}
          <div className="flex sm:hidden fixed bottom-8 right-8  flex-col space-y-3 z-10">
             <div className="relative [&>*]:cursor-pointer [&>*]:shadow-[#FFFFFF_-1px_1px_4px_4px,#888BF3_-1px_-1px_1px_2px,#888BF3_1px_-1px_1px_2px,#888BF3_-1px_1px_2px_2px]">
                <button
