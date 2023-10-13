@@ -56,7 +56,6 @@ export const renameFolder = async (folderName: string, folderId: string) => {
    try {
       const FolderRef = doc(db, "data", folderId);
       // console.log(FolderRef);
-      // Set the "capital" field of the city 'DC'
       await updateDoc(FolderRef, {
          name: folderName,
       });
@@ -66,19 +65,6 @@ export const renameFolder = async (folderName: string, folderId: string) => {
    }
 };
 
-export const moveToTrash = async (folderId: string) => {
-   // this is not exact solution it should be BFS or DFS but for show business logic
-   try {
-      const FolderRef = doc(db, "data", folderId);
-      // console.log(FolderRef);
-      await updateDoc(FolderRef, {
-         trash: true,
-      });
-      return { status: "success", message: "folder deleted successfully" };
-   } catch (error) {
-      return { status: "error", message: "Error deleting the file : ", error };
-   }
-};
 export const deleteFolder = async (folderId: string) => {
    // this is not exact solution it should be BFS or DFS but for show business logic
    try {
@@ -93,6 +79,60 @@ export const deleteFile = async (fileId: string) => {
    try {
       await deleteDoc(doc(db, "data", fileId));
       return { status: "success", message: "File deleted successfully" };
+   } catch (error) {
+      return { status: "error", message: "Error deleting the file : ", error };
+   }
+};
+
+// trash  functions
+
+export const moveToTrash = async (fileFolderId: string) => {
+   // this is not exact solution it should be BFS or DFS but for show business logic
+   try {
+      const FolderRef = doc(db, "data", fileFolderId);
+      // console.log(FolderRef);
+      await updateDoc(FolderRef, {
+         trash: true,
+      });
+      return { status: "success", message: "folder deleted successfully" };
+   } catch (error) {
+      return { status: "error", message: "Error deleting the file : ", error };
+   }
+};
+export const getTrash = async (owner: string) => {
+   // this is not exact solution it should be BFS or DFS but for show business logic
+   try {
+      const dataCollection = query(
+         collection(db, "data"),
+         where("trash", "==", true),
+         where("owner", "==", owner)
+      );
+      const querySnapshot = await getDocs(dataCollection);
+      // console.log(querySnapshot);
+
+      return querySnapshot.docs.map((doc) => {
+         if (doc.data().isFolder) {
+            return {
+               data: doc.data() as Folder,
+               id: doc.id,
+            } as FolderWithID;
+         }
+         return { data: doc.data() as File, id: doc.id } as FileWithID;
+      });
+   } catch (error) {
+      return { status: "error", message: "Error deleting the file : ", error };
+   }
+};
+
+export const restoreToDrive = async (fileFolderId: string) => {
+   // this is not exact solution it should be BFS or DFS but for show business logic
+   try {
+      const FolderRef = doc(db, "data", fileFolderId);
+      // console.log(FolderRef);
+      await updateDoc(FolderRef, {
+         trash: false,
+      });
+      return { status: "success", message: "folder deleted successfully" };
    } catch (error) {
       return { status: "error", message: "Error deleting the file : ", error };
    }

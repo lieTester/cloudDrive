@@ -38,6 +38,7 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
                         name: folder.data.name,
                         id: folder.id,
                      }}
+                     trash={folder.data?.trash}
                   />
                </div>
             ))}

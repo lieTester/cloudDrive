@@ -30,6 +30,7 @@ const FilesUI: React.FC<FileGridProps> = ({ files }) => {
                            link: file.data.fileLink,
                            id: file.id,
                         }}
+                        trash={file.data?.trash}
                      />
                   </div>
                   <BsFillFileEarmarkFill className="text-gray-500 text-4xl mb-2 mx-auto my-3" />

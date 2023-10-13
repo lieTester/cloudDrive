@@ -39,6 +39,12 @@ div {
    -webkit-tap-highlight-color: transparent;
 }
 
+body {
+   -moz-user-select: none; /* firefox */
+   -webkit-user-select: none; /* Safari */
+   -ms-user-select: none; /* IE */
+   user-select: none; /* Standard syntax */
+}
 /* width */
 ::-webkit-scrollbar {
    width: 8px;

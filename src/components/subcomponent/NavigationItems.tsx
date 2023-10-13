@@ -83,7 +83,6 @@ const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
    useEffect(() => {
       if (searchParams?.get("path")) {
          const item = searchParams?.get("path") || "";
-         console.log(item, itemsSlug.indexOf(item));
          setHighlightedIndex(itemsSlug.indexOf(item));
       }
    }, [searchParams?.get("path")]);

@@ -6,6 +6,7 @@ import { BsThreeDotsVertical, BsTrash } from "react-icons/bs";
 import { AiOutlineDownload, AiOutlineFolderView } from "react-icons/ai";
 import { RiUserShared2Line } from "react-icons/ri";
 import { MdDriveFileRenameOutline } from "react-icons/md";
+import { FaTrashRestore } from "react-icons/fa";
 // types
 import { InfoComponentProps } from "@/types/index";
 // contexts
@@ -13,7 +14,11 @@ import { FileFolderContext } from "@/context/FileFolderContext";
 // functions
 import DeleteFile from "@/functions/DeleteFile";
 // schema
-import { deleteFolder, moveToTrash } from "@/schema/dataFunctions";
+import {
+   deleteFolder,
+   moveToTrash,
+   restoreToDrive,
+} from "@/schema/dataFunctions";
 
 const InfoComponent: FC<InfoComponentProps> = ({
    folderOrFile,
@@ -26,13 +31,26 @@ const InfoComponent: FC<InfoComponentProps> = ({
    const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
 
    const removeFileFolder = async () => {
-      if (folder && trash && setAddedFileFolder && folderOrFile === "folder") {
-      } else if (folder && setAddedFileFolder && folderOrFile === "folder") {
-         await deleteFolder(folder.id).then((res) => {
-            setAddedFileFolder(true);
-         });
-      } else if (file && setAddedFileFolder && folderOrFile === "file") {
-         DeleteFile(file?.name, file?.id, setAddedFileFolder);
+      if (setAddedFileFolder && folderOrFile) {
+         if (folderOrFile === "folder") {
+            if (folder && trash && trash === true) {
+               await deleteFolder(folder.id).then((res) => {
+                  setAddedFileFolder(true);
+               });
+            } else if (folder && setAddedFileFolder) {
+               moveToTrash(folder.id).then((res) => {
+                  setAddedFileFolder(true);
+               });
+            }
+         } else if (file && setAddedFileFolder && folderOrFile === "file") {
+            if (trash === true)
+               DeleteFile(file?.name, file?.id, setAddedFileFolder);
+            else {
+               moveToTrash(file.id).then((res) => {
+                  setAddedFileFolder(true);
+               });
+            }
+         }
       }
    };
 
@@ -40,6 +58,17 @@ const InfoComponent: FC<InfoComponentProps> = ({
       if (setFolderFileHandler && folder) {
          setFolderFileHandler((prev) => {
             return { isOpen: true, name: folder.name, id: folder.id };
+         });
+      }
+   };
+   const restoreItem = async () => {
+      if (folder && setAddedFileFolder) {
+         await restoreToDrive(folder.id).then((res) => {
+            setAddedFileFolder(true);
+         });
+      } else if (file && setAddedFileFolder) {
+         await restoreToDrive(file.id).then((res) => {
+            setAddedFileFolder(true);
          });
       }
    };
@@ -53,7 +82,7 @@ const InfoComponent: FC<InfoComponentProps> = ({
 
             <div className="absolute -right-3 mt-2 w-24 bg-prim2  border-seco2 border-[1px] rounded-[4px] shadow-lg overflow-hidden z-30">
                <div className="[&>*]:p-1 [&>*:hover]:bg-seco1 [&>*]:text-prim1 [&>*]:text-xs">
-                  {file && (
+                  {file && trash == undefined && (
                      <button className="w-full   ">
                         <Link
                            href={file?.link}
@@ -65,18 +94,30 @@ const InfoComponent: FC<InfoComponentProps> = ({
                         </Link>
                      </button>
                   )}
-                  <button
-                     onClick={renameFolder}
-                     className="w-full flex items-center space-x-2 "
-                  >
-                     <MdDriveFileRenameOutline />
-                     <span>Rename</span>
-                  </button>
+                  {trash ? (
+                     <button
+                        onClick={restoreItem}
+                        className="w-full flex items-center space-x-2 "
+                     >
+                        <FaTrashRestore />
+                        <span>Restore</span>
+                     </button>
+                  ) : (
+                     <button
+                        onClick={renameFolder}
+                        className="w-full flex items-center space-x-2 "
+                     >
+                        <MdDriveFileRenameOutline />
+                        <span>Rename</span>
+                     </button>
+                  )}
 
-                  <button className="w-full flex items-center space-x-2 ">
-                     <RiUserShared2Line />
-                     <span>Share</span>
-                  </button>
+                  {/* {trash == undefined && (
+                     <button className="w-full flex items-center space-x-2 ">
+                        <RiUserShared2Line />
+                        <span>Share</span>
+                     </button>
+                  )} */}
 
                   {trash ? (
                      <button
