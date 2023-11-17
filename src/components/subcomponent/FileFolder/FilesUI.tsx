@@ -6,7 +6,7 @@ import { BsFillFileEarmarkFill } from "react-icons/bs";
 // types
 import { FileGridProps } from "@/types/index";
 // components
-import InfoComponent from "@/components/subcomponent/InfoFileOrFolder";
+import InfoComponent from "@/components/subcomponent/FileFolder/InfoFileOrFolder";
 
 const FilesUI: React.FC<FileGridProps> = ({ files }) => {
    // Filter out only files (not folders) from the files array
@@ -30,7 +30,7 @@ const FilesUI: React.FC<FileGridProps> = ({ files }) => {
                            link: file.data.fileLink,
                            id: file.id,
                         }}
-                        trash={file.data?.trash}
+                        trash={file.data?.trash || false}
                      />
                   </div>
                   <BsFillFileEarmarkFill className="text-gray-500 text-4xl mb-2 mx-auto my-3" />

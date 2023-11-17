@@ -7,7 +7,7 @@ import { FaFolderOpen } from "react-icons/fa";
 // types
 import { FolderGridProps } from "@/types/index";
 // components
-import InfoComponent from "@/components/subcomponent/InfoFileOrFolder";
+import InfoComponent from "@/components/subcomponent/FileFolder/InfoFileOrFolder";
 
 const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
    const router = useRouter();
@@ -24,7 +24,8 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
                   className="relative bg-prim1 p-4 rounded-lg border hover:shadow-md transition duration-300 flex items-center cursor-pointer"
                   onDoubleClick={(e) => {
                      console.log(folder.id);
-                     changeParentFolder(folder.id);
+                     folder.data?.trash === false &&
+                        changeParentFolder(folder.id);
                   }}
                >
                   <FaFolderOpen className="text-prim1 w-[15%] " />

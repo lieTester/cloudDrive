@@ -12,7 +12,7 @@ import Spam from "@/pages/subPages/Spam";
 import Storage from "@/pages/subPages/Storage";
 import Trash from "@/pages/subPages/Trash";
 import Recent from "@/pages/subPages/Recent";
-import CreateEditFileFolderUI from "@/components/subcomponent/CreateEditFileFolderUI";
+import CreateEditFileFolderUI from "@/components/subcomponent/FileFolder/CreateEditFileFolderUI";
 // types
 import { SessionProp } from "@/types/index";
 // context

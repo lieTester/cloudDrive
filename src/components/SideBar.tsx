@@ -11,7 +11,7 @@ import { SessionContext } from "@/context/SessionContext";
 // functions
 import UploadFile from "@/functions/UploadFile";
 // components
-import FileUpload from "@/components/subcomponent/FileUploadsUI";
+import FileUpload from "@/components/subcomponent/FileFolder/FileUploadsUI";
 import NavigationList from "@/components/subcomponent/NavigationItems";
 
 const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
