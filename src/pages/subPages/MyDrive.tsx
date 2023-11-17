@@ -6,8 +6,8 @@ import { BsCardList } from "react-icons/bs";
 import { FileFolderContext } from "@/context/FileFolderContext";
 import { FolderInfoContext } from "@/context/FolderInfoContext";
 import { SessionContext } from "@/context/SessionContext";
-import FolderUI from "@/components/subcomponent/FolderUI";
-import FilesUI from "@/components/subcomponent/FilesUI";
+import FolderUI from "@/components/subcomponent/FileFolder/FolderUI";
+import FilesUI from "@/components/subcomponent/FileFolder/FilesUI";
 
 import FetchFileFolders from "@/functions/FetchFileFolders";
 

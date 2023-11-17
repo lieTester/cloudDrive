@@ -82,7 +82,7 @@ const InfoComponent: FC<InfoComponentProps> = ({
 
             <div className="absolute -right-3 mt-2 w-24 bg-prim2  border-seco2 border-[1px] rounded-[4px] shadow-lg overflow-hidden z-30">
                <div className="[&>*]:p-1 [&>*:hover]:bg-seco1 [&>*]:text-prim1 [&>*]:text-xs">
-                  {file && trash == undefined && (
+                  {file && !trash && (
                      <button className="w-full   ">
                         <Link
                            href={file?.link}
