@@ -5,29 +5,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-   --bg-prim1: #f7f9fc;
-   --bg-prim2: #ffffff;
-   --bg-seco1: #edf2fc;
-   --bg-seco2: #dee1e2;
-   --text-prim1: #444746;
-   --text-prim2: #0b5cd6;
-   --extra1: #c2e7ff;
-   --extra2: #23272e;
-   --sh-prim1: white;
-   --sh-prim2: #170b3b;
-}
-
-@media (prefers-color-scheme: system) {
-   :root {
-      --bg-prim1: #21252b;
-      --bg-prim2: #5b5f67;
-      --text-prim1: #989aa1;
-      --text-prim2: white;
-      --extra1: #303443;
-      --extra2: #989aa1;
-      --sh-prim1: #181a21;
-      --sh-prim2: #303443;
+@layer utilities {
+   @media (prefers-color-scheme: dark) {
+      :root {
+         --bg-prim1: #0b0c17;
+         --bg-prim2: #101422;
+         --bg-seco1: #323946;
+         --bg-seco2: #1e2533;
+         --text-prim1: #8e9299;
+         --text-prim2: #0b5cd6;
+         --extra1: #323946;
+         --extra2: #abaeb3;
+      }
+   }
+   @media (prefers-color-scheme: light) {
+      :root {
+         --bg-prim1: #f7f9fc;
+         --bg-prim2: #ffffff;
+         --bg-seco1: #edf2fc;
+         --bg-seco2: #dee1e2;
+         --text-prim1: #444746;
+         --text-prim2: #0b5cd6;
+         --extra1: #c2e7ff;
+         --extra2: #23272e;
+      }
    }
 }
 input,

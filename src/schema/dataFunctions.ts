@@ -137,3 +137,20 @@ export const restoreToDrive = async (fileFolderId: string) => {
       return { status: "error", message: "Error deleting the file : ", error };
    }
 };
+// Search function
+
+export const searchByTerm = async (owner: string, searchTerm: string) => {
+   try {
+      // Perform the search query using Firestore
+      const querySnapshot = query(
+         collection(db, "data"),
+         where("fileName", ">=", searchTerm),
+         where("fileName", "<=", searchTerm + "\uf8ff"),
+         where("owner", "==", owner)
+      );
+      console.log(querySnapshot);
+      return { status: "success", message: "search Tearms" };
+   } catch (error) {
+      return { status: "error", message: "Error deleting the file : ", error };
+   }
+};
