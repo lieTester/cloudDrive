@@ -8,8 +8,8 @@ import { SessionContext } from "@/context/SessionContext";
 // types
 import { FileWithID, Folder, FolderWithID, File } from "@/types/modelTypes";
 // compon ents
-import FilesUI from "@/components/subcomponent/FilesUI";
-import FolderUI from "@/components/subcomponent/FolderUI";
+import FilesUI from "@/components/subcomponent/FileFolder/FilesUI";
+import FolderUI from "@/components/subcomponent/FileFolder/FolderUI";
 // schema
 import { getTrash } from "@/schema/dataFunctions";
 
