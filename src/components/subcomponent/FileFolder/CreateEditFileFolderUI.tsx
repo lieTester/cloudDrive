@@ -78,14 +78,14 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
             className="bg-prim2 rounded-lg py-3 px-5 w-[90%] sm:w-96"
             onClick={(e) => e.stopPropagation()}
          >
-            <h2 className="text-lg mb-2">
+            <h2 className="text-lg mb-2 text-prim1">
                {name ? "Rename Folder" : "New Folder"}
             </h2>
             <div className="mb-3">
                <input
                   type="text"
                   placeholder="Untitled folder"
-                  className="w-full outline-none bg-prim2 px-2 py-1 border-[2px] text-sm border-[var(--text-prim1)] focus:border-[var(--text-prim2)] rounded-[4px]"
+                  className="w-full outline-none bg-prim2 text-prim1 px-2 py-1 border-[2px] text-sm border-[var(--text-prim1)] focus:border-[var(--text-prim2)] rounded-[4px]"
                   value={folderName}
                   onChange={handleFolderNameChange}
                />
