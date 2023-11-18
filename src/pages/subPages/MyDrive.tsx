@@ -53,7 +53,7 @@ const MyDrive: React.FC = () => {
       <>
          <div className="relative   w-full flex items-center justify-between">
             <ul className="inline-block [&>li]:text-[22px] [&>li]:px-2  [&>li]:rounded-full">
-               <li className="hover:bg-seco2">My Drive</li>
+               <li className="hover:bg-seco2 ">My Drive</li>
             </ul>
             <ul className="float-right mr-3 flex [&>li]:m-1">
                <li className="flex p-2  hover:bg-seco2 align-middle rounded-full">

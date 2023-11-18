@@ -69,7 +69,7 @@ const Landing: FC<SessionProp> = ({ session }) => {
    return (
       <section className="w-screen h-screen flex flex-col">
          <Header setToggle={toogleHandler} toggle={sideBarToogle} />
-         <div className="relative h-[92%] p-2 flex">
+         <div className="relative  p-2 flex-grow flex overflow-hidden">
             <SideBar setToggle={toogleHandler} toggle={sideBarToogle} />
             <section className="w-full sm:w-[60%] md:w-[75%] lg:w-[85%] h-full bg-prim2 rounded-xl px-2 py-3 flex flex-col text-prim1">
                {navigationPath(pathValue)}

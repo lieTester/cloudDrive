@@ -142,7 +142,7 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
          </div>
          {/* floating button for small devices---------------------------------------------------------------------------------------------- */}
          <div className="flex sm:hidden fixed bottom-8 right-8  flex-col space-y-3 z-10">
-            <div className="relative [&>*]:cursor-pointer [&>*]:shadow-[#FFFFFF_-1px_1px_4px_4px,#888BF3_-1px_-1px_1px_2px,#888BF3_1px_-1px_1px_2px,#888BF3_-1px_1px_2px_2px]">
+            <div className="relative [&>*]:cursor-pointer [&>*]:shadow-[#FFFFFF_-1px_1px_4px_4px,#888BF3_-1px_-1px_1px_2px,#888BF3_1px_-1px_1px_2px,#888BF3_-1px_1px_2px_2px] [&>*]:dark:shadow-[var(--bg-prim1)_-1px_1px_4px_4px,var(--bg-seco1)_1px_-1px_1px_2px,var(--bg-seco1)_-1px_1px_2px_2px]">
                <button
                   className={`absolute top-1 left-1 w-[40px] h-[40px] bg-green-500 rounded-full text-white flex items-center justify-center shadow-lg transition-transform ease-in-out duration-300 ${
                      isExpanded ? "translate-y-0" : "-translate-y-[96px]"

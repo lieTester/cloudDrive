@@ -22,7 +22,7 @@ const Header: FC<{
    const session = sessionContext?.session;
 
    return (
-      <div className="w-full h-[8%] flex p-2 !important  text-prim1 z-20">
+      <div className="w-full h-fit  flex p-2 !important  text-prim1 z-20">
          <Logo />
          <div className="w-[100%] sm:w-[60%] md:w-[75%] lg:w-[85%] flex justify-between ">
             <div className="w-[60%] flex-grow md:flex-grow-0 relative bg-seco1 p-2 rounded-full focus-within:bg-prim2">
