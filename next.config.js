@@ -2,7 +2,7 @@
 
 const nextConfig = {
    images: {
-      domains: ["lh3.googleusercontent.com"], // Add your desired hostname(s) here
+      domains: ["lh3.googleusercontent.com", "avatars.githubusercontent.com"], // Add your desired hostname(s) here
    },
 };
 
