@@ -86,16 +86,17 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
       >
          <div
             className="w-full relative text-prim1 z-20"
-            onBlur={() => {
+            onBlur={(e) => {
+               e.stopPropagation();
                setTimeout(() => {
                   setfileFolderOpt(false);
-               }, 100);
+               }, 300);
             }}
             tabIndex={0}
          >
             <button
                onClick={() => {
-                  setfileFolderOpt(!fileFolderOpt);
+                  setfileFolderOpt(true);
                }}
                className="hidden sm:block p-2 px-4  text-4xl bg-prim2 rounded-lg drop-shadow hover:bg-seco1"
             >

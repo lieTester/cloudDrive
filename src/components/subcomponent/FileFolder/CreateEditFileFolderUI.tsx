@@ -85,7 +85,7 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
                <input
                   type="text"
                   placeholder="Untitled folder"
-                  className="w-full outline-none px-2 py-1 border-[2px] text-sm border-[var(--text-prim1)] focus:border-[var(--text-prim2)] rounded-[4px]"
+                  className="w-full outline-none bg-prim2 px-2 py-1 border-[2px] text-sm border-[var(--text-prim1)] focus:border-[var(--text-prim2)] rounded-[4px]"
                   value={folderName}
                   onChange={handleFolderNameChange}
                />
