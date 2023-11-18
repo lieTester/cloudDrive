@@ -8,10 +8,10 @@ const Logo = () => {
                className="pl-2"
                src={"/img/drive.png"}
                alt="drive-img"
-               width={"40"}
-               height={"40"}
+               width={"50"}
+               height={"50"}
             />
-            <label className=" font-productSans text-prim1 text-[22px] ml-4">
+            <label className=" font-productSans text-prim1 text-[22px] ml-2">
                Drive
             </label>
          </div>

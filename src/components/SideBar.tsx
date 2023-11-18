@@ -109,9 +109,9 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
                >
                   <BsFolderPlus size={18} className="mx-2" /> New folder
                </li>
-               <li className="!relative px-2 pt-2 pb-1  flex">
+               <li className=" px-2 pt-2 pb-1  flex bg-inherit">
                   <input
-                     className="absolute top-0 left-0 opacity-0 w-full h-full"
+                     className="absolute top-0 left-0 opacity-0 w-full h-full bg-transparent"
                      type="file"
                      onChange={(e) => {
                         handleFileChange(e);
