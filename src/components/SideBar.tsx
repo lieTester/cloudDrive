@@ -84,7 +84,15 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
             toggle ? " left-0 " : " -left-full "
          } top-0 w-full  sm:relative  sm:w-[40%] md:w-[35%] lg:w-[25%] bg-prim1 transition-all duration-100 h-full p-2 z-10 flex flex-col`}
       >
-         <div className="w-full relative text-prim1 z-20">
+         <div
+            className="w-full relative text-prim1 z-20"
+            onBlur={() => {
+               setTimeout(() => {
+                  setfileFolderOpt(false);
+               }, 100);
+            }}
+            tabIndex={0}
+         >
             <button
                onClick={() => {
                   setfileFolderOpt(!fileFolderOpt);
@@ -99,9 +107,6 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
                      ? "  h-fit translate-y-0 opacity-100"
                      : " h-0 -translate-y-2 opacity-0"
                }  transition-all ease-in duration-200  absolute cursor-pointer overflow-hidden top-0 text-[13px] bg-prim2 w-[120%] [&>li]:h-8 [&>li:hover]:bg-seco2 drop-shadow-md shadow-slate-800 rounded-[5px]`}
-               onClick={() => {
-                  setfileFolderOpt(!fileFolderOpt);
-               }}
             >
                <li
                   className="px-2 pt-2 pb-1  flex"
@@ -133,7 +138,7 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
          </div>
          <div
             className="flex-grow overflow-y-auto"
-            onClick={() => setfileFolderOpt(false)}
+            // onClick={() => setfileFolderOpt(false)}
          >
             <NavigationList setToggle={setToggle} />
             <span className="inline-block w-full text-center text-prim2 text-base border-2 border-seco2 rounded-full py-1 hover:bg-seco1">
