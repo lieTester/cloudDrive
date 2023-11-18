@@ -17,7 +17,7 @@ const FilesUI: React.FC<FileGridProps> = ({ files }) => {
             files.map((file, index) => (
                <div
                   key={index}
-                  className="bg-prim1 p-2 rounded-lg border hover:shadow-md transition duration-300 cursor-pointer "
+                  className="bg-prim1 p-2 rounded-lg border-seco2 border-[1px] hover:shadow-md transition duration-300 cursor-pointer "
                >
                   <div className="flex justify-between px-1">
                      <p className="truncate text-sm text-prim1 font-medium">

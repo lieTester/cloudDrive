@@ -21,7 +21,7 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
             folders.map((folder, index) => (
                <div
                   key={folder.id}
-                  className="relative bg-prim1 p-4 rounded-lg border hover:shadow-md transition duration-300 flex items-center cursor-pointer"
+                  className="relative bg-prim1 p-4 rounded-lg border-seco2 border-[1px]  hover:shadow-md transition duration-300 flex items-center cursor-pointer"
                   onDoubleClick={(e) => {
                      console.log(folder.id);
                      !folder.data?.trash && changeParentFolder(folder.id);

@@ -84,7 +84,7 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
             toggle ? " left-0 " : " -left-full "
          } top-0 w-full  sm:relative  sm:w-[40%] md:w-[35%] lg:w-[25%] bg-prim1 transition-all duration-100 h-full p-2 z-10 flex flex-col`}
       >
-         <div className="w-full relative z-20">
+         <div className="w-full relative text-prim1 z-20">
             <button
                onClick={() => {
                   setfileFolderOpt(!fileFolderOpt);
