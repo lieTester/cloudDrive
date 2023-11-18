@@ -98,7 +98,7 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
                   fileFolderOpt
                      ? "  h-fit translate-y-0 opacity-100"
                      : " h-0 -translate-y-2 opacity-0"
-               }  transition-all ease-in duration-200  absolute cursor-pointer overflow-hidden top-0 text-[13px] bg-prim2 w-[120%] [&>li:hover]:bg-seco2 drop-shadow-md shadow-slate-800 rounded-[5px]`}
+               }  transition-all ease-in duration-200  absolute cursor-pointer overflow-hidden top-0 text-[13px] bg-prim2 w-[120%] [&>li]:h-8 [&>li:hover]:bg-seco2 drop-shadow-md shadow-slate-800 rounded-[5px]`}
                onClick={() => {
                   setfileFolderOpt(!fileFolderOpt);
                }}
@@ -109,15 +109,15 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
                >
                   <BsFolderPlus size={18} className="mx-2" /> New folder
                </li>
-               <li className="!relative px-2 pt-2 pb-1  flex bg-inherit">
+               <li className=" px-2 pt-2 pb-1 flex ">
+                  <MdUploadFile size={18} className="mx-2" /> File Upload
                   <input
-                     className="absolute top-0 left-0 opacity-0 w-full h-full bg-transparent"
+                     className="absolute left-0 top-8 w-full h-8  opacity-0 cursor-pointer"
                      type="file"
                      onChange={(e) => {
                         handleFileChange(e);
                      }}
                   />
-                  <MdUploadFile size={18} className="mx-2" /> File Upload
                </li>
                <li className="px-2 pt-2 pb-1  flex">
                   <BsFolderSymlink size={18} className="mx-2" /> Folder Upload
