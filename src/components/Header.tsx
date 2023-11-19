@@ -47,6 +47,8 @@ const Header: FC<{
                   placeholder="Search in Drive"
                   value={fileSearch}
                   onChange={(e) => handelFileSearch(e.target.value)}
+                  tabIndex={0}
+                  onBlur={() => setFileSearch("")}
                />
                <span className="hidden sm:flex left-1  top-1 p-1 absolute  hover:bg-seco2  justify-center rounded-full">
                   <IoIosSearch className="  text-[25px]" />
