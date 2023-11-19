@@ -13,6 +13,7 @@ import Storage from "@/pages/subPages/Storage";
 import Trash from "@/pages/subPages/Trash";
 import Recent from "@/pages/subPages/Recent";
 import CreateEditFileFolderUI from "@/components/subcomponent/FileFolder/CreateEditFileFolderUI";
+import ShareFileFolder from "@/components/subcomponent/FileFolder/ShareFileFolder";
 // types
 import { SessionProp } from "@/types/index";
 // context
@@ -81,6 +82,7 @@ const Landing: FC<SessionProp> = ({ session }) => {
             name={folderFileHandler ? folderFileHandler?.name : undefined}
             id={folderFileHandler ? folderFileHandler?.id : undefined}
          />
+         <ShareFileFolder />
       </section>
    );
 };

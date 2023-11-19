@@ -13,6 +13,12 @@ export const FileFolderProvider = ({ children }: ChildrenProp) => {
       useState<CreateEditFileFolderUIProps>({
          isOpen: false,
       });
+   const [folderFileShareHandler, setFolderFileShareHandler] = useState<{
+      isOpen: boolean;
+      id?: string;
+   }>({
+      isOpen: false,
+   });
    const [addedFileFolder, setAddedFileFolder] = useState<boolean>(false);
    const [allFiles, setAllFiles] = useState<FileWithID[]>([]);
    const [allFolders, setAllFolders] = useState<FolderWithID[]>([]);
@@ -28,6 +34,8 @@ export const FileFolderProvider = ({ children }: ChildrenProp) => {
             setAllFolders,
             folderFileHandler,
             setFolderFileHandler,
+            folderFileShareHandler,
+            setFolderFileShareHandler,
          }}
       >
          {children}

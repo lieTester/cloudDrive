@@ -19,6 +19,16 @@ export type FileFolderContextType = {
    setFolderFileHandler: React.Dispatch<
       React.SetStateAction<CreateEditFileFolderUIProps>
    >;
+   folderFileShareHandler: {
+      isOpen: boolean;
+      id?: string;
+   };
+   setFolderFileShareHandler: React.Dispatch<
+      React.SetStateAction<{
+         isOpen: boolean;
+         id?: string;
+      }>
+   >;
    addedFileFolder: boolean;
    setAddedFileFolder: React.Dispatch<React.SetStateAction<boolean>>;
    allFiles: FileWithID[];

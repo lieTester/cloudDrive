@@ -18,7 +18,7 @@ const db = database;
 export const userExists = async (email: string) => {
    try {
       const userQuery = query(
-         collection(db, "data"),
+         collection(db, "users"),
          where("email", "==", email)
       );
       const users = await getDocs(userQuery);
@@ -50,7 +50,7 @@ export const userExists = async (email: string) => {
 };
 export const createUser = async (user: any) => {
    try {
-      const userCollection = collection(db, "user");
+      const userCollection = collection(db, "users");
       const res = await addDoc(userCollection, user);
       if (res.id) {
          return {
@@ -71,6 +71,44 @@ export const createUser = async (user: any) => {
          message: "Error checking user existence",
          error,
          value: false,
+      };
+   }
+};
+export const serachUsers = async (searchTerm: string) => {
+   try {
+      // Perform the search query using Firestore
+      console.log(searchTerm);
+      const querySnapshot = await getDocs(
+         query(
+            collection(db, "users"),
+            where("email", ">=", searchTerm),
+            where("email", "<=", searchTerm + "\uf8ff")
+         )
+      );
+
+      const data = querySnapshot.docs.map((doc) => ({
+         id: doc.id,
+         email: doc.data().email,
+         image: doc.data().image,
+      }));
+
+      return { status: "success", message: "find the results", data };
+   } catch (error) {
+      return { status: "error", message: "Error finding the file", error };
+   }
+};
+
+export const shareWith = async (
+   id: string,
+   usersList: { email: string; image: string; id: string }[]
+) => {
+   try {
+      console.log(usersList, id);
+   } catch (error) {
+      return {
+         error,
+         status: "error",
+         message: "Error checking user existence",
       };
    }
 };

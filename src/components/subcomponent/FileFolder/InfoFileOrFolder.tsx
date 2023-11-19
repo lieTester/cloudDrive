@@ -3,7 +3,7 @@ import { useContext, FC, useState } from "react";
 import Link from "next/link";
 // icons
 import { BsThreeDotsVertical, BsTrash } from "react-icons/bs";
-import { AiOutlineDownload, AiOutlineFolderView } from "react-icons/ai";
+import { AiOutlineFolderView } from "react-icons/ai";
 import { RiUserShared2Line } from "react-icons/ri";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { FaTrashRestore } from "react-icons/fa";
@@ -29,6 +29,8 @@ const InfoComponent: FC<InfoComponentProps> = ({
    const fileFolderContext = useContext(FileFolderContext);
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
    const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
+   const setFolderFileShareHandler =
+      fileFolderContext?.setFolderFileShareHandler;
 
    const removeFileFolder = async () => {
       if (setAddedFileFolder && folderOrFile) {
@@ -112,12 +114,21 @@ const InfoComponent: FC<InfoComponentProps> = ({
                      </button>
                   )}
 
-                  {/* {trash == undefined && (
-                     <button className="w-full flex items-center space-x-2 ">
+                  {!trash && (
+                     <button
+                        className="w-full flex items-center space-x-2 "
+                        onClick={() => {
+                           const fileOrFolderId = file ? file.id : folder?.id;
+                           setFolderFileShareHandler &&
+                              setFolderFileShareHandler((prev) => {
+                                 return { isOpen: true, id: fileOrFolderId };
+                              });
+                        }}
+                     >
                         <RiUserShared2Line />
                         <span>Share</span>
                      </button>
-                  )} */}
+                  )}
 
                   {trash ? (
                      <button
