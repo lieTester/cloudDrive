@@ -1,11 +1,13 @@
 "use client";
 // react, next
-import { useContext, FC } from "react";
+import { useContext, FC, useState } from "react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 // icons
 import { IoIosSearch } from "react-icons/io";
-import { BsQuestionCircle, BsCircle } from "react-icons/bs";
+import { BsQuestionCircle } from "react-icons/bs";
+import { BsFillFileEarmarkFill } from "react-icons/bs";
+import { FaFolderOpen } from "react-icons/fa";
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineSetting, AiOutlineCloseCircle } from "react-icons/ai";
 import { IoApps } from "react-icons/io5";
@@ -13,6 +15,7 @@ import { IoApps } from "react-icons/io5";
 import Logo from "./subcomponent/Logo";
 // context
 import { SessionContext } from "@/context/SessionContext";
+import { searchByTerm } from "@/schema/dataFunctions";
 
 const Header: FC<{
    setToggle: () => void;
@@ -21,6 +24,18 @@ const Header: FC<{
    const sessionContext = useContext(SessionContext);
    const session = sessionContext?.session;
 
+   const [fileSearch, setFileSearch] = useState<string>("");
+   const [fileSearchData, setFileSearchData] = useState<any>([]);
+   const handelFileSearch = (fileName: string) => {
+      setFileSearch(fileName);
+      if (fileName.length) {
+         searchByTerm(session?.user?.email, fileName).then((res) => {
+            setFileSearchData(res.data);
+         });
+      } else {
+         setFileSearchData([]);
+      }
+   };
    return (
       <div className="w-full h-fit  flex p-2 !important  text-prim1 z-20">
          <Logo />
@@ -30,6 +45,8 @@ const Header: FC<{
                   className="pr-8 md:pr-0 w-full bg-transparent pl-8 outline-none rounded-full "
                   type="text"
                   placeholder="Search in Drive"
+                  value={fileSearch}
+                  onChange={(e) => handelFileSearch(e.target.value)}
                />
                <span className="hidden sm:flex left-1  top-1 p-1 absolute  hover:bg-seco2  justify-center rounded-full">
                   <IoIosSearch className="  text-[25px]" />
@@ -68,6 +85,36 @@ const Header: FC<{
                      </li>
                   </ul>
                </span>
+               <div
+                  className={`${
+                     fileSearch.length === 0 && "hidden"
+                  } absolute overflow-hidden w-full left-0 top-[120%] bg-prim2 rounded-md border-seco2 border-[1px] z-20`}
+               >
+                  {fileSearchData.length ? (
+                     fileSearchData.map((data: any) => {
+                        if (data?.trash || data?.ancestorTrash) return;
+                        return (
+                           <span
+                              className="flex px-2 py-1 items-center font-openSans hover:bg-prim1"
+                              key={data.id}
+                           >
+                              {data.isFolder ? (
+                                 <FaFolderOpen className="mr-2" />
+                              ) : (
+                                 <BsFillFileEarmarkFill className="mr-2" />
+                              )}
+
+                              {data.name}
+                           </span>
+                        );
+                     })
+                  ) : (
+                     <div className="px-2 py-1 items-center font-openSans hover:bg-prim1">
+                        No data found for serach term :
+                        <span className="text-prim2"> {fileSearch}</span>
+                     </div>
+                  )}
+               </div>
             </div>
             <div className="h-full flex items-center font-extrabold text-extra2 [&>span]:mx-[2px] ">
                <span className="hidden md:flex p-2 !mx-1 hover:bg-seco2  justify-center rounded-full">
