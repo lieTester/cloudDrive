@@ -13,18 +13,83 @@ import { database } from "../../firebaseConfig";
 import { File, Folder, FileWithID, FolderWithID } from "../types/modelTypes";
 
 const db = database;
-
 export const createFileInFolder = async (file: File) => {
-   const dataCollection = collection(db, "data");
-   const docRef = await addDoc(dataCollection, file);
-   return docRef.id;
+   try {
+      const parentId = file.parentFolder;
+      const dataCollection = collection(db, "data");
+
+      const existingFilesQuery = query(
+         dataCollection,
+         where("parentFolder", "==", parentId),
+         where("name", "==", file.name)
+      );
+      const existingFiles = await getDocs(existingFilesQuery);
+
+      if (!existingFiles.empty) {
+         // File with the same name in the parent folder exists
+         return {
+            status: "success",
+            message: "File with the same name already exists in the folder.",
+            data: existingFiles.docs[0].data().id,
+         };
+      }
+
+      const docRef = await addDoc(dataCollection, file);
+      return {
+         status: "success",
+         message: "File added successfully",
+         data: docRef.id,
+      };
+   } catch (error) {
+      return { status: "error", message: "Error creating file: ", error };
+   }
 };
 
 export const createFolderInFolder = async (folder: Folder) => {
-   const dataCollection = collection(db, "data");
-   const docRef = await addDoc(dataCollection, folder);
-   return docRef.id;
+   try {
+      const parentId = folder.parentFolder;
+      const dataCollection = collection(db, "data");
+
+      const existingFoldersQuery = query(
+         dataCollection,
+         where("parentFolder", "==", parentId),
+         where("name", "==", folder.name)
+      );
+      const existingFolders = await getDocs(existingFoldersQuery);
+
+      if (!existingFolders.empty) {
+         // Folder with the same name in the parent folder exists
+         return {
+            status: "success",
+            message: "Folder with the same name already exists in the folder.",
+            data: existingFolders.docs[0].data().id,
+         };
+      }
+
+      const docRef = await addDoc(dataCollection, folder);
+      return {
+         status: "success",
+         message: "Folder Created successfully",
+         data: docRef.id,
+      };
+   } catch (error) {
+      return { status: "error", message: "Error creating folder: ", error };
+   }
 };
+
+// export const createFileInFolder = async (file: File) => {
+//    const parentId = file.parentFolder;
+//    const dataCollection = collection(db, "data");
+//    const docRef = await addDoc(dataCollection, file);
+//    return docRef.id;
+// };
+
+// export const createFolderInFolder = async (folder: Folder) => {
+//    const parentId = folder.parentFolder;
+//    const dataCollection = collection(db, "data");
+//    const docRef = await addDoc(dataCollection, folder);
+//    return docRef.id;
+// };
 
 export const getFolderContents = async (folderId: string, owner: string) => {
    try {
