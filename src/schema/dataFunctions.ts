@@ -2,6 +2,7 @@
 import {
    collection,
    getDocs,
+   getDoc,
    addDoc,
    where,
    query,
@@ -264,7 +265,10 @@ export const restoreToDrive = async (fileFolderId: string) => {
       return { status: "error", message: "Error deleting the file : ", error };
    }
 };
+
+////////////////////////////////////////////////////////////////////////
 // Search function
+////////////////////////////////////////////////////////////////////////
 
 export const searchByTerm = async (owner: string, searchTerm: string) => {
    try {
@@ -285,6 +289,46 @@ export const searchByTerm = async (owner: string, searchTerm: string) => {
       }));
 
       return { status: "success", message: "find the results", data };
+   } catch (error) {
+      return { status: "error", message: "Error finding the file", error };
+   }
+};
+
+////////////////////////////////////////////////////////////////////////
+// collect share Data function
+////////////////////////////////////////////////////////////////////////
+
+export const collectShareData = async (owner: string) => {
+   try {
+      const userQuerySnapshot = await getDocs(
+         query(collection(db, "users"), where("email", "==", owner))
+      );
+      if (userQuerySnapshot.docs[0].exists()) {
+         const User = userQuerySnapshot.docs[0];
+         const sharedWithMe = User.data()?.sharedWithMe || [];
+         const querySnapshot = [];
+
+         for (const id of sharedWithMe) {
+            const res = await getDoc(doc(collection(db, "data"), id));
+            querySnapshot.push(res);
+         }
+
+         // Use Promise.all to await all the asynchronous operations
+         const allData = await Promise.all(querySnapshot);
+
+         // Log and return the data
+         // console.log(allData, sharedWithMe, "collectShareData");
+
+         return allData.map((doc: any) => {
+            if (doc.data().isFolder) {
+               return {
+                  data: doc.data() as Folder,
+                  id: doc.id,
+               } as FolderWithID;
+            }
+            return { data: doc.data() as File, id: doc.id } as FileWithID;
+         });
+      }
    } catch (error) {
       return { status: "error", message: "Error finding the file", error };
    }

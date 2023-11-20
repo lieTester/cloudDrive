@@ -76,7 +76,11 @@ const ShareFileFolder: FC<{}> = ({}) => {
 
    const handleShareUser = () => {
       if (selectedUserList.length && folderFileShareHandler?.id)
-         shareWith(folderFileShareHandler?.id, selectedUserList).then((res) => {
+         shareWith(
+            folderFileShareHandler?.id,
+            session?.user?.email,
+            selectedUserList
+         ).then((res) => {
             onClose();
          });
    };

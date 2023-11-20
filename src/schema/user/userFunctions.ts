@@ -77,8 +77,8 @@ export const createUser = async (user: any) => {
 export const serachUsers = async (searchTerm: string) => {
    try {
       // Perform the search query using Firestore
-      console.log(searchTerm);
-      const querySnapshot = await getDocs(
+
+      const userQuerySnapshot = await getDocs(
          query(
             collection(db, "users"),
             where("email", ">=", searchTerm),
@@ -86,7 +86,7 @@ export const serachUsers = async (searchTerm: string) => {
          )
       );
 
-      const data = querySnapshot.docs.map((doc) => ({
+      const data = userQuerySnapshot.docs.map((doc) => ({
          id: doc.id,
          email: doc.data().email,
          image: doc.data().image,
@@ -100,10 +100,57 @@ export const serachUsers = async (searchTerm: string) => {
 
 export const shareWith = async (
    id: string,
+   owner: string,
    usersList: { email: string; image: string; id: string }[]
 ) => {
    try {
-      console.log(usersList, id);
+      const FolderOrFile = await getDoc(doc(collection(db, "data"), id));
+      if (FolderOrFile.exists()) {
+         const shareWith = FolderOrFile.data()?.shareWith || [];
+         usersList.filter((user) => {
+            // for duplicasy check
+            const res = shareWith.find(
+               (item: any) => user.email === item.email
+            );
+            if (!res) shareWith.push(user.email);
+         });
+         await updateDoc(doc(collection(db, "data"), id), {
+            shareWith: shareWith,
+         })
+            .then(async (res) => {
+               usersList.map(async (user) => {
+                  const User = await getDoc(
+                     doc(collection(db, "users"), user.id)
+                  );
+                  if (User.exists()) {
+                     const sharedWithMe = User.data()?.sharedWithMe || [];
+                     const res = sharedWithMe.find(
+                        (item: any) => id === item.id
+                     );
+                     // for duplicasy check
+                     if (!res) sharedWithMe.push(id);
+
+                     await updateDoc(doc(collection(db, "users"), user.id), {
+                        sharedWithMe: sharedWithMe,
+                     });
+                     return {
+                        status: "success",
+                        message: "shared with listed user",
+                        shareWith,
+                     };
+                  }
+               });
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+      }
+      return {
+         status: "Error",
+         message:
+            "Not able to share with listed user unexpected error accoured",
+         shareWith,
+      };
    } catch (error) {
       return {
          error,
