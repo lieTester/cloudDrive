@@ -25,6 +25,7 @@ const InfoComponent: FC<InfoComponentProps> = ({
    file,
    folder,
    trash,
+   shared,
 }) => {
    const fileFolderContext = useContext(FileFolderContext);
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
@@ -105,16 +106,18 @@ const InfoComponent: FC<InfoComponentProps> = ({
                         <span>Restore</span>
                      </button>
                   ) : (
-                     <button
-                        onClick={renameFolder}
-                        className="w-full flex items-center space-x-2 "
-                     >
-                        <MdDriveFileRenameOutline />
-                        <span>Rename</span>
-                     </button>
+                     !shared && (
+                        <button
+                           onClick={renameFolder}
+                           className="w-full flex items-center space-x-2 "
+                        >
+                           <MdDriveFileRenameOutline />
+                           <span>Rename</span>
+                        </button>
+                     )
                   )}
 
-                  {!trash && (
+                  {!trash && !shared && (
                      <button
                         className="w-full flex items-center space-x-2 "
                         onClick={() => {
@@ -139,13 +142,15 @@ const InfoComponent: FC<InfoComponentProps> = ({
                         <span>Delete</span>
                      </button>
                   ) : (
-                     <button
-                        onClick={removeFileFolder}
-                        className="w-full flex items-center space-x-2 hover:text-red-500"
-                     >
-                        <BsTrash />
-                        <span>Trash</span>
-                     </button>
+                     !shared && (
+                        <button
+                           onClick={removeFileFolder}
+                           className="w-full flex items-center space-x-2 hover:text-red-500"
+                        >
+                           <BsTrash />
+                           <span>Trash</span>
+                        </button>
+                     )
                   )}
                </div>
             </div>

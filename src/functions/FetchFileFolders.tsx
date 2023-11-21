@@ -1,9 +1,12 @@
 import { useEffect } from "react";
-import { getFolderContents } from "@/schema/dataFunctions";
+import {
+   getFolderContents,
+   getNestedShareFolderContents,
+} from "@/schema/dataFunctions";
 import { File, Folder, FolderWithID, FileWithID } from "@/types/modelTypes";
 import { FolderInfo } from "@/types/contextTypes";
 
-const FetchFileFolders = ({
+export const FetchFileFolders = ({
    setAddedFileFolder,
    folderInfo,
    session,
@@ -53,5 +56,49 @@ const FetchFileFolders = ({
       }
    }
 };
-
-export default FetchFileFolders;
+export const FetchShareFileFolders = ({
+   folderInfo,
+   setAllFiles,
+   setAllFolders,
+}: {
+   folderInfo?: FolderInfo | null;
+   session?: any;
+   setAllFiles?: (files: FileWithID[]) => void;
+   setAllFolders?: (folders: FolderWithID[]) => void;
+}) => {
+   if (folderInfo) {
+      try {
+         getNestedShareFolderContents(folderInfo.parentFolder).then(
+            (arr: any) => {
+               const files: FileWithID[] = [];
+               const folders: FolderWithID[] = [];
+               arr.forEach((detail: FileWithID | FolderWithID) => {
+                  // console.log(detail);
+                  if (detail !== undefined) {
+                     // to check i thier is any undefiend which means trash value
+                     if (detail.data.isFolder) {
+                        const folderData: FolderWithID = {
+                           data: detail.data as Folder,
+                           id: detail.id,
+                        };
+                        folders.push(folderData);
+                     } else {
+                        const fileData: FileWithID = {
+                           data: detail.data as File,
+                           id: detail.id,
+                        };
+                        files.push(fileData);
+                     }
+                  }
+               });
+               if (setAllFiles && setAllFolders) {
+                  setAllFiles(files);
+                  setAllFolders(folders);
+               }
+            }
+         );
+      } catch (error) {
+         console.log(error);
+      }
+   }
+};

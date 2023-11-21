@@ -25,7 +25,6 @@ export const options: NextAuthOptions = {
             if (user?.email) {
                const response = await userExists(user?.email);
                if (response.value) {
-                  console.log(response.data);
                   return true;
                } else {
                   const userData = await createUser(user);

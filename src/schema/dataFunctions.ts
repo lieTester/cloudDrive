@@ -320,7 +320,8 @@ export const collectShareData = async (owner: string) => {
          // console.log(allData, sharedWithMe, "collectShareData");
 
          return allData.map((doc: any) => {
-            if (doc.data().isFolder) {
+            if (doc.data()?.trash && doc.data().trash === true) return;
+            else if (doc.data().isFolder) {
                return {
                   data: doc.data() as Folder,
                   id: doc.id,
@@ -331,5 +332,32 @@ export const collectShareData = async (owner: string) => {
       }
    } catch (error) {
       return { status: "error", message: "Error finding the file", error };
+   }
+};
+
+export const getNestedShareFolderContents = async (folderId: string) => {
+   try {
+      const dataCollection = query(
+         collection(db, "data"),
+         where("parentFolder", "==", folderId)
+      );
+      const querySnapshot = await getDocs(dataCollection);
+      // console.log(querySnapshot.docs);
+      return querySnapshot.docs.map((doc) => {
+         if (doc.data()?.trash && doc.data().trash === true) {
+            return;
+         } else if (doc.data().isFolder) {
+            return {
+               data: { ...doc.data(), shared: true } as Folder,
+               id: doc.id,
+            } as FolderWithID;
+         }
+         return {
+            data: { ...doc.data(), shared: true } as File,
+            id: doc.id,
+         } as FileWithID;
+      });
+   } catch (error) {
+      return { status: "error", message: "Not able to get data : ", error };
    }
 };

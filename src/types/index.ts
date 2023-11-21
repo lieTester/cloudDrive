@@ -44,4 +44,5 @@ export type InfoComponentProps = {
    file?: { name: string; link: string; id: string }; // file detail
    folder?: { name: string; id: string }; // folder detail
    trash?: boolean; // will use it in Trash path
+   shared?: boolean; // will use it in shared path
 };

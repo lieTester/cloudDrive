@@ -9,7 +9,7 @@ import { SessionContext } from "@/context/SessionContext";
 import FolderUI from "@/components/subcomponent/FileFolder/FolderUI";
 import FilesUI from "@/components/subcomponent/FileFolder/FilesUI";
 
-import FetchFileFolders from "@/functions/FetchFileFolders";
+import { FetchFileFolders } from "@/functions/FetchFileFolders";
 
 const MyDrive: React.FC = () => {
    const folderInfoContext = useContext(FolderInfoContext);

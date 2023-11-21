@@ -31,6 +31,7 @@ const FilesUI: React.FC<FileGridProps> = ({ files }) => {
                            id: file.id,
                         }}
                         trash={file.data?.trash || false}
+                        shared={file.data?.shared || false}
                      />
                   </div>
                   <BsFillFileEarmarkFill className="text-gray-500 text-4xl mb-2 mx-auto my-3" />

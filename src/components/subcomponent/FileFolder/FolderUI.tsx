@@ -4,6 +4,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 // icons
 import { FaFolderOpen } from "react-icons/fa";
+// hook
+import useQueryParams from "@/hook/useQueryParams";
 // types
 import { FolderGridProps } from "@/types/index";
 // components
@@ -11,8 +13,10 @@ import InfoComponent from "@/components/subcomponent/FileFolder/InfoFileOrFolder
 
 const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
    const router = useRouter();
+   const { urlSearchParams, setQueryParams } = useQueryParams();
    const changeParentFolder = (id: string) => {
-      router.push(`/?id=${id}`, undefined);
+      setQueryParams({ id: id });
+      // router.push(`/?id=${id}`, undefined);
    };
 
    return (
@@ -38,7 +42,8 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
                         name: folder.data.name,
                         id: folder.id,
                      }}
-                     trash={folder.data?.trash}
+                     trash={folder.data?.trash || false}
+                     shared={folder.data?.shared || false}
                   />
                </div>
             ))}

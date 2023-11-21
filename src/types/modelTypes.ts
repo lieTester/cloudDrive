@@ -7,6 +7,7 @@ export interface File {
    fileLink: string;
    parentFolder: string;
    trash?: boolean;
+   shared?: boolean;
 }
 
 export interface Folder {
@@ -15,6 +16,7 @@ export interface Folder {
    isFolder: boolean;
    parentFolder: string;
    trash?: boolean;
+   shared?: boolean;
 }
 
 export interface FolderWithID {
