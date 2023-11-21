@@ -34,7 +34,7 @@ const SharedWithMe = () => {
          const files: FileWithID[] = [];
          const folders: FolderWithID[] = [];
          data.forEach((detail: FileWithID | FolderWithID) => {
-            console.log(detail);
+            // console.log(detail);
             if (detail !== undefined) {
                if (detail.data.isFolder) {
                   const folderData: FolderWithID = {
