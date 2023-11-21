@@ -71,4 +71,5 @@ This project is licensed under the MIT License. See the [LICENSE](./License) fil
 ## Acknowledgments
 
 -  Thanks to the creators of Google Drive for the inspiration.
+-  Thanks to [Bennett Dams](https://github.com/vercel/next.js/discussions/47583#discussioncomment-6379219) for useQueryParams().
 -  Icons made by [ReactIcons](https://react-icons.github.io/).
