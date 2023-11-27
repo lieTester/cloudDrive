@@ -78,20 +78,6 @@ export const createFolderInFolder = async (folder: Folder) => {
    }
 };
 
-// export const createFileInFolder = async (file: File) => {
-//    const parentId = file.parentFolder;
-//    const dataCollection = collection(db, "data");
-//    const docRef = await addDoc(dataCollection, file);
-//    return docRef.id;
-// };
-
-// export const createFolderInFolder = async (folder: Folder) => {
-//    const parentId = folder.parentFolder;
-//    const dataCollection = collection(db, "data");
-//    const docRef = await addDoc(dataCollection, folder);
-//    return docRef.id;
-// };
-
 export const getFolderContents = async (folderId: string, owner: string) => {
    try {
       const dataCollection = query(
@@ -356,6 +342,57 @@ export const getNestedShareFolderContents = async (folderId: string) => {
             data: { ...doc.data(), shared: true } as File,
             id: doc.id,
          } as FileWithID;
+      });
+   } catch (error) {
+      return { status: "error", message: "Not able to get data : ", error };
+   }
+};
+
+////////////////////////////////////////////////////////////////////////
+// Starred functions
+////////////////////////////////////////////////////////////////////////
+export const addStarred = async (folderId: string) => {
+   try {
+      const FolderRef = doc(db, "data", folderId);
+      await updateDoc(FolderRef, {
+         isStarred: true,
+      });
+      return { status: "success", message: "starred successfully" };
+   } catch (error) {
+      return { status: "error", message: "Not able to add star : ", error };
+   }
+};
+export const removeStarred = async (folderId: string) => {
+   try {
+      const FolderRef = doc(db, "data", folderId);
+      await updateDoc(FolderRef, {
+         isStarred: false,
+      });
+      return { status: "success", message: "Un-starred successfully" };
+   } catch (error) {
+      return { status: "error", message: "Not able to add star : ", error };
+   }
+};
+export const getAllStarredData = async (owner: string) => {
+   try {
+      const dataCollection = query(
+         collection(db, "data"),
+         where("owner", "==", owner),
+         where("isStarred", "==", true)
+      );
+      const querySnapshot = await getDocs(dataCollection);
+      // console.log(querySnapshot.docs);
+      return querySnapshot.docs.map((doc) => {
+         if (doc.data()?.trash && doc.data().trash === true) {
+            // console.log(doc.data().trash);
+            return undefined;
+         } else if (doc.data().isFolder) {
+            return {
+               data: doc.data() as Folder,
+               id: doc.id,
+            } as FolderWithID;
+         }
+         return { data: doc.data() as File, id: doc.id } as FileWithID;
       });
    } catch (error) {
       return { status: "error", message: "Not able to get data : ", error };

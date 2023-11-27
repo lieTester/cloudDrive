@@ -8,6 +8,7 @@ export interface File {
    parentFolder: string;
    trash?: boolean;
    shared?: boolean;
+   isStarred?: boolean;
 }
 
 export interface Folder {

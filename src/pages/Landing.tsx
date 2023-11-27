@@ -7,7 +7,7 @@ import Header from "@/components/Header";
 import MyDrive from "@/pages/subPages/MyDrive";
 import Computer from "@/pages/subPages/Computer";
 import SharedWithMe from "@/pages/subPages/SharedWithMe";
-import Stared from "@/pages/subPages/Stared";
+import Starred from "@/pages/subPages/Starred";
 import Spam from "@/pages/subPages/Spam";
 import Storage from "@/pages/subPages/Storage";
 import Trash from "@/pages/subPages/Trash";
@@ -46,8 +46,8 @@ const Landing: FC<SessionProp> = ({ session }) => {
             return <SharedWithMe />;
          case "recent":
             return <Recent />;
-         case "stared":
-            return <Stared />;
+         case "starred":
+            return <Starred />;
          case "spam":
             return <Spam />;
          case "trash":

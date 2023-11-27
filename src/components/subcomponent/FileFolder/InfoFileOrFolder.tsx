@@ -7,6 +7,7 @@ import { AiOutlineFolderView } from "react-icons/ai";
 import { RiUserShared2Line } from "react-icons/ri";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { FaTrashRestore } from "react-icons/fa";
+import { CiStar } from "react-icons/ci";
 // types
 import { InfoComponentProps } from "@/types/index";
 // contexts
@@ -15,8 +16,10 @@ import { FileFolderContext } from "@/context/FileFolderContext";
 import DeleteFile from "@/functions/DeleteFile";
 // schema
 import {
+   addStarred,
    deleteFolder,
    moveToTrash,
+   removeStarred,
    restoreToDrive,
 } from "@/schema/dataFunctions";
 
@@ -76,6 +79,27 @@ const InfoComponent: FC<InfoComponentProps> = ({
       }
    };
 
+   const [starValue, setStarValue] = useState(
+      file?.starred ? "Un-Star" : "Star"
+   );
+   const handelStarred = async () => {
+      try {
+         if (starValue === "Un-Star") {
+            file &&
+               removeStarred(file.id).then((res) => {
+                  setStarValue("Star");
+               });
+         } else {
+            file &&
+               addStarred(file.id).then((res) => {
+                  setStarValue("Un-Star");
+               });
+         }
+      } catch (error) {
+         console.log(error);
+      }
+   };
+
    return (
       <>
          <div className="relative inline-block [&>div]:invisible [&>div]:focus-within:visible">
@@ -86,16 +110,25 @@ const InfoComponent: FC<InfoComponentProps> = ({
             <div className="absolute -right-3 mt-2 w-24 bg-prim2  border-seco2 border-[1px] rounded-[4px] shadow-lg overflow-hidden z-30">
                <div className="[&>*]:p-1 [&>*:hover]:bg-seco1 [&>*]:text-prim1 [&>*]:text-xs">
                   {file && !trash && (
-                     <button className="w-full   ">
-                        <Link
-                           href={file?.link}
-                           target="_blank"
-                           className="flex items-center space-x-2"
+                     <>
+                        <button className="w-full   ">
+                           <Link
+                              href={file?.link}
+                              target="_blank"
+                              className="flex items-center space-x-2"
+                           >
+                              <AiOutlineFolderView />
+                              <span>open</span>
+                           </Link>
+                        </button>
+                        <button
+                           onClick={handelStarred}
+                           className="w-full   flex items-center space-x-2"
                         >
-                           <AiOutlineFolderView />
-                           <span>open</span>
-                        </Link>
-                     </button>
+                           <CiStar />
+                           <span>{starValue}</span>
+                        </button>
+                     </>
                   )}
                   {trash ? (
                      <button

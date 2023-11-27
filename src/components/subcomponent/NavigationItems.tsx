@@ -22,7 +22,7 @@ const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
       "computers",
       "shared-with-me",
       "recent",
-      "stared",
+      "starred",
       "spam",
       "trash",
       "storage",
@@ -44,7 +44,7 @@ const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
       },
       {
          icon: <AiOutlineStar className="mr-2 text-xl mt-[1px]" />,
-         text: "Stared",
+         text: "Starred",
       },
       { icon: <RiSpam2Line className="mr-2 text-xl mt-[1px]" />, text: "Spam" },
       { icon: <BsTrash className="mr-2 text-xl mt-[1px]" />, text: "Trash" },

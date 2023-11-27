@@ -41,7 +41,7 @@ export type SidebarProps = {
 
 export type InfoComponentProps = {
    folderOrFile: string; // 'folder' or 'file'
-   file?: { name: string; link: string; id: string }; // file detail
+   file?: { name: string; link: string; id: string; starred: boolean }; // file detail
    folder?: { name: string; id: string }; // folder detail
    trash?: boolean; // will use it in Trash path
    shared?: boolean; // will use it in shared path
