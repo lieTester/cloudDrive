@@ -29,7 +29,6 @@ const SharedWithMe = () => {
    const setFolderInfo = folderInfoContext?.setFolderInfo;
    const session = sessionContext?.session;
    const searchParams = useSearchParams();
-   useEffect(() => {}, []);
 
    // // param for checking which folder view to present
    useEffect(() => {
