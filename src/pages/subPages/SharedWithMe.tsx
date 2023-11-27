@@ -29,39 +29,39 @@ const SharedWithMe = () => {
    const setFolderInfo = folderInfoContext?.setFolderInfo;
    const session = sessionContext?.session;
    const searchParams = useSearchParams();
-   useEffect(() => {
-      collectShareData(session.user.email).then((data: any) => {
-         const files: FileWithID[] = [];
-         const folders: FolderWithID[] = [];
-         data.forEach((detail: FileWithID | FolderWithID) => {
-            // console.log(detail);
-            if (detail !== undefined) {
-               if (detail.data.isFolder) {
-                  const folderData: FolderWithID = {
-                     data: { ...detail.data, shared: true } as Folder,
-                     id: detail.id,
-                  };
-                  folders.push(folderData);
-               } else {
-                  const fileData: FileWithID = {
-                     data: { ...detail.data, shared: true } as File,
-                     id: detail.id,
-                  };
-                  files.push(fileData);
-               }
-            }
-         });
-         if (setAllFiles && setAllFolders) {
-            setAllFiles(files);
-            setAllFolders(folders);
-         }
-      });
-   }, []);
+   useEffect(() => {}, []);
 
    // // param for checking which folder view to present
    useEffect(() => {
       let id = searchParams?.get("id") || "";
-
+      if (id.length === 0) {
+         collectShareData(session.user.email).then((data: any) => {
+            const files: FileWithID[] = [];
+            const folders: FolderWithID[] = [];
+            data.forEach((detail: FileWithID | FolderWithID) => {
+               // console.log(detail);
+               if (detail !== undefined) {
+                  if (detail.data.isFolder) {
+                     const folderData: FolderWithID = {
+                        data: { ...detail.data, shared: true } as Folder,
+                        id: detail.id,
+                     };
+                     folders.push(folderData);
+                  } else {
+                     const fileData: FileWithID = {
+                        data: { ...detail.data, shared: true } as File,
+                        id: detail.id,
+                     };
+                     files.push(fileData);
+                  }
+               }
+            });
+            if (setAllFiles && setAllFolders) {
+               setAllFiles(files);
+               setAllFolders(folders);
+            }
+         });
+      }
       if (setFolderInfo && id) {
          setFolderInfo((prev) => {
             return { ...prev, parentFolder: id };
