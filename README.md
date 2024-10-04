@@ -1,6 +1,6 @@
 # [Cloud Drive Clone](https://drive-cloud.vercel.app/)
 
-![Cloud Drive Clone](./docs/drive.png)
+![Cloud Drive Clone](./docs/clouddrive.png)
 
 A cloud storage platform clone, built with Next.js, TypeScript, and Tailwind CSS, deployed on Vercel. This project aims to replicate the user interface and core functionalities of Google Drive, offering a similar experience for users to manage their files and folders in the cloud.
 
