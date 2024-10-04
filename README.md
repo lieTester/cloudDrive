@@ -1,6 +1,6 @@
-# [Cloud Drive Clone](https://cloud-drive-seven.vercel.app/)
+# [Cloud Drive Clone](https://drive-cloud.vercel.app/)
 
-![Cloud Drive Clone](./docs//drive.png)
+![Cloud Drive Clone](./docs/drive.png)
 
 A cloud storage platform clone, built with Next.js, TypeScript, and Tailwind CSS, deployed on Vercel. This project aims to replicate the user interface and core functionalities of Google Drive, offering a similar experience for users to manage their files and folders in the cloud.
 
@@ -16,7 +16,7 @@ A cloud storage platform clone, built with Next.js, TypeScript, and Tailwind CSS
 
 ![Image Description](./docs//cloud-drive.gif)
 
-Check out the live demo of the Cloud Drive Clone [here](https://cloud-drive-seven.vercel.app/).
+Check out the live demo of the Cloud Drive Clone [here](https://drive-cloud.vercel.app/).
 
 ## Technologies Used
 
@@ -29,8 +29,8 @@ Check out the live demo of the Cloud Drive Clone [here](https://cloud-drive-seve
 
 1. Clone the repository:
 
-   ```bash
-   https://github.com/lieTester/cloudDrive.git
+   ```
+   bash https://github.com/lieTester/cloudDrive.git
    ```
 
 2. Navigate to the project folder:
@@ -56,9 +56,16 @@ Check out the live demo of the Cloud Drive Clone [here](https://cloud-drive-seve
 ## Usage
 
 1. Sign up for an account or log in if you already have one.
-   ![Sign Up](https://chat.openai.com/c/insert-sign-up-screenshot-url-here)
+   ![Sign Up](./docs/signup.png)
 2. Start managing your files and folders in the cloud, just like you would with Google Drive!
-   ![File Management](./docs//managment.png)
+   ![File Management](./docs//manag1.png)
+
+   <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; width: 100%; gap: 10px;">
+      <img src="./docs/manag2.png" alt="create" style="width: 100%; height: auto; object-fit: contain;" />
+      <img src="./docs/manag3.png" alt="shared" style="width: 100%; height: auto; object-fit: contain;" />
+      <img src="./docs/manag4.png" alt="starred" style="width: 100%; height: auto; object-fit: contain;" />
+      <img src="./docs/manag5.png" alt="trash" style="width: 100%; height: auto; object-fit: contain;" />
+   </div>
 
 ## Contributing
 
