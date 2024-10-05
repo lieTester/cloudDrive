@@ -82,6 +82,7 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
             setMessage(
                "YOU don't have enough storage left to upload this file"
             );
+         return;
       } else if (file.size > maxSizeInBytes) {
          setOpen && setOpen(true);
          setSeverity && setSeverity("urgent");
