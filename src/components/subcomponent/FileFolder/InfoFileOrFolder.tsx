@@ -1,5 +1,5 @@
 // react, next
-import { useContext, FC, useState } from "react";
+import React, { useContext, FC, useState } from "react";
 import Link from "next/link";
 // icons
 import { BsThreeDotsVertical, BsTrash } from "react-icons/bs";

@@ -12,7 +12,7 @@ const UploadFile = (
    // as over context value is undefined as primarrly so direct destructuring will give warning
 
    if (file) {
-      const storageRef = ref(storage, `files/${file.name}`);
+      const storageRef = ref(storage, `/${owner}/${file.name}`);
 
       const uploadTask = uploadBytesResumable(storageRef, file);
 

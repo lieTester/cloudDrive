@@ -7,11 +7,9 @@ import {
    where,
    query,
    doc,
-   deleteDoc,
    updateDoc,
 } from "firebase/firestore";
 import { database } from "../../../firebaseConfig";
-import { File, Folder, FileWithID, FolderWithID } from "@/types/modelTypes";
 
 const db = database;
 

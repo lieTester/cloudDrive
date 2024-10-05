@@ -13,6 +13,7 @@ import UploadFile from "@/functions/UploadFile";
 // components
 import FileUpload from "@/components/subcomponent/FileFolder/FileUploadsUI";
 import NavigationList from "@/components/subcomponent/NavigationItems";
+import MessageContext from "@/context/MessageContext";
 
 const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
    toggle,
@@ -22,11 +23,15 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
    const folderInfoContext = useContext(FolderInfoContext);
    const fileFolderContext = useContext(FileFolderContext);
    const sessionContext = useContext(SessionContext);
+   const messageContext = useContext(MessageContext);
 
    const folderInfo = folderInfoContext?.folderInfo; // Use optional chaining here
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
    const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
    const session = sessionContext?.session;
+   const setOpen = messageContext?.setOpen;
+   const setMessage = messageContext?.setMessage;
+   const setSeverity = messageContext?.setSeverity;
 
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
 
@@ -52,22 +57,35 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
    const [progress, setProgress] = useState(0);
 
    const handleFileChange = (e: any) => {
-      // console.log(e.target.files[0], file, session?.user?.email);
-      // console.log(folderInfo);
+      const file = e.target.files[0];
 
-      setFile(e.target.files[0].name);
+      if (!file) return;
+
+      const maxSizeInBytes = 1 * 1024 * 1024; // 1MB in bytes
+      if (file.size > maxSizeInBytes) {
+         setOpen && setOpen(true);
+         setSeverity && setSeverity("urgent");
+         setMessage &&
+            setMessage("File size exceeds 1MB. Please choose a smaller file.");
+
+         return;
+      }
+
+      // Proceed with the file upload if the size is valid
+      setFile(file.name);
       setfileUploadCompVisiblity(true);
+
       if (
          session?.user?.email &&
          folderInfo?.parentFolder &&
          setAddedFileFolder
       ) {
          UploadFile(
-            e.target.files[0],
+            file,
             session.user.email,
             folderInfo.parentFolder,
             setProgress,
-            setAddedFileFolder // to set that file isuploaded and we can now fetchin realtime
+            setAddedFileFolder // to set that file is uploaded and we can now fetch in realtime
          );
       }
    };

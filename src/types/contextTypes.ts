@@ -42,3 +42,12 @@ export type SessionContextType = {
    session: any;
    setSession: React.Dispatch<React.SetStateAction<any>>;
 };
+// MessageContext.tsx
+export type MessageContextType = {
+   open: boolean;
+   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+   message: string;
+   setMessage: React.Dispatch<React.SetStateAction<string>>;
+   severity: string;
+   setSeverity: React.Dispatch<React.SetStateAction<string>>;
+};

@@ -9,6 +9,7 @@ import { FolderInfoContext } from "@/context/FolderInfoContext";
 import { SessionContext } from "@/context/SessionContext";
 // firebase shema
 import { createFolderInFolder, renameFolder } from "@/schema/dataFunctions";
+import MessageContext from "@/context/MessageContext";
 
 const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
    isOpen,
@@ -19,6 +20,11 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
    const folderInfoContext = useContext(FolderInfoContext);
    const fileFolderContext = useContext(FileFolderContext);
    const sessionContext = useContext(SessionContext);
+   const messageContext = useContext(MessageContext);
+
+   const setOpen = messageContext?.setOpen;
+   const setMessage = messageContext?.setMessage;
+   const setSeverity = messageContext?.setSeverity;
 
    const session = sessionContext?.session; // Use optional chaining here
    const folderInfo = folderInfoContext?.folderInfo; // Use optional chaining here
@@ -38,7 +44,7 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
       setFolderFileHandler && setFolderFileHandler({ isOpen: false });
    };
 
-   const handleCreateFolder = () => {
+   const handleCreateFolder = async () => {
       // folder creation logic here
       if (session?.user?.email && folderInfo?.parentFolder) {
          const data = {
@@ -48,10 +54,13 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
             parentFolder: folderInfo?.parentFolder,
          };
 
-         createFolderInFolder(data).then((res) => {
+         await createFolderInFolder(data).then((res) => {
             // console.log("Folder created:", res); //will get id of folder create in firestore
             setAddedFileFolder && setAddedFileFolder(true);
             onClose();
+            setOpen && setOpen(true);
+            setSeverity && setSeverity("success");
+            setMessage && setMessage("Folder Create Successfully");
          });
       }
    };
@@ -63,6 +72,9 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
             // console.log("Folder renamed:", res); //will get id of folder create in firestore
             if (setAddedFileFolder) setAddedFileFolder(true);
             onClose();
+            setOpen && setOpen(true);
+            setSeverity && setSeverity("warning");
+            setMessage && setMessage("Folder Renamed Successfully!");
          });
       }
    };

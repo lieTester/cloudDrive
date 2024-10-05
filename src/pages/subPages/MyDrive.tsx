@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useEffect, useContext } from "react";
 import { useSearchParams } from "next/navigation";
 import { BiInfoCircle } from "react-icons/bi";

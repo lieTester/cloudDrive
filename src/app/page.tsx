@@ -7,6 +7,7 @@ import LoadingPage from "@/components/subcomponent/LoderComponent";
 import { FileFolderProvider } from "../context/FileFolderContext";
 import { FolderInfoProvider } from "../context/FolderInfoContext";
 import { SessionProvider } from "../context/SessionContext";
+import { MessageContextProvider } from "@/context/MessageContext";
 
 export default function Home() {
    // session
@@ -22,8 +23,11 @@ export default function Home() {
                   <FolderInfoProvider>
                      {/* // current folder if on main path */}
                      <FileFolderProvider>
-                        {/* // files or folders need to fetch related to subPages */}
-                        <Landing session={session} />
+                        {/* // urgent message displayer at top */}
+                        <MessageContextProvider>
+                           {/* // files or folders need to fetch related to subPages */}
+                           <Landing session={session} />
+                        </MessageContextProvider>
                      </FileFolderProvider>
                   </FolderInfoProvider>
                </SessionProvider>

@@ -19,6 +19,7 @@ import { SessionProp } from "@/types/index";
 // context
 import { SessionContext } from "@/context/SessionContext";
 import { FileFolderContext } from "@/context/FileFolderContext";
+import Message from "@/components/Message";
 
 const Landing: FC<SessionProp> = ({ session }) => {
    // sideBar toggle state pass to header for functional and value to sidebar component
@@ -83,6 +84,7 @@ const Landing: FC<SessionProp> = ({ session }) => {
             id={folderFileHandler ? folderFileHandler?.id : undefined}
          />
          <ShareFileFolder />
+         <Message />
       </section>
    );
 };

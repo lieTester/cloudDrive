@@ -1,6 +1,6 @@
 "use client";
 // react, next
-import React, { useState, FC } from "react";
+import React, { useState, FC, useEffect, useContext } from "react";
 // icons
 import { FiX } from "react-icons/fi";
 import {
@@ -10,6 +10,7 @@ import {
 } from "react-icons/bi";
 //types
 import { FileUploads } from "@/types/index";
+import MessageContext from "@/context/MessageContext";
 
 const FileUpload: FC<FileUploads> = ({
    fileName,
@@ -17,10 +18,23 @@ const FileUpload: FC<FileUploads> = ({
    isVisible,
    onClose,
 }) => {
+   const messageContext = useContext(MessageContext);
+   const setOpen = messageContext?.setOpen;
+   const setMessage = messageContext?.setMessage;
+   const setSeverity = messageContext?.setSeverity;
+
    const [minimized, setMinimized] = useState(false);
    const radius = 10; // Radius of the circle
    const circumference = (2 * 22 * radius) / 7;
    const dashOffset = circumference - (progress / 100) * circumference;
+
+   useEffect(() => {
+      if (progress === 100) {
+         setOpen && setOpen(true);
+         setSeverity && setSeverity("success");
+         setMessage && setMessage("File upload Success!");
+      }
+   }, [progress]);
    return (
       <div
          className={
