@@ -28,6 +28,7 @@ const FilesUI: React.FC<FileGridProps> = ({ files }) => {
                         file={{
                            name: file.data.name,
                            link: file.data.fileLink,
+                           storageFileName: file.data.storageFileName,
                            id: file.id,
                            starred: file.data?.isStarred || false,
                         }}

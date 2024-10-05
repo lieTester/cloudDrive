@@ -22,6 +22,7 @@ import {
    removeStarred,
    restoreToDrive,
 } from "@/schema/dataFunctions";
+import { SessionContext } from "@/context/SessionContext";
 
 const InfoComponent: FC<InfoComponentProps> = ({
    folderOrFile,
@@ -30,6 +31,8 @@ const InfoComponent: FC<InfoComponentProps> = ({
    trash,
    shared,
 }) => {
+   const sessionContext = useContext(SessionContext);
+   const session = sessionContext?.session;
    const fileFolderContext = useContext(FileFolderContext);
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
    const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
@@ -49,14 +52,23 @@ const InfoComponent: FC<InfoComponentProps> = ({
                });
             }
          } else if (file && setAddedFileFolder && folderOrFile === "file") {
-            if (trash === true)
-               DeleteFile(file?.name, file?.id, setAddedFileFolder);
-            else {
+            if (trash === true) {
+               DeleteFile({
+                  fileName: file?.storageFileName,
+                  fileId: file?.id,
+                  owner: session?.user?.email,
+                  setAddedFileFolder: setAddedFileFolder,
+               });
+            } else {
                moveToTrash(file.id).then((res) => {
                   setAddedFileFolder(true);
                });
             }
          }
+         // necessary for trash and other things to fetch in real-time
+         setTimeout(() => {
+            setAddedFileFolder && setAddedFileFolder(false);
+         }, 800);
       }
    };
 
@@ -77,6 +89,10 @@ const InfoComponent: FC<InfoComponentProps> = ({
             setAddedFileFolder(true);
          });
       }
+      // for fetching trash and other things in realtime
+      setTimeout(() => {
+         setAddedFileFolder && setAddedFileFolder(false);
+      }, 800);
    };
 
    const [starValue, setStarValue] = useState(
@@ -96,7 +112,7 @@ const InfoComponent: FC<InfoComponentProps> = ({
                });
          }
       } catch (error) {
-         console.log(error);
+         console.error(error);
       }
    };
 
@@ -121,13 +137,15 @@ const InfoComponent: FC<InfoComponentProps> = ({
                               <span>open</span>
                            </Link>
                         </button>
-                        <button
-                           onClick={handelStarred}
-                           className="w-full   flex items-center space-x-2"
-                        >
-                           <CiStar />
-                           <span>{starValue}</span>
-                        </button>
+                        {!shared && (
+                           <button
+                              onClick={handelStarred}
+                              className="w-full   flex items-center space-x-2"
+                           >
+                              <CiStar />
+                              <span>{starValue}</span>
+                           </button>
+                        )}
                      </>
                   )}
                   {trash ? (

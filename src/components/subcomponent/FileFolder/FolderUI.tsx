@@ -25,9 +25,9 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
             folders.map((folder, index) => (
                <div
                   key={folder.id}
+                  title={`To open "${folder.data.name}" double click`}
                   className="relative bg-prim1 p-4 rounded-lg border-seco2 border-[1px]  hover:shadow-md transition duration-300 flex items-center cursor-pointer"
                   onDoubleClick={(e) => {
-                     console.log(folder.id);
                      !folder.data?.trash && changeParentFolder(folder.id);
                   }}
                >
@@ -36,15 +36,20 @@ const FolderGrid: React.FC<FolderGridProps> = ({ folders }) => {
                      {folder.data.name}
                   </p>
 
-                  <InfoComponent
-                     folderOrFile="folder"
-                     folder={{
-                        name: folder.data.name,
-                        id: folder.id,
-                     }}
-                     trash={folder.data?.trash || false}
-                     shared={folder.data?.shared || false}
-                  />
+                  {folder.data?.isFolder === true &&
+                  folder.data?.shared === true ? (
+                     <></>
+                  ) : (
+                     <InfoComponent
+                        folderOrFile="folder"
+                        folder={{
+                           name: folder.data.name,
+                           id: folder.id,
+                        }}
+                        trash={folder.data?.trash || false}
+                        shared={folder.data?.shared || false}
+                     />
+                  )}
                </div>
             ))}
       </div>

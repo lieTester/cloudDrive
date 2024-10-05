@@ -45,6 +45,12 @@ export const options: NextAuthOptions = {
          return token;
       },
       async session({ session, token, user }) {
+         if (session?.user?.email) {
+            const response = await userExists(session?.user?.email);
+            if (response?.data && session?.user) {
+               session.user.id = response.data.id;
+            }
+         }
          return session;
       },
    },

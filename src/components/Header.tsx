@@ -29,7 +29,10 @@ const Header: FC<{
    const handelFileSearch = (fileName: string) => {
       setFileSearch(fileName);
       if (fileName.length) {
-         searchByTerm(session?.user?.email, fileName).then((res) => {
+         searchByTerm({
+            owner: session?.user?.email,
+            searchTerm: fileName,
+         }).then((res) => {
             setFileSearchData(res.data);
          });
       } else {
@@ -58,13 +61,18 @@ const Header: FC<{
                   onClick={() => setToggle()}
                >
                   <HiMenu
+                     title="View SideBar"
                      className={`${toggle ? "hidden" : ""}  text-[25px]`}
                   />
                   <AiOutlineCloseCircle
+                     title="close Sidebar"
                      className={`${toggle ? "" : "hidden"}  text-[25px]`}
                   />
                </span>
-               <span className="absolute md:hidden w-fit right-0 top-0 p-1 bg-seco2 flex justify-center rounded-full [&:hover>ul]:visible [&:hover>ul]:opacity-100">
+               <span
+                  title={session?.user?.name}
+                  className="absolute md:hidden w-fit right-0 top-0 p-1 bg-seco2 flex justify-center rounded-full [&:hover>ul]:visible [&:hover>ul]:opacity-100"
+               >
                   {session?.user?.image && (
                      <Image
                         src={session?.user?.image}
@@ -119,13 +127,22 @@ const Header: FC<{
                </div>
             </div>
             <div className="h-full flex items-center font-extrabold text-extra2 [&>span]:mx-[2px] ">
-               <span className="hidden md:flex p-2 !mx-1 hover:bg-seco2  justify-center rounded-full">
+               <span
+                  title="help? will not give ;)"
+                  className="hidden md:flex p-2 !mx-1 hover:bg-seco2  justify-center rounded-full"
+               >
                   <BsQuestionCircle className="  text-[22px] " />
                </span>
-               <span className="hidden md:flex  p-2 !mx-1 hover:bg-seco2  justify-center rounded-full">
+               <span
+                  title="setting? beleive me you don't need ;)"
+                  className="hidden md:flex  p-2 !mx-1 hover:bg-seco2  justify-center rounded-full"
+               >
                   <AiOutlineSetting className="  text-[22px] " />
                </span>
-               <span className=" hidden md:flex p-2  !mx-1 hover:bg-seco2  justify-center rounded-full">
+               <span
+                  title="??? i'm confuse too"
+                  className=" hidden md:flex p-2  !mx-1 hover:bg-seco2  justify-center rounded-full"
+               >
                   <IoApps className="  text-[22px] " />
                </span>
                <span className="hidden md:flex absolute right-0 md:relative !mx-1 p-1 hover:bg-seco2  justify-center rounded-full [&:hover>ul]:visible [&:hover>ul]:opacity-100">

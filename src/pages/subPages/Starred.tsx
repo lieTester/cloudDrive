@@ -1,7 +1,6 @@
 // react next
 import Image from "next/image";
-import { useContext, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useContext, useEffect } from "react";
 // icons
 import { BiInfoCircle } from "react-icons/bi";
 import { BsCardList } from "react-icons/bs";
@@ -27,11 +26,10 @@ const Starred = () => {
    const session = sessionContext?.session;
 
    useEffect(() => {
-      getAllStarredData(session.user.email).then((data: any) => {
+      getAllStarredData(session.user.email).then((res) => {
          const files: FileWithID[] = [];
          const folders: FolderWithID[] = [];
-         data.forEach((detail: FileWithID | FolderWithID) => {
-            // console.log(detail);
+         res?.data?.forEach((detail: FileWithID | FolderWithID) => {
             if (detail !== undefined) {
                if (detail.data.isFolder) {
                   const folderData: FolderWithID = {

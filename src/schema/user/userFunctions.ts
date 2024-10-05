@@ -1,4 +1,3 @@
-// firebase-collections.ts
 import {
    collection,
    getDocs,
@@ -13,68 +12,120 @@ import { database } from "../../../firebaseConfig";
 
 const db = database;
 
+const createResponse = ({
+   status,
+   statusCode,
+   message,
+   data,
+   error,
+   value,
+}: {
+   status: string;
+   statusCode: number;
+   message: string;
+   value?: boolean;
+   data?: any;
+   error?: any;
+}) => {
+   return {
+      status,
+      statusCode,
+      message,
+      ...(data && { data }),
+      ...(error && { error }),
+      ...(value && { value }),
+   };
+};
+
+// Check if a user exists by email
 export const userExists = async (email: string) => {
    try {
+      // Validate email
+      if (!email) {
+         return createResponse({
+            status: "error",
+            statusCode: 400,
+            message: "Email is required.",
+         });
+      }
+
       const userQuery = query(
          collection(db, "users"),
          where("email", "==", email)
       );
       const users = await getDocs(userQuery);
-      const res = users.docs[0];
+      const user = users.docs[0];
 
-      if (res.exists()) {
-         return {
+      if (user && user.exists()) {
+         return createResponse({
             status: "success",
+            statusCode: 200,
             message: "User found",
+            data: user.data(),
             value: true,
-            data: res.data(),
-         };
+         });
       } else {
-         return {
+         return createResponse({
             status: "success",
+            statusCode: 200,
             message: "User not found",
-            value: true,
-            data: null,
-         };
+            value: false,
+         });
       }
    } catch (error) {
-      return {
+      return createResponse({
          status: "error",
+         statusCode: 500,
          message: "Error checking user existence",
-         error,
-         value: false,
-      };
+         error: error,
+      });
    }
 };
+
+// Create a new user in Firestore
 export const createUser = async (user: any) => {
    try {
-      const userCollection = collection(db, "users");
-      const res = await addDoc(userCollection, user);
-      if (res.id) {
-         return {
-            status: "success",
-            message: "User Created",
-            value: true,
-         };
-      } else {
-         return {
-            status: "fail",
-            message: "Unknown error occurred",
-            value: false,
-         };
+      // Validate user object
+      if (!user || !user.email || !user.password) {
+         return createResponse({
+            status: "error",
+            statusCode: 400,
+            message: "Email and password are required.",
+         });
       }
+
+      const userCollection = collection(db, "users");
+      const res = await addDoc(userCollection, {
+         ...user,
+         TOTAL_STORAGE_USED: 0,
+      });
+      return createResponse({
+         status: res.id ? "success" : "fail",
+         statusCode: res.id ? 201 : 500,
+         message: res.id ? "User created" : "Unknown error occurred",
+         data: null,
+      });
    } catch (error) {
-      return {
+      return createResponse({
          status: "error",
-         message: "Error checking user existence",
-         error,
-         value: false,
-      };
+         statusCode: 500,
+         message: "Error creating user",
+         error: error,
+      });
    }
 };
-export const serachUsers = async (searchTerm: string) => {
+
+// Search users by email
+export const searchUsers = async (searchTerm: string) => {
    try {
-      // Perform the search query using Firestore
+      // Validate search term
+      if (!searchTerm) {
+         return createResponse({
+            status: "error",
+            statusCode: 400,
+            message: "Search term is required.",
+         });
+      }
 
       const userQuerySnapshot = await getDocs(
          query(
@@ -90,70 +141,116 @@ export const serachUsers = async (searchTerm: string) => {
          image: doc.data().image,
       }));
 
-      return { status: "success", message: "find the results", data };
+      return createResponse({
+         status: "success",
+         statusCode: 200,
+         message: "Found results",
+         data: data,
+      });
    } catch (error) {
-      return { status: "error", message: "Error finding the file", error };
+      return createResponse({
+         status: "error",
+         statusCode: 500,
+         message: "Error searching users",
+         error: error,
+      });
    }
 };
 
-export const shareWith = async (
-   id: string,
-   owner: string,
-   usersList: { email: string; image: string; id: string }[]
-) => {
+// Share a file/folder with a list of users
+export const shareWith = async ({
+   id,
+   owner,
+   usersList,
+}: {
+   id: string;
+   owner: string;
+   usersList: { email: string; image: string; id: string }[];
+}) => {
    try {
-      const FolderOrFile = await getDoc(doc(collection(db, "data"), id));
-      if (FolderOrFile.exists()) {
-         const shareWith = FolderOrFile.data()?.shareWith || [];
-         usersList.filter((user) => {
-            // for duplicasy check
-            const res = shareWith.find(
-               (item: any) => user.email === item.email
-            );
-            if (!res) shareWith.push(user.email);
+      // Validate input parameters
+      if (!id || !owner || !usersList || usersList.length === 0) {
+         return createResponse({
+            status: "error",
+            statusCode: 400,
+            message: "Invalid input parameters.",
          });
-         await updateDoc(doc(collection(db, "data"), id), {
-            shareWith: shareWith,
-         })
-            .then(async (res) => {
-               usersList.map(async (user) => {
-                  const User = await getDoc(
-                     doc(collection(db, "users"), user.id)
-                  );
-                  if (User.exists()) {
-                     const sharedWithMe = User.data()?.sharedWithMe || [];
-                     const res = sharedWithMe.find(
-                        (item: any) => id === item.id
-                     );
-                     // for duplicasy check
-                     if (!res) sharedWithMe.push(id);
-
-                     await updateDoc(doc(collection(db, "users"), user.id), {
-                        sharedWithMe: sharedWithMe,
-                     });
-                     return {
-                        status: "success",
-                        message: "shared with listed user",
-                        shareWith,
-                     };
-                  }
-               });
-            })
-            .catch((err) => {
-               console.log(err);
-            });
       }
-      return {
-         status: "Error",
-         message:
-            "Not able to share with listed user unexpected error accoured",
-         shareWith,
-      };
+
+      const fileOrFolder = await getDoc(doc(db, "data", id));
+      if (!fileOrFolder.exists()) {
+         return createResponse({
+            status: "error",
+            statusCode: 404,
+            message: "File or folder not found",
+            data: null,
+         });
+      }
+
+      const shareWith = fileOrFolder.data()?.shareWith || [];
+
+      // Add unique emails to the shareWith list
+      const updatedShareWith = Array.from(
+         new Set([...shareWith, ...usersList.map((user) => user.email)])
+      );
+
+      // Update the file or folder with new shareWith data
+      await updateDoc(doc(db, "data", id), { shareWith: updatedShareWith });
+
+      // Use Promise.all to update all users concurrently
+      await Promise.all(
+         usersList.map(async (user) => {
+            const userDoc = await getDoc(doc(db, "users", user.id));
+            if (userDoc.exists()) {
+               const sharedWithMe = userDoc.data()?.sharedWithMe || [];
+               if (!sharedWithMe.includes(id)) {
+                  sharedWithMe.push(id);
+                  await updateDoc(doc(db, "users", user.id), {
+                     sharedWithMe,
+                  });
+               }
+            }
+         })
+      );
+
+      return createResponse({
+         status: "success",
+         statusCode: 200,
+         message: "Shared successfully",
+         data: { shareWith: updatedShareWith },
+      });
    } catch (error) {
-      return {
-         error,
+      return createResponse({
          status: "error",
-         message: "Error checking user existence",
-      };
+         statusCode: 500,
+         message: "Error sharing file/folder",
+         error: error,
+      });
+   }
+};
+
+export const getUserStorageUsed = async (userId: string) => {
+   try {
+      const dataCollection = query(
+         collection(db, "users"),
+         where("id", "==", userId)
+      );
+      const users = await getDocs(dataCollection);
+
+      // Sum up the sizes of all files
+      const totalUsed = users?.docs[0]?.data()?.TOTAL_STORAGE_USED || 0;
+      return createResponse({
+         status: "success",
+         statusCode: 200,
+         message: "Found results",
+         data: { memory: totalUsed },
+      });
+   } catch (error) {
+      return createResponse({
+         status: "error",
+         statusCode: 500,
+         message: "Error searching users",
+         error: error,
+      });
    }
 };

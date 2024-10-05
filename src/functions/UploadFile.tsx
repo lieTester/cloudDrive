@@ -1,18 +1,28 @@
 import { storage } from "../../firebaseConfig";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { createFileInFolder } from "@/schema/dataFunctions";
+import { Dispatch, SetStateAction } from "react";
+import { v4 as uuidv4 } from "uuid"; // Import the UUID library for unique storage names
 
-const UploadFile = (
-   file: any,
-   owner: string,
-   parentId: string,
-   setProgress: Function,
-   setAddedFileFolder: Function
-) => {
-   // as over context value is undefined as primarrly so direct destructuring will give warning
-
+const UploadFile = ({
+   file,
+   userEmail,
+   parentId,
+   setProgress,
+   setAddedFileFolder,
+}: {
+   file: any;
+   userEmail: string;
+   parentId: string;
+   setProgress: Dispatch<SetStateAction<number>>;
+   setAddedFileFolder: Dispatch<SetStateAction<boolean>>;
+}) => {
    if (file) {
-      const storageRef = ref(storage, `/${owner}/${file.name}`);
+      // Create a custom name for storage (UUID ensures uniqueness)
+      const customStorageFileName = `${uuidv4()}`;
+
+      // Reference with the new custom name for storage
+      const storageRef = ref(storage, `/${userEmail}/${customStorageFileName}`);
 
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -22,7 +32,6 @@ const UploadFile = (
             // Track the upload progress
             const uploadProgress =
                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            // console.log(uploadProgress);
             setProgress(uploadProgress);
          },
          (error) => {
@@ -30,23 +39,25 @@ const UploadFile = (
          },
          async () => {
             // Upload complete
-            console.log("File uploaded successfully!");
-
             // Get the download URL of the uploaded file
-            // console.log(uploadTask.snapshot);
             const url = await getDownloadURL(uploadTask.snapshot.ref);
-            // console.log(url);
+
+            // Keep the original file name for the database
             const fileDetails = {
-               name: file.name,
+               name: file.name, // Keep the original file name here
                size: file.size,
-               owner: owner,
+               owner: userEmail,
                isFolder: false,
-               fileLink: url,
+               fileLink: url, // Link to the file with a modified storage name
                parentFolder: parentId,
+               storageFileName: customStorageFileName, // Optionally store the custom storage name if needed
             };
-            // console.log(fileDetails);
-            await createFileInFolder(fileDetails).then((res) => {
-               setAddedFileFolder(true); // to set that over file is loaded in database
+
+            // Save the file details in the database
+            await createFileInFolder({
+               file: fileDetails,
+            }).then((res) => {
+               setAddedFileFolder(true); // Indicate that the file is loaded in the database
             });
          }
       );

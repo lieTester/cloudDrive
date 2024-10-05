@@ -55,7 +55,6 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
          };
 
          await createFolderInFolder(data).then((res) => {
-            // console.log("Folder created:", res); //will get id of folder create in firestore
             setAddedFileFolder && setAddedFileFolder(true);
             onClose();
             setOpen && setOpen(true);
@@ -67,9 +66,7 @@ const CreateEditFolderUI: FC<CreateEditFileFolderUIProps> = ({
    // Rename folder
    const handelRenameFolder = async () => {
       if (id) {
-         console.log(folderName, id);
-         await renameFolder(folderName, id).then((res) => {
-            // console.log("Folder renamed:", res); //will get id of folder create in firestore
+         await renameFolder({ folderName, folderId: id }).then((res) => {
             if (setAddedFileFolder) setAddedFileFolder(true);
             onClose();
             setOpen && setOpen(true);

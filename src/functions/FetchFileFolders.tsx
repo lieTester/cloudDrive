@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import {
    getFolderContents,
    getNestedShareFolderContents,
@@ -6,73 +6,75 @@ import {
 import { File, Folder, FolderWithID, FileWithID } from "@/types/modelTypes";
 import { FolderInfo } from "@/types/contextTypes";
 
-export const FetchFileFolders = ({
-   setAddedFileFolder,
-   folderInfo,
+export const FetchFileFolders = async ({
    session,
+   folderInfo,
    setAllFiles,
    setAllFolders,
+   setAddedFileFolder,
 }: {
-   setAddedFileFolder?: (value: boolean) => void;
-   folderInfo?: FolderInfo | null;
    session?: any;
-   setAllFiles?: (files: FileWithID[]) => void;
-   setAllFolders?: (folders: FolderWithID[]) => void;
+   folderInfo?: FolderInfo | null;
+   setAllFiles?: Dispatch<SetStateAction<FileWithID[]>>;
+   setAddedFileFolder?: Dispatch<SetStateAction<boolean>>;
+   setAllFolders?: Dispatch<SetStateAction<FolderWithID[]>>;
 }) => {
    if (setAddedFileFolder) setAddedFileFolder(false);
    if (session?.user?.email && folderInfo) {
       try {
-         getFolderContents(folderInfo.parentFolder, session.user.email).then(
-            (arr: any) => {
-               const files: FileWithID[] = [];
-               const folders: FolderWithID[] = [];
-               arr.forEach((detail: FileWithID | FolderWithID) => {
-                  // console.log(detail);
-                  if (detail !== undefined) {
-                     // to check i thier is any undefiend which means trash value
-                     if (detail.data.isFolder) {
-                        const folderData: FolderWithID = {
-                           data: detail.data as Folder,
-                           id: detail.id,
-                        };
-                        folders.push(folderData);
-                     } else {
-                        const fileData: FileWithID = {
-                           data: detail.data as File,
-                           id: detail.id,
-                        };
-                        files.push(fileData);
-                     }
+         await getFolderContents({
+            folderId: folderInfo.parentFolder,
+            owner: session.user.email,
+         }).then((res) => {
+            const files: FileWithID[] = [];
+            const folders: FolderWithID[] = [];
+
+            res?.data?.forEach((detail: FileWithID | FolderWithID) => {
+               // console.log(detail);
+               if (detail !== undefined) {
+                  // to check i thier is any undefiend which means trash value
+                  if (detail.data.isFolder) {
+                     const folderData: FolderWithID = {
+                        data: detail.data as Folder,
+                        id: detail.id,
+                     };
+                     folders.push(folderData);
+                  } else {
+                     const fileData: FileWithID = {
+                        data: detail.data as File,
+                        id: detail.id,
+                     };
+                     files.push(fileData);
                   }
-               });
-               if (setAllFiles && setAllFolders) {
-                  setAllFiles(files);
-                  setAllFolders(folders);
                }
+            });
+            if (setAllFiles && setAllFolders) {
+               setAllFiles(files);
+               setAllFolders(folders);
             }
-         );
+         });
       } catch (error) {
          console.log(error);
       }
    }
 };
-export const FetchShareFileFolders = ({
+export const FetchShareFileFolders = async ({
    folderInfo,
    setAllFiles,
    setAllFolders,
 }: {
    folderInfo?: FolderInfo | null;
    session?: any;
-   setAllFiles?: (files: FileWithID[]) => void;
-   setAllFolders?: (folders: FolderWithID[]) => void;
+   setAllFiles?: Dispatch<SetStateAction<FileWithID[]>>;
+   setAllFolders?: Dispatch<SetStateAction<FolderWithID[]>>;
 }) => {
    if (folderInfo) {
       try {
-         getNestedShareFolderContents(folderInfo.parentFolder).then(
-            (arr: any) => {
+         await getNestedShareFolderContents(folderInfo.parentFolder).then(
+            (res) => {
                const files: FileWithID[] = [];
                const folders: FolderWithID[] = [];
-               arr.forEach((detail: FileWithID | FolderWithID) => {
+               res?.data?.forEach((detail: FileWithID | FolderWithID) => {
                   // console.log(detail);
                   if (detail !== undefined) {
                      // to check i thier is any undefiend which means trash value

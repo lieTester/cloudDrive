@@ -1,5 +1,5 @@
 // react next
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 // icons
 import { BiInfoCircle } from "react-icons/bi";
@@ -31,41 +31,54 @@ const SharedWithMe = () => {
    const searchParams = useSearchParams();
 
    // // param for checking which folder view to present
-   useEffect(() => {
-      let id = searchParams?.get("id") || "";
-      if (id.length === 0) {
-         collectShareData(session.user.email).then((data: any) => {
-            const files: FileWithID[] = [];
-            const folders: FolderWithID[] = [];
-            data.forEach((detail: FileWithID | FolderWithID) => {
-               // console.log(detail);
-               if (detail !== undefined) {
-                  if (detail.data.isFolder) {
-                     const folderData: FolderWithID = {
-                        data: { ...detail.data, shared: true } as Folder,
-                        id: detail.id,
-                     };
-                     folders.push(folderData);
-                  } else {
-                     const fileData: FileWithID = {
-                        data: { ...detail.data, shared: true } as File,
-                        id: detail.id,
-                     };
-                     files.push(fileData);
+   const fetchTrashData = async () => {
+      try {
+         let id = searchParams?.get("id") || "";
+         if (id.length === 0) {
+            await collectShareData(session?.user?.email)
+               .then((res) => {
+                  const files: FileWithID[] = [];
+                  const folders: FolderWithID[] = [];
+
+                  res?.data?.forEach((detail: FileWithID | FolderWithID) => {
+                     // console.log(detail);
+                     if (detail !== undefined) {
+                        if (detail.data.isFolder) {
+                           const folderData: FolderWithID = {
+                              data: { ...detail.data, shared: true } as Folder,
+                              id: detail.id,
+                           };
+                           folders.push(folderData);
+                        } else {
+                           const fileData: FileWithID = {
+                              data: { ...detail.data, shared: true } as File,
+                              id: detail.id,
+                           };
+                           files.push(fileData);
+                        }
+                     }
+                  });
+
+                  if (setAllFiles && setAllFolders) {
+                     setAllFiles(files);
+                     setAllFolders(folders);
                   }
-               }
+               })
+               .catch((err) => {
+                  throw err;
+               });
+         }
+         if (setFolderInfo && id) {
+            setFolderInfo((prev) => {
+               return { ...prev, parentFolder: id };
             });
-            if (setAllFiles && setAllFolders) {
-               setAllFiles(files);
-               setAllFolders(folders);
-            }
-         });
+         }
+      } catch (error) {
+         console.error(error);
       }
-      if (setFolderInfo && id) {
-         setFolderInfo((prev) => {
-            return { ...prev, parentFolder: id };
-         });
-      }
+   };
+   useEffect(() => {
+      fetchTrashData();
    }, [searchParams?.get("id")]);
 
    useEffect(() => {

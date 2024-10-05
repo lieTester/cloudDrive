@@ -5,10 +5,13 @@ export interface File {
    owner: string;
    isFolder: boolean;
    fileLink: string;
+   storageFileName: string;
    parentFolder: string;
    trash?: boolean;
    shared?: boolean;
    isStarred?: boolean;
+   createdAt?: Date;
+   updatedAt?: Date;
 }
 
 export interface Folder {
@@ -18,6 +21,8 @@ export interface Folder {
    parentFolder: string;
    trash?: boolean;
    shared?: boolean;
+   createdAt?: Date;
+   updatedAt?: Date;
 }
 
 export interface FolderWithID {

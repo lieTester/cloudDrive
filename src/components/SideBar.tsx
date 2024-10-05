@@ -1,5 +1,5 @@
 // react, next
-import { useState, useContext, FC } from "react";
+import { useState, useContext, FC, useMemo, useEffect } from "react";
 import Image from "next/image";
 // icons
 import { MdUploadFile } from "react-icons/md";
@@ -14,6 +14,7 @@ import UploadFile from "@/functions/UploadFile";
 import FileUpload from "@/components/subcomponent/FileFolder/FileUploadsUI";
 import NavigationList from "@/components/subcomponent/NavigationItems";
 import MessageContext from "@/context/MessageContext";
+import { getUserStorageUsed } from "@/schema/user/userFunctions";
 
 const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
    toggle,
@@ -26,6 +27,7 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
    const messageContext = useContext(MessageContext);
 
    const folderInfo = folderInfoContext?.folderInfo; // Use optional chaining here
+   const addedFileFolder = fileFolderContext?.addedFileFolder;
    const setAddedFileFolder = fileFolderContext?.setAddedFileFolder;
    const setFolderFileHandler = fileFolderContext?.setFolderFileHandler;
    const session = sessionContext?.session;
@@ -33,7 +35,19 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
    const setMessage = messageContext?.setMessage;
    const setSeverity = messageContext?.setSeverity;
 
+   const userIdMemo = useMemo(() => {
+      return session?.user?.id;
+   }, [session]);
+   const MAX_STORAGE_LIMIT = 5 * 1024 * 1024;
+   const [userStorage, setUserStorage] = useState<number>(0);
+   const [progressPercentage, setProgressPercentage] = useState<number>(0);
    const [fileFolderOpt, setfileFolderOpt] = useState(false);
+
+   // floating button toggles
+   const [isExpanded, setExpanded] = useState(true);
+   const toggleExpanded = () => {
+      setExpanded(!isExpanded);
+   };
 
    // to create add new folder window
    const openCloseAddEditFolderUI = () => {
@@ -56,13 +70,19 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
    const [file, setFile] = useState("");
    const [progress, setProgress] = useState(0);
 
-   const handleFileChange = (e: any) => {
+   const handleFileChange = async (e: any) => {
       const file = e.target.files[0];
 
       if (!file) return;
-
       const maxSizeInBytes = 1 * 1024 * 1024; // 1MB in bytes
-      if (file.size > maxSizeInBytes) {
+      if (userStorage + file.size > MAX_STORAGE_LIMIT) {
+         setOpen && setOpen(true);
+         setSeverity && setSeverity("urgent");
+         setMessage &&
+            setMessage(
+               "YOU don't have enough storage left to upload this file"
+            );
+      } else if (file.size > maxSizeInBytes) {
          setOpen && setOpen(true);
          setSeverity && setSeverity("urgent");
          setMessage &&
@@ -80,21 +100,28 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
          folderInfo?.parentFolder &&
          setAddedFileFolder
       ) {
-         UploadFile(
-            file,
-            session.user.email,
-            folderInfo.parentFolder,
-            setProgress,
-            setAddedFileFolder // to set that file is uploaded and we can now fetch in realtime
-         );
+         UploadFile({
+            file: file,
+            userEmail: session?.user?.email,
+            parentId: folderInfo.parentFolder,
+            setProgress: setProgress,
+            setAddedFileFolder: setAddedFileFolder, // to set that file is uploaded and we can now fetch in realtime
+         });
       }
    };
 
-   // floating button toggles
-   const [isExpanded, setExpanded] = useState(true);
-   const toggleExpanded = () => {
-      setExpanded(!isExpanded);
-   };
+   useEffect(() => {
+      const fetch = async () => {
+         await getUserStorageUsed(userIdMemo).then((res) => {
+            const totalSize = res?.data?.memory / (1024 * 1024);
+            setUserStorage(Number(totalSize.toFixed(2)));
+            setProgressPercentage(
+               Math.round((res?.data?.memory / MAX_STORAGE_LIMIT) * 100)
+            );
+         });
+      };
+      (userIdMemo || addedFileFolder) && fetch();
+   }, [userIdMemo, addedFileFolder]);
 
    return (
       <div
@@ -155,14 +182,28 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
                progress={progress}
             />
          </div>
-         <div
-            className="flex-grow overflow-y-auto"
-            // onClick={() => setfileFolderOpt(false)}
-         >
+         <div className="flex-grow overflow-y-auto">
             <NavigationList setToggle={setToggle} />
-            <span className="inline-block w-full text-center text-prim2 text-base border-2 border-seco2 rounded-full py-1 hover:bg-seco1">
+            <div className="w-full h-10 mb-3">
+               <span className="relative w-full h-[8px] bg-prim2 rounded-full overflow-hidden text-prim1 flex items-center ">
+                  <span
+                     style={{ width: `${progressPercentage}%` }}
+                     className={`w-[${progressPercentage}%] w-[30%] h-[8px]   bg-blue-900 transition-[width] duration-300 ease-in-out`}
+                  />
+                  <span className="absolute inset-0 font-semibold text-white text-[9px] flex justify-center items-center z-[2]">
+                     {progressPercentage}%
+                  </span>
+               </span>
+               <span className="flex justify-center text-sm font-semibold text-prim1">
+                  {userStorage} MB / {5} MB
+               </span>
+            </div>
+            <div
+               title="try i will not give any"
+               className="inline-block w-full text-center text-prim2 text-base border-2 border-seco2 rounded-full py-1 hover:bg-seco1"
+            >
                Get more storage
-            </span>
+            </div>
          </div>
          {/* floating button for small devices---------------------------------------------------------------------------------------------- */}
          <div className="flex sm:hidden fixed bottom-8 right-8  flex-col space-y-3 z-10">

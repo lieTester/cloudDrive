@@ -9,7 +9,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FileFolderContext } from "@/context/FileFolderContext";
 import { SessionContext } from "@/context/SessionContext";
 // firebase shema
-import { shareWith, serachUsers } from "@/schema/user/userFunctions";
+import { shareWith, searchUsers } from "@/schema/user/userFunctions";
 
 const ShareFileFolder: FC<{}> = ({}) => {
    // as over context value is undefined as primarrly so direct destructuring will give warning
@@ -39,17 +39,22 @@ const ShareFileFolder: FC<{}> = ({}) => {
       setUserList([]);
       setShareUser("");
    };
-   const handleShareUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleShareUserChange = async (
+      e: React.ChangeEvent<HTMLInputElement>
+   ) => {
       setShareUser(e.target.value);
       if (e.target.value.length) {
-         serachUsers(e.target.value).then((users) => {
-            if (users.data?.length) {
-               const newUsers = users?.data.filter((user) => {
-                  const res = selectedUserList.find(
-                     (item) => item.id === user.id
-                  );
-                  if (!res && user.email !== session?.user.email) return user;
-               });
+         await searchUsers(e.target.value).then((res) => {
+            if (res?.data?.length) {
+               const newUsers = res?.data?.filter(
+                  (user: { email: string; image: string; id: string }) => {
+                     const result = selectedUserList.find(
+                        (item) => item.id === user.id
+                     );
+                     if (!result && user.email !== session?.user?.email)
+                        return user;
+                  }
+               );
                setUserList(newUsers);
             }
          });
@@ -74,15 +79,23 @@ const ShareFileFolder: FC<{}> = ({}) => {
       setSelectedUserList(newSelectedUserList);
    };
 
-   const handleShareUser = () => {
-      if (selectedUserList.length && folderFileShareHandler?.id)
-         shareWith(
-            folderFileShareHandler?.id,
-            session?.user?.email,
-            selectedUserList
-         ).then((res) => {
-            onClose();
-         });
+   const handleShareUser = async () => {
+      try {
+         if (selectedUserList.length && folderFileShareHandler?.id)
+            await shareWith({
+               id: folderFileShareHandler?.id,
+               owner: session?.user?.email,
+               usersList: selectedUserList,
+            })
+               .then((res) => {
+                  onClose();
+               })
+               .catch((err) => {
+                  throw err;
+               });
+      } catch (error) {
+         console.error(error);
+      }
    };
    const getUserEmails = (
       email: string,

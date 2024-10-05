@@ -1,3 +1,4 @@
+import React from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import { BsCardList } from "react-icons/bs";
 const Recent = () => {

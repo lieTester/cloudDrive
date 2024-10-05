@@ -1,5 +1,5 @@
 // react next
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 // icons
 import { BsCardList } from "react-icons/bs";
 // context
@@ -26,34 +26,41 @@ const Trash = () => {
    const addedFileFolder = fileFolderContext?.addedFileFolder;
 
    const session = sessionContext?.session;
-   useEffect(() => {
-      getTrash(session.user.email).then((trash: any) => {
-         const files: FileWithID[] = [];
-         const folders: FolderWithID[] = [];
-         trash.forEach((detail: FileWithID | FolderWithID) => {
-            // console.log(detail);
-            if (detail !== undefined) {
-               // to check i thier is any undefiend which means trash value
-               if (detail.data.isFolder) {
-                  const folderData: FolderWithID = {
-                     data: detail.data as Folder,
-                     id: detail.id,
-                  };
-                  folders.push(folderData);
-               } else {
-                  const fileData: FileWithID = {
-                     data: detail.data as File,
-                     id: detail.id,
-                  };
-                  files.push(fileData);
+
+   const fetchTrash = async () => {
+      try {
+         await getTrash(session.user.email).then((res) => {
+            const files: FileWithID[] = [];
+            const folders: FolderWithID[] = [];
+            res?.data?.forEach((detail: FileWithID | FolderWithID) => {
+               if (detail !== undefined) {
+                  // to check i thier is any undefiend which means trash value
+                  if (detail.data.isFolder) {
+                     const folderData: FolderWithID = {
+                        data: detail.data as Folder,
+                        id: detail.id,
+                     };
+                     folders.push(folderData);
+                  } else {
+                     const fileData: FileWithID = {
+                        data: detail.data as File,
+                        id: detail.id,
+                     };
+                     files.push(fileData);
+                  }
                }
+            });
+            if (setAllFiles && setAllFolders) {
+               setAllFiles(files);
+               setAllFolders(folders);
             }
          });
-         if (setAllFiles && setAllFolders) {
-            setAllFiles(files);
-            setAllFolders(folders);
-         }
-      });
+      } catch (error) {
+         console.error(error);
+      }
+   };
+   useEffect(() => {
+      fetchTrash();
    }, [addedFileFolder]);
    return (
       <>
