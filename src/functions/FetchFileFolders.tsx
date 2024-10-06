@@ -60,45 +60,47 @@ export const FetchFileFolders = async ({
 };
 export const FetchShareFileFolders = async ({
    folderInfo,
+   userEmail,
    setAllFiles,
    setAllFolders,
 }: {
-   folderInfo?: FolderInfo | null;
-   session?: any;
+   folderInfo: FolderInfo;
+   userEmail: string;
    setAllFiles?: Dispatch<SetStateAction<FileWithID[]>>;
    setAllFolders?: Dispatch<SetStateAction<FolderWithID[]>>;
 }) => {
    if (folderInfo) {
       try {
-         await getNestedShareFolderContents(folderInfo.parentFolder).then(
-            (res) => {
-               const files: FileWithID[] = [];
-               const folders: FolderWithID[] = [];
-               res?.data?.forEach((detail: FileWithID | FolderWithID) => {
-                  // console.log(detail);
-                  if (detail !== undefined) {
-                     // to check i thier is any undefiend which means trash value
-                     if (detail.data.isFolder) {
-                        const folderData: FolderWithID = {
-                           data: detail.data as Folder,
-                           id: detail.id,
-                        };
-                        folders.push(folderData);
-                     } else {
-                        const fileData: FileWithID = {
-                           data: detail.data as File,
-                           id: detail.id,
-                        };
-                        files.push(fileData);
-                     }
+         await getNestedShareFolderContents({
+            folderId: folderInfo.parentFolder,
+            userEmail,
+         }).then((res) => {
+            const files: FileWithID[] = [];
+            const folders: FolderWithID[] = [];
+            res?.data?.forEach((detail: FileWithID | FolderWithID) => {
+               // console.log(detail);
+               if (detail !== undefined) {
+                  // to check i thier is any undefiend which means trash value
+                  if (detail.data.isFolder) {
+                     const folderData: FolderWithID = {
+                        data: detail.data as Folder,
+                        id: detail.id,
+                     };
+                     folders.push(folderData);
+                  } else {
+                     const fileData: FileWithID = {
+                        data: detail.data as File,
+                        id: detail.id,
+                     };
+                     files.push(fileData);
                   }
-               });
-               if (setAllFiles && setAllFolders) {
-                  setAllFiles(files);
-                  setAllFolders(folders);
                }
+            });
+            if (setAllFiles && setAllFolders) {
+               setAllFiles(files);
+               setAllFolders(folders);
             }
-         );
+         });
       } catch (error) {
          console.log(error);
       }

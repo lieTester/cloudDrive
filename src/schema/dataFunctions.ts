@@ -611,7 +611,6 @@ export const collectShareData = async (owner: string) => {
 
       const User = userQuerySnapshot.docs[0];
       const sharedWithMe = User.data()?.sharedWithMe || [];
-
       // Use Promise.all to fetch all shared documents concurrently
       const allDataPromises = sharedWithMe.map(async (id: string) => {
          const res = await getDoc(doc(collection(db, "data"), id));
@@ -645,20 +644,27 @@ export const collectShareData = async (owner: string) => {
    }
 };
 
-export const getNestedShareFolderContents = async (folderId: string) => {
+export const getNestedShareFolderContents = async ({
+   folderId,
+   userEmail,
+}: {
+   folderId: string;
+   userEmail: string;
+}) => {
    // Validate input
-   if (!folderId) {
+   if (!folderId || !userEmail) {
       return createResponse({
          status: "error",
          statusCode: 400,
-         message: "Folder ID is required.",
+         message: "Folder ID and User is required.",
       });
    }
 
    try {
       const dataCollection = query(
          collection(db, "data"),
-         where("parentFolder", "==", folderId)
+         where("parentFolder", "==", folderId),
+         where("owner", "==", userEmail)
       );
       const querySnapshot = await getDocs(dataCollection);
 

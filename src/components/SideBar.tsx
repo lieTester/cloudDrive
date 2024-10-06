@@ -184,7 +184,7 @@ const SideBar: FC<{ toggle: boolean; setToggle: () => void }> = ({
          </div>
          <div className="flex-grow overflow-y-auto">
             <NavigationList setToggle={setToggle} />
-            <div className="w-full h-10 mb-3">
+            <div className="w-full h-10">
                <span className="relative w-full h-[8px] bg-prim2 rounded-full overflow-hidden text-prim1 flex items-center ">
                   <span
                      style={{ width: `${progressPercentage}%` }}

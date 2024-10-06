@@ -31,7 +31,7 @@ const SharedWithMe = () => {
    const searchParams = useSearchParams();
 
    // // param for checking which folder view to present
-   const fetchTrashData = async () => {
+   const fetchSharedData = async () => {
       try {
          let id = searchParams?.get("id") || "";
          if (id.length === 0) {
@@ -77,16 +77,19 @@ const SharedWithMe = () => {
       }
    };
    useEffect(() => {
-      fetchTrashData();
+      fetchSharedData();
    }, [searchParams?.get("id")]);
 
    useEffect(() => {
       // Fetch files and folders using the provided functions from the custom hook
-      FetchShareFileFolders({
-         folderInfo,
-         setAllFiles,
-         setAllFolders,
-      });
+      folderInfo &&
+         session?.user?.email &&
+         FetchShareFileFolders({
+            folderInfo,
+            userEmail: session?.user?.email,
+            setAllFiles,
+            setAllFolders,
+         });
    }, [folderInfo]);
 
    return (
