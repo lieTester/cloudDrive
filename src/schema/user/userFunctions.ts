@@ -187,16 +187,6 @@ export const shareWith = async ({
          });
       }
 
-      const shareWith = fileOrFolder.data()?.shareWith || [];
-
-      // Add unique emails to the shareWith list
-      const updatedShareWith = Array.from(
-         new Set([...shareWith, ...usersList.map((user) => user.email)])
-      );
-
-      // Update the file or folder with new shareWith data
-      await updateDoc(doc(db, "data", id), { shareWith: updatedShareWith });
-
       // Use Promise.all to update all users concurrently
       await Promise.all(
          usersList.map(async (user) => {
@@ -213,11 +203,43 @@ export const shareWith = async ({
          })
       );
 
+      if (fileOrFolder.data()?.isFolder) {
+         const queue = [id];
+         while (queue.length) {
+            const currFileFolderId = queue.shift()!; // Get and remove the first element from the queue
+            const fileOrFolder = await getDoc(
+               doc(db, "data", currFileFolderId)
+            );
+            const sharedToList = fileOrFolder?.data()?.sharedTo || [];
+            const newSharedToList = Array.from(
+               new Set([
+                  ...sharedToList,
+                  ...usersList.map((user) => user.email),
+               ])
+            );
+            const folderRef = doc(db, "data", currFileFolderId);
+            await updateDoc(folderRef, {
+               trash: false,
+               sharedTo: newSharedToList,
+            });
+            // collect inside data of this folder
+            if (fileOrFolder.data()?.isFolder) {
+               const allChildrenCollection = query(
+                  collection(db, "data"),
+                  where("parentFolder", "==", fileOrFolder.id)
+               );
+               const allChildrenSnapshot = await getDocs(allChildrenCollection);
+               allChildrenSnapshot.docs.forEach((doc) => {
+                  queue.push(doc.id);
+               });
+            }
+         }
+      }
+
       return createResponse({
          status: "success",
          statusCode: 200,
          message: "Shared successfully",
-         data: { shareWith: updatedShareWith },
       });
    } catch (error) {
       return createResponse({

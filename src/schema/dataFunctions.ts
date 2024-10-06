@@ -188,6 +188,7 @@ export const getFolderContents = async ({
          }
 
          // Determine if the document is a folder or a file
+         console.log(data);
          if (data.isFolder) {
             return {
                data: data as Folder,
@@ -280,6 +281,13 @@ export const deleteFolder = async ({
             status: "error",
             statusCode: 404,
             message: "Folder not found.",
+         });
+      }
+      if (folderDoc.data().owner !== user) {
+         return createResponse({
+            status: "error",
+            statusCode: 403,
+            message: "You are not authorized to delete folder",
          });
       }
 
@@ -664,8 +672,9 @@ export const getNestedShareFolderContents = async ({
       const dataCollection = query(
          collection(db, "data"),
          where("parentFolder", "==", folderId),
-         where("owner", "==", userEmail)
+         where("sharedTo", "array-contains", userEmail) // Will return nothing if sharedTo doesn't exist
       );
+
       const querySnapshot = await getDocs(dataCollection);
 
       // Map through documents and build the response

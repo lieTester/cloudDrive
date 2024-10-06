@@ -3,26 +3,22 @@ export interface File {
    name: string;
    size: number;
    owner: string;
-   isFolder: boolean;
-   fileLink: string;
-   storageFileName: string;
-   parentFolder: string;
    trash?: boolean;
    shared?: boolean;
+   fileLink: string;
+   isFolder: boolean;
    isStarred?: boolean;
-   createdAt?: Date;
-   updatedAt?: Date;
+   parentFolder: string;
+   storageFileName: string;
 }
 
 export interface Folder {
    name: string;
    owner: string;
-   isFolder: boolean;
-   parentFolder: string;
    trash?: boolean;
    shared?: boolean;
-   createdAt?: Date;
-   updatedAt?: Date;
+   isFolder: boolean;
+   parentFolder: string;
 }
 
 export interface FolderWithID {
