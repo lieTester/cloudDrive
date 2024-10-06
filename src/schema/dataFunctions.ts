@@ -188,7 +188,6 @@ export const getFolderContents = async ({
          }
 
          // Determine if the document is a folder or a file
-         console.log(data);
          if (data.isFolder) {
             return {
                data: data as Folder,
