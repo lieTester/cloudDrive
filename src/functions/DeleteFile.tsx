@@ -1,6 +1,6 @@
 import { storage } from "../../firebaseConfig";
 import { ref, deleteObject } from "firebase/storage";
-import { deleteFile } from "@/schema/dataFunctions";
+import { deleteFileFromDoc } from "@/schema/dataFunctions";
 import { Dispatch, SetStateAction } from "react";
 
 const DeleteFile = async ({
@@ -12,7 +12,7 @@ const DeleteFile = async ({
    fileName: string;
    fileId: string;
    owner: string;
-   setAddedFileFolder: Dispatch<SetStateAction<boolean>>;
+   setAddedFileFolder?: Dispatch<SetStateAction<boolean>>;
 }) => {
    // Create a reference to the file to delete
    const desertRef = ref(storage, `${owner}/${fileName}`);
@@ -21,10 +21,10 @@ const DeleteFile = async ({
       .then(async () => {
          // File deleted successfully
          try {
-            await deleteFile(fileId).then((res) => {
-               setAddedFileFolder(true);
+            await deleteFileFromDoc(fileId).then((res) => {
+               setAddedFileFolder && setAddedFileFolder(true);
                setTimeout(() => {
-                  setAddedFileFolder(false);
+                  setAddedFileFolder && setAddedFileFolder(false);
                }, 800);
             });
          } catch (error) {

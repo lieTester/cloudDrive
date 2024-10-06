@@ -76,7 +76,6 @@ const NavigationList: FC<{ setToggle: () => void }> = ({ setToggle }) => {
          .replace(/[^\w\s-]/g, "")
          .replace(/[\s_-]+/g, "-")
          .replace(/^-+|-+$/g, "");
-      // console.log(path);
       router.push(`/?path=${path}`, undefined);
       setToggle();
    };

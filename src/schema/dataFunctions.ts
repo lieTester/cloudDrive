@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
 import { File, Folder, FileWithID, FolderWithID } from "../types/modelTypes";
+import DeleteFile from "@/functions/DeleteFile";
 
 const db = database;
 
@@ -88,6 +89,7 @@ export const createFileInFolder = async ({ file }: { file: File }) => {
          );
          const users = await getDocs(userQuery);
          const userRef = doc(db, "users", users?.docs[0]?.id);
+
          await updateDoc(userRef, {
             TOTAL_STORAGE_USED:
                (users?.docs[0]?.data()?.TOTAL_STORAGE_USED || 0) + file.size,
@@ -100,7 +102,7 @@ export const createFileInFolder = async ({ file }: { file: File }) => {
          data: docRef.id,
       });
    } catch (error) {
-      console.log(error);
+      console.error(error);
       return createResponse({
          status: "error",
          statusCode: 500,
@@ -253,7 +255,13 @@ export const renameFolder = async ({
    }
 };
 
-export const deleteFolder = async (folderId: string) => {
+export const deleteFolder = async ({
+   folderId,
+   user,
+}: {
+   folderId: string;
+   user: string;
+}) => {
    // Check if folderId is valid
    if (!folderId) {
       return createResponse({
@@ -266,7 +274,6 @@ export const deleteFolder = async (folderId: string) => {
    try {
       const folderRef = doc(db, "data", folderId);
       const folderDoc = await getDoc(folderRef);
-
       // Check if the folder exists
       if (!folderDoc.exists()) {
          return createResponse({
@@ -293,7 +300,13 @@ export const deleteFolder = async (folderId: string) => {
             });
             await deleteDoc(folderRef);
          } else {
-            await deleteFile(currFolder[0]);
+            const fileRef = doc(db, "data", currFolder[0]);
+            const fileDoc = await getDoc(fileRef);
+            await DeleteFile({
+               fileName: fileDoc.data()?.storageFileName,
+               fileId: fileDoc.id,
+               owner: fileDoc?.data()?.owner,
+            });
          }
       }
 
@@ -312,7 +325,7 @@ export const deleteFolder = async (folderId: string) => {
    }
 };
 
-export const deleteFile = async (fileId: string) => {
+export const deleteFileFromDoc = async (fileId: string) => {
    // Validate fileId
    if (!fileId) {
       return createResponse({
@@ -334,7 +347,16 @@ export const deleteFile = async (fileId: string) => {
             message: "File not found.",
          });
       }
-
+      const userQuery = query(
+         collection(db, "users"),
+         where("email", "==", fileDoc?.data()?.owner)
+      );
+      const users = await getDocs(userQuery);
+      const userRef = doc(db, "users", users?.docs[0]?.id);
+      await updateDoc(userRef, {
+         TOTAL_STORAGE_USED:
+            users?.docs[0]?.data()?.TOTAL_STORAGE_USED - fileDoc?.data()?.size,
+      });
       await deleteDoc(fileRef);
       return createResponse({
          status: "success",

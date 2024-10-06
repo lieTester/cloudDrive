@@ -1,6 +1,5 @@
 import { storage } from "../../firebaseConfig";
 import { ref, getDownloadURL } from "firebase/storage";
-import { deleteFile } from "@/schema/dataFunctions";
 
 const DownloadFile = (fileName: string) => {
    getDownloadURL(ref(storage, "images/stars.jpg"))
@@ -18,6 +17,7 @@ const DownloadFile = (fileName: string) => {
       })
       .catch((error) => {
          // Handle any errors
+         console.error(error);
       });
 };
 

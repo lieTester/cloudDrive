@@ -88,7 +88,6 @@ const Header: FC<{
                         className="text-xs font-normal bg-extra2 text-seco1 rounded-sm p-1 px-3"
                         onClick={() => {
                            signOut();
-                           console.log("signOut");
                         }}
                      >
                         Signout
@@ -161,7 +160,6 @@ const Header: FC<{
                         className="text-xs font-normal bg-extra2 text-seco1 rounded-sm p-1 px-3"
                         onClick={() => {
                            signOut();
-                           console.log("signOut");
                         }}
                      >
                         Signout

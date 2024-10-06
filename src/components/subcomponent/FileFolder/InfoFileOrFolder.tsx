@@ -43,7 +43,10 @@ const InfoComponent: FC<InfoComponentProps> = ({
       if (setAddedFileFolder && folderOrFile) {
          if (folderOrFile === "folder") {
             if (folder && trash && trash === true) {
-               await deleteFolder(folder.id).then((res) => {
+               await deleteFolder({
+                  folderId: folder.id,
+                  user: session?.user?.email,
+               }).then((res) => {
                   setAddedFileFolder(true);
                });
             } else if (folder && setAddedFileFolder) {

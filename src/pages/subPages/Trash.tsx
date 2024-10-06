@@ -69,7 +69,10 @@ const Trash = () => {
                <li className="hover:bg-seco2">Trash</li>
             </ul>
             <ul className="float-right mr-3 flex [&>li]:m-1">
-               <li className="flex p-2  hover:bg-seco2 align-middle rounded-full">
+               <li
+                  title="have this view only"
+                  className="flex p-2  hover:bg-seco2 align-middle rounded-full"
+               >
                   <BsCardList className="text-xl " />
                </li>
             </ul>

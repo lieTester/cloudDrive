@@ -41,7 +41,6 @@ const SharedWithMe = () => {
                   const folders: FolderWithID[] = [];
 
                   res?.data?.forEach((detail: FileWithID | FolderWithID) => {
-                     // console.log(detail);
                      if (detail !== undefined) {
                         if (detail.data.isFolder) {
                            const folderData: FolderWithID = {
